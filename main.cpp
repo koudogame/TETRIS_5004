@@ -252,11 +252,16 @@ int WINAPI WinMain( HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLin
 
                 case kTitleUpdate:
                     no = title.update(); //タイトル更新
-                    if (no == 4)
+
+                    if (no == 2)
+                    {
+                        work_no = kGameInit;
+                    }
+                    else if (no == 4)
                     {
                         work_no = kOptionInit;
                     }
-                    if (no == 5)
+                    else if (no == 5)
                     {
                         work_no = kCreditInit;
                     }
@@ -295,7 +300,7 @@ int WINAPI WinMain( HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLin
                     break;
                 case kGameInit:
                     //ゲームクラス初期化
-                    if (!game.init(oba,p2))
+                    if (!game.init())
                     {
                         //エラー
                         PostQuitMessage(0);
@@ -317,7 +322,7 @@ int WINAPI WinMain( HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLin
 
                 case kGameUpdate:
 
-                    if (!game.update(oba))
+                    if (!game.update())
                     {
                         // 次の処理へ
                         work_no = kHitSceneInit;
@@ -386,7 +391,7 @@ int WINAPI WinMain( HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLin
                     start.draw();  //説明
                     break;
                 case kGameUpdate:
-                    game.draw(oba); //ゲーム部分描画
+                    game.draw(); //ゲーム部分描画
                     break;
                 case kHitSceneUpdate:
                     break;

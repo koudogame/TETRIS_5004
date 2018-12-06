@@ -12,45 +12,26 @@ Game::~Game()
 }
 
 //‰Šú‰»
-bool Game::init(bool oba, int p2)
+bool Game::init()
 {
-
-
     //ƒƒ“ƒo‰Šú‰»
-
-    if (oba)
-    {
-
-    }
-
 
     return true;
 }
 
 //XV
-bool Game::update(bool oba)
+bool Game::update()
 {
-    field_.update(oba);
-    player_.update(oba);
+    player_.update();
     ui_.update();
-    if (!timelimit_.update())
-    {
-        return false;
-    }
+
     return true;
 }
 
 //•`‰æ
-void Game::draw(bool oba)
+void Game::draw()
 {
-    ui_.draw(); //”wŒi
-    field_.draw();
-    field_.draw2();
-    player_.draw(oba); //‘åêæ¶
-    player_.draw2();//©“]Ô
-    ui_.partitiondraw(); //dØ‚è
-    ui_.meterdraw(); //‰ß¸Š„‡ƒ[ƒ^[
-    timelimit_.draw(); //ŠÔ
+    ui_.draw();
 }
 
 //”jŠü

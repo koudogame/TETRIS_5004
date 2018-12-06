@@ -28,9 +28,9 @@ private:
 public:
     Game();                             // コンストラクタ
     ~Game();                            // デストラクタ
-    bool init(bool oba, int p2);                // 初期化
-    bool update(bool oba);              // 更新
-    void draw(bool oba);                // 描画
+    bool init();                // 初期化
+    bool update();              // 更新
+    void draw();                // 描画
     void destroy();                     // 破棄
 
     int tmp = 0;

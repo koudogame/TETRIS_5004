@@ -62,19 +62,11 @@ Player::~Player()
 }
 
 //初期化
-bool Player::init( const wchar_t* FileName1, const wchar_t* FileName2)
+bool Player::init( )
 {
     //テクスチャの読み込み
 
-    texture_1 = Texture::load( FileName1 );
-    texture_2 = Texture::load( FileName2 );
-
-	// 変数初期化
-    //static int mash_point1_;    // プレイヤー1
-    //static int mash_point2_ ;    // プレイヤー2
-
-    mash_point1_ = 0;
-    mash_point2_ = 0;
+    //texture_1 = Texture::load();
 
     //NULLチェック
     if( texture_1 == NULL )
@@ -86,28 +78,14 @@ bool Player::init( const wchar_t* FileName1, const wchar_t* FileName2)
         return false;
     }
 
-    //NULLチェック
-    if( texture_2 == NULL )
-    {
-
-        Error::showDialog( "texture_2が読み込めません" );
-
-        //エラー
-        return false;
-    }
-
-    //再生
-    Adx::play( 0 );
-
     return true;
 
 }
 
 //更新処理
-void Player::update(bool oba)
+void Player::update()
 {
-    if (oba) //大場モード時のみ使用
-    {
+
         // アニメーション処理
         animation_no_++;
 
@@ -130,7 +108,6 @@ void Player::update(bool oba)
                 animation_pattern_ = turn;
             }
         }
-    }
    
 
     // 1Pコントローラの入力を取得
@@ -149,10 +126,8 @@ void Player::update(bool oba)
     if( pad_tracker.a == GamePad::ButtonStateTracker::PRESSED || key_tracker.pressed.Enter )
     {
         mash_point1_++;
-		if (oba)
-		{
+	
 			Adx::play(5);
-		}
     }
 
     if( pad_tracker2.a == GamePad::ButtonStateTracker::PRESSED || key_tracker.pressed.Space )
@@ -166,12 +141,11 @@ void Player::update(bool oba)
 }
 
 //描画
-void Player::draw(bool oba)  //車
+void Player::draw()  //車
 {
     RECT rect;
 
-    if (oba) //大場モードのテクスチャの設定
-    {
+  
         // 描画範囲の設定
         rect.top = animation_pattern_ * 196L;
         rect.left = animation_no_ * 600L;
@@ -180,18 +154,6 @@ void Player::draw(bool oba)  //車
 
         // 描画
         Sprite::draw(texture_1, position_, &rect);
-    }
-    else //通常モードの車テクスチャの設定
-    {
-        // 描画範囲の設定
-        rect.top =0L;
-        rect.left = 0L;
-        rect.right = rect.left + 600L;
-        rect.bottom = rect.top + 360L;
-
-        // 描画
-        Sprite::draw(texture_1, Vector2(-50.0F, 250.0F), &rect);
-    }
 
 }
 

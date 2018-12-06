@@ -54,13 +54,15 @@ int Title::update()
     {
         menu--;
     }
-
-    if (menu == 3 && key_tracker.pressed.Enter)
+    if (menu == 0 && key_tracker.pressed.Enter)
+    {
+        return 2;
+    }
+    else if (menu == 3 && key_tracker.pressed.Enter)
     {
         return 4; //オプション
     }
-
-    if (menu == 4 && key_tracker.pressed.Enter)
+    else if (menu == 4 && key_tracker.pressed.Enter)
     {
         return 5; //クレジット
     }

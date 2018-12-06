@@ -38,15 +38,15 @@ public:
     ~Player();                                                                                  // デストラクタ
 
     //初期化
-    bool init( const wchar_t* FileName1, const wchar_t*FileName2);
+    bool init();
     int get_position_x() { return position_.x; }
     int get_animation_pattern() { return animation_pattern_; }
     static int get_mashpoint_1() { return mash_point1_; }
     static int get_mashpoint_2() { return mash_point2_; }
 
 
-    void update(bool oba);                                                // 更新
-    void draw(bool oba);                                                  // 描画
+    void update();                                                // 更新
+    void draw();                                                  // 描画
     void draw2();
     void destroy();                                               // 破棄
 };
