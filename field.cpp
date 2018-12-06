@@ -11,7 +11,7 @@ Field::Field()
 
 bool Field::init()
 {
-    texture_ = Texture::load(L"field1.png");
+    texture_ = Texture::load(L"Tetris01_Single.png");
     speed = 10;
 
     if (texture_ == NULL)

@@ -20,28 +20,10 @@ bool Game::init(bool oba, int p2)
 
     if (oba)
     {
-        //大場モード
-        if (!player_.init(L"oba1.png", L"チャリ.png"))return false;
-    }
-    else
-    {
-        if (p2 == 0)
-        {
-            if (!player_.init(L"car_side.png", L"チャリ.png"))return false;
-        }
-        if (p2 == 1)
-        {
-            if (!player_.init(L"car_side.png", L"バイク緑.png"))return false;
-        }
-        if (p2 == 2)
-        {
-            if (!player_.init(L"car_side.png", L"バイク赤.png"))return false;
-        }
+
     }
 
-    if (!ui_.init()) return false;
-    if (!timelimit_.init(L"work8.png")) return false;
-    if (!field_.init())return false;
+
     return true;
 }
 

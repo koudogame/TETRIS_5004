@@ -156,7 +156,7 @@ int WINAPI WinMain( HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLin
     t2 = timeGetTime();
 
     //現在の作業番号
-    int work_no = kRatingInit;
+    int work_no = kTitleInit;
 
     //シーンクラス変数
     Title title;
@@ -215,11 +215,6 @@ int WINAPI WinMain( HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLin
                 {
             
                 case kTitleInit:
-
-                    Adx::stop();
-                    Adx::play(3);
-
-                    oba = false; //大場モード無効化
 
                     //タイトルクラス初期化
                     if (!title.init())
@@ -344,11 +339,10 @@ int WINAPI WinMain( HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLin
 
                 switch (work_no)
                 {
-                case kRatingUpdate:
-                    break;
                 case kTitleUpdate:
                     title.draw();  //タイトル背景
-                    title.adraw(); //タイトル矢印
+                    title.dpaddraw();  //タイトル十字
+                    title.buttondraw(); //タイトルAボタン
                     break;
                 case kStartUpdate:
                     start.draw();  //説明
