@@ -12,14 +12,15 @@
 #include"title.h"
 #include"adx.h"
 #include "CueSheet_0.h"
+#include"scene.h"
 using namespace DirectX;
 using namespace SimpleMath;
 
 //列挙体
 enum
 {
-    kRatingInit,        //レーティング初期化
-    kRatingUpdate,      //レーティング更新
+    kSceneInit,         //シーン変化初期化
+    kSceneUpdate,       //シーン変化更新
 
     kTitleInit,         // タイトル画面初期化
     kTitleUpdate,       // タイトル画面更新
@@ -156,13 +157,14 @@ int WINAPI WinMain( HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLin
     t2 = timeGetTime();
 
     //現在の作業番号
-    int work_no = kTitleInit;
+    int work_no = kSceneInit;
 
     //シーンクラス変数
     Title title;
     Start start;
     Game game;
     Result result;
+    Scene scene;
 
     int no = 0;
     int num = 0;
@@ -213,7 +215,20 @@ int WINAPI WinMain( HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLin
                 //シーン処理
                 switch (work_no)
                 {
-            
+                case kSceneInit:
+                    if (!scene.init())
+                    {
+                        //エラー
+                        PostQuitMessage(0);
+                    }
+                    work_no = kSceneUpdate;
+                    break;
+                case kSceneUpdate:
+                    if (!scene.update())
+                    {
+                        work_no = kTitleInit;
+                    }
+                    break;
                 case kTitleInit:
 
                     //タイトルクラス初期化
@@ -339,6 +354,9 @@ int WINAPI WinMain( HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLin
 
                 switch (work_no)
                 {
+                case kSceneUpdate:
+                    scene.draw();
+                    break;
                 case kTitleUpdate:
                     title.draw();  //タイトル背景
                     title.dpaddraw();  //タイトル十字
