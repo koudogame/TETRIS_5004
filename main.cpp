@@ -13,6 +13,7 @@
 #include"adx.h"
 #include "CueSheet_0.h"
 #include"scene.h"
+#include"credit.h"
 using namespace DirectX;
 using namespace SimpleMath;
 
@@ -165,6 +166,7 @@ int WINAPI WinMain( HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLin
     Game game;
     Result result;
     Scene scene;
+    Credit credit;
 
     int no = 0;
     int num = 0;
@@ -246,28 +248,26 @@ int WINAPI WinMain( HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLin
                 case kTitleUpdate:
 
                     no = title.update(); //タイトル更新
-
-                    //タイトルクラス更新処理
-                    if (no == 2)       // 2が返ってきたらゲーム開始
-                    {
-                        work_no = kStartInit; //通常モードでゲームスタート
-                    }
-                    else if (no == 4)
-                    {
-                        oba = true; //大場モードでゲームスタート
-                        work_no = kStartInit;
-                    }
-                    else if (no == 3)  // 3が返ってきたらクレジットへ
+                    if (no == 5)
                     {
                         work_no = kCreditInit;
                     }
-                    else if (no == 1)  //1が返ってきたらゲーム終了
-                    {
-                        exit = true;
-                    }
-
                     break;
-
+                case kCreditInit:
+                    if (!credit.init())
+                    {
+                        //エラー
+                        PostQuitMessage(0);
+                    }
+                    work_no = kCreditUpdate;
+                    break;
+                case kCreditUpdate:
+                    if (!credit.update())
+                    {
+                        //タイトルへ戻る
+                        work_no = kTitleUpdate;
+                    }
+                    break;
                 case kStartInit:
 					if (!start.init())
 					{
@@ -361,6 +361,7 @@ int WINAPI WinMain( HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLin
                     title.draw();  //タイトル背景
                     title.dpaddraw();  //タイトル十字
                     title.buttondraw(); //タイトルAボタン
+                    title.cursordraw();
                     break;
                 case kStartUpdate:
                     start.draw();  //説明
@@ -376,7 +377,10 @@ int WINAPI WinMain( HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLin
                     result.scoredraw2(); //2Pのスコア描画
                     result.arrowdraw();  //リザルト矢印
                     break;
-
+                case kCreditUpdate:
+                    credit.draw(); //クレジット背景
+                    credit.buttondraw(); //クレジットボタン
+                    break;
                 }
 
                 //スプライト描画終了

@@ -32,9 +32,8 @@ public:
     void draw();                                // 背景描画
     void dpaddraw();                            // 十字キー描画
     void buttondraw();                          // ボタン描画
+    void cursordraw();                          //カーソル描画
     void destroy();                             // 破棄
-    int cnt = 0;                                //大場モード起動コマンドのカウント
-    int subcnt = 0;                             //通常モード起動コマンドのカウント
     int menu = 0;
 
     bool oba = false;                           //大場先生出現

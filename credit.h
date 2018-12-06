@@ -16,8 +16,8 @@ public:
 
     bool init();        //‰Šú‰»
     bool update();       //XV
-    void arrowdraw();   //–îˆó•`‰æ
     void draw();        //•`‰æ
+    void buttondraw();
     void destroy();     //”jŠü
 
     int menu = 0; //ƒQ[ƒ€‚ğI‚í‚é‚Æ‚«‚Étrue

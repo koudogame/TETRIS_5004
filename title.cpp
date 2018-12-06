@@ -47,27 +47,31 @@ int Title::update()
     if (key_tracker.pressed.Down || pad_tracker.dpadDown == GamePad::ButtonStateTracker::PRESSED)
     {
         menu++;
-		Adx::play(10);
     }
 
     // 上が押されたら
     else if (key_tracker.pressed.Up || pad_tracker.dpadUp == GamePad::ButtonStateTracker::PRESSED)
     {
         menu--;
-		Adx::play(10);
+    }
+
+
+    if (menu == 4 && key_tracker.pressed.Enter)
+    {
+        return 5; //クレジット
     }
 
     // メニューのループ
-    if (menu > 2)
+    if (menu > 5)
     {
         menu = 0;
     }
 
     if (menu < 0)
     {
-        menu = 2;
+        menu = 5;
     }
-    return 6;
+    return 1;
 
 }
 
@@ -110,6 +114,19 @@ void Title::buttondraw()
 
 
     Sprite::draw(texture_, Vector2(1002, 519), &btrim);
+
+}
+
+void Title::cursordraw()
+{
+    RECT ctrim;
+
+    ctrim.top = 947;
+    ctrim.left = 1201;
+    ctrim.bottom = ctrim.top + 35;
+    ctrim.right = ctrim.left + 265;
+
+    Sprite::draw(texture_, Vector2(505, 322+(menu*42)), &ctrim);
 
 }
 

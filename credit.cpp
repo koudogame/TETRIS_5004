@@ -11,17 +11,10 @@
 bool Credit::init()
 {
     //テクスチャの読み込み
-    if (!(texture_ = Texture::load(L"credit.png")))
+    if (!(texture_ = Texture::load(L"Tetris17_Credit.png")))
     {
         //エラー
-        Error::showDialog("リザルト画面がありません。");
-        return false;
-    }
-
-    if (!(Ctexture_ = Texture::load(L"矢印.png")))
-    {
-        //エラー
-        Error::showDialog("矢印.pngがありません。");
+        Error::showDialog("クレジット画面がありません。");
         return false;
     }
 
@@ -38,12 +31,9 @@ bool Credit::update()
     const Keyboard::State state = Key::getState();
     const Keyboard::KeyboardStateTracker key_tracker = Key::getTracker();
 
-    cnt++;
 
     if( pad_tracker.a == GamePad::ButtonStateTracker::PRESSED || key_tracker.pressed.Enter )
     {
-        Adx::play( 6 );
-        Sleep(550);
         return false;
     }
 
@@ -56,21 +46,17 @@ void Credit::draw()
     Sprite::draw(texture_, Vector2::Zero);
 }
 
-void Credit::arrowdraw()
+void Credit::buttondraw()
 {
-    RECT rect;
 
-    const GamePad::State pad = Pad::getState();
-    const Keyboard::State state = Key::getState();
-
-    rect.top = 200;
-    rect.left = 0;
-    rect.right = rect.left + 200;
-    rect.bottom = rect.top + 200;
-
-    Sprite::draw(Ctexture_, Vector2(820.0F, 500.0F), &rect);
+    RECT btrim;
+    btrim.top = 463;
+    btrim.left = 1536;
+    btrim.bottom = btrim.top + 129;
+    btrim.right = btrim.left + 128;
 
 
+    Sprite::draw(texture_, Vector2(1002, 519), &btrim);
 }
 
 void Credit::destroy()

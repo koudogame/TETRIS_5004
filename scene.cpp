@@ -21,7 +21,7 @@ bool Scene::update()
 
     cnt++;
 
-    if (cnt > 70||state.Enter||pad.buttons.a)
+    if (cnt > 50||state.Enter||pad.buttons.a)
     {
         return false;
     }
