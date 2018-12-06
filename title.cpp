@@ -55,6 +55,10 @@ int Title::update()
         menu--;
     }
 
+    if (menu == 3 && key_tracker.pressed.Enter)
+    {
+        return 4; //ƒIƒvƒVƒ‡ƒ“
+    }
 
     if (menu == 4 && key_tracker.pressed.Enter)
     {

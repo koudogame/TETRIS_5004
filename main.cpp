@@ -14,6 +14,7 @@
 #include "CueSheet_0.h"
 #include"scene.h"
 #include"credit.h"
+#include"option.h"
 using namespace DirectX;
 using namespace SimpleMath;
 
@@ -41,7 +42,10 @@ enum
     kCreditInit,        //クレジット初期化
     kCreditUpdate,      //クレジット更新
 
-    kResultUpdate       // ゲーム終了
+    kResultUpdate,       // ゲーム終了
+
+    kOptionInit,         //オプション初期化
+    kOptionUpdate        //オプション更新
 
 };
 
@@ -167,6 +171,7 @@ int WINAPI WinMain( HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLin
     Result result;
     Scene scene;
     Credit credit;
+    Option option;
 
     int no = 0;
     int num = 0;
@@ -246,8 +251,11 @@ int WINAPI WinMain( HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLin
                     break;
 
                 case kTitleUpdate:
-
                     no = title.update(); //タイトル更新
+                    if (no == 4)
+                    {
+                        work_no = kOptionInit;
+                    }
                     if (no == 5)
                     {
                         work_no = kCreditInit;
@@ -342,7 +350,18 @@ int WINAPI WinMain( HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLin
                     {
                         exit = true;
                     }
-
+                case kOptionInit:
+                    if (!option.init())
+                    {
+                        PostQuitMessage(0);
+                    }
+                    work_no = kOptionUpdate;
+                    break;
+                case kOptionUpdate:
+                    if (!option.update())
+                    {
+                        work_no = kTitleUpdate;
+                    }
                     break;
                 }
 
@@ -361,7 +380,7 @@ int WINAPI WinMain( HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLin
                     title.draw();  //タイトル背景
                     title.dpaddraw();  //タイトル十字
                     title.buttondraw(); //タイトルAボタン
-                    title.cursordraw();
+                    title.cursordraw(); //タイトルカーソル
                     break;
                 case kStartUpdate:
                     start.draw();  //説明
@@ -381,6 +400,10 @@ int WINAPI WinMain( HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLin
                     credit.draw(); //クレジット背景
                     credit.buttondraw(); //クレジットボタン
                     break;
+                case kOptionUpdate:
+                    option.draw(); //オプション背景
+                    option.buttondraw(); //オプションボタン
+                    option.dpaddraw(); //オプション十字
                 }
 
                 //スプライト描画終了
