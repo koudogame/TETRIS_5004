@@ -8,6 +8,7 @@
 #include"texture.h"
 #include"sprite.h"
 #include"Error.h"
+#include"pov.h"
 
 #define SPEED 5
 
@@ -25,13 +26,12 @@ public:
     bool init();              //初期化
     void update();            //更新
     void draw();              //描画
-    void meterdraw();         //メーター描画
-    void partitiondraw();     //仕切り描画
+    void inputdraw();
     void destroy();           //破棄
 
-    int cnt = 0;            //押された瞬間取得用
-    int Bcnt = 0;           //押された瞬間取得用
-    int carmeter = 0;       //連打メーター(車)
-    int bicyclemeter = 0;   //連打メーター(自転車)
-    int tmp = 0;            //自動車減算カウント
+    int uipov = 0; //十字入力状態描画
+    int penter = 0; //A入力状態描画
+    int pspace = 0; //B入力状態
+    int plb = 0;   //LB入力状態
+    int pstart = 0; //start入力状態
 };

@@ -41,9 +41,7 @@ public:
     bool init();
     int get_position_x() { return position_.x; }
     int get_animation_pattern() { return animation_pattern_; }
-    static int get_mashpoint_1() { return mash_point1_; }
-    static int get_mashpoint_2() { return mash_point2_; }
-
+ 
 
     void update();                                                // XV
     void draw();                                                  // •`‰æ

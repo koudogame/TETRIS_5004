@@ -23,10 +23,18 @@ bool Option::update()
     const Keyboard::State state = Key::getState();
     const Keyboard::KeyboardStateTracker key_tracker = Key::getTracker();
 
+    if (pad.buttons.start)
+    {
+        pstart = 1;
+        return false;
+    }
+    else
+    {
+        pstart = 0;
+    }
 
     if (pad_tracker.a == GamePad::ButtonStateTracker::PRESSED || key_tracker.pressed.Enter)
     {
-        return false;
     }
 
     return true;
@@ -55,6 +63,15 @@ void Option::buttondraw()
 
 
     Sprite::draw(texture_, Vector2(1002, 519), &btrim);
+
+    //STARTƒ{ƒ^ƒ“
+    RECT strim;
+    strim.top = 336 + (pstart * 64);
+    strim.left = 1920;
+    strim.bottom = strim.top + 64;
+    strim.right = strim.left + 128;
+
+    Sprite::draw(texture_, Vector2(1063, 82), &strim);
 }
 
 void Option::dpaddraw()

@@ -27,4 +27,6 @@ public:
     void dpaddraw();
     void destroy();     //”jŠü
 
+    int pstart = 0;
+
 };

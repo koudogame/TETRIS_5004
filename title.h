@@ -10,7 +10,7 @@
 #include"adx.h"
 #include"Error.h"
 #include"pov.h"
-
+#include"UI.h"
 
 class Title
 {

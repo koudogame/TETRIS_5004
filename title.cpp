@@ -65,15 +65,15 @@ int Title::update()
         menu++;
     }
 
-    if (menu == 0 && key_tracker.pressed.Enter)
+    if (menu == 0 && (key_tracker.pressed.Enter|| pad_tracker.a == GamePad::ButtonStateTracker::PRESSED))
     {
         return 2;
     }
-    else if (menu == 3 && key_tracker.pressed.Enter)
+    else if (menu == 3 && (key_tracker.pressed.Enter|| pad_tracker.a == GamePad::ButtonStateTracker::PRESSED))
     {
         return 4; //オプション
     }
-    else if (menu == 4 && key_tracker.pressed.Enter)
+    else if (menu == 4 && (key_tracker.pressed.Enter|| pad_tracker.a == GamePad::ButtonStateTracker::PRESSED))
     {
         return 5; //クレジット
     }

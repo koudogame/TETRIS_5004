@@ -24,7 +24,7 @@ private:
     Result result_;                     //リザルトクラス
     Field field_;                       //フィールドクラス
     TimeLimit timelimit_;               //タイムリミットクラス
-
+    Pov pov_;                           //povクラス
 public:
     Game();                             // コンストラクタ
     ~Game();                            // デストラクタ

@@ -172,6 +172,7 @@ int WINAPI WinMain( HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLin
     Scene scene;
     Credit credit;
     Option option;
+    UI ui;
 
     int no = 0;
     int num = 0;
@@ -179,6 +180,8 @@ int WINAPI WinMain( HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLin
     bool oba = false;
     bool exit = false;
     bool bikerand = false;
+
+    ui.init();
 
     srand((unsigned)time(NULL));
 
@@ -330,14 +333,6 @@ int WINAPI WinMain( HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLin
                     break;
 
                 case kResultInit:
-                    Adx::stop();
-                    Adx::play(2);
-                    // リザルトクラス初期化
-                    if (!result.init(Player::get_mashpoint_1(), Player::get_mashpoint_2(),oba))
-                    {
-                        // エラー
-                        PostQuitMessage(0);
-                    }
                     // 次の処理
                     work_no = kResultUpdate;
                     break;
@@ -363,6 +358,7 @@ int WINAPI WinMain( HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLin
                     work_no = kOptionUpdate;
                     break;
                 case kOptionUpdate:
+                    ui.update();
                     if (!option.update())
                     {
                         work_no = kTitleUpdate;
@@ -407,8 +403,7 @@ int WINAPI WinMain( HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLin
                     break;
                 case kOptionUpdate:
                     option.draw(); //オプション背景
-                    option.buttondraw(); //オプションボタン
-                    option.dpaddraw(); //オプション十字
+                    ui.inputdraw(); //入力状態表示
                 }
 
                 //スプライト描画終了

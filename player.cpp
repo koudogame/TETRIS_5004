@@ -7,52 +7,12 @@
 #include"adx.h"
 
 Player player;
-// 実体の宣言
-int Player::mash_point1_;
-int Player::mash_point2_;
-
-enum
-{
-    kDown,
-    kUp,
-    kRight,
-    kLeft,
-};
-
-// アクション番号
-enum Action
-{
-    animation1,
-    animation2,
-    animation3,
-};
-
-enum Motion
-{
-    normal,
-    turn,
-};
 
 // コンストラクタ
 Player::Player()
 {
-    //メンバ変数初期化
-    position_.x = static_cast<float>(0.0F);
-    position_.y = static_cast<float>(600.0F - 196.0F);
-
-    // アニメーション関係
-    animation_no_ = animation1;
-    animation_pattern_ = normal;                                                                                                                                                                                   // アニメーション番号
-    animation_counter_ = 0;
-
-    // アクション関連
-    action_flag_ = false;
-    action_count_ = 0;
-
-
     // メンバ変数初期化
     texture_1 = NULL;
-    texture_2 = NULL;
 }
 
 
@@ -66,13 +26,13 @@ bool Player::init( )
 {
     //テクスチャの読み込み
 
-    //texture_1 = Texture::load();
+    texture_1 = Texture::load(L"Tetris11_SingleT.png");
 
     //NULLチェック
     if( texture_1 == NULL )
     {
 
-        Error::showDialog( "texture_1が読み込めません" );
+        Error::showDialog( "Tetris11_SingleT.pngが読み込めません" );
 
         //エラー
         return false;
@@ -86,30 +46,6 @@ bool Player::init( )
 void Player::update()
 {
 
-        // アニメーション処理
-        animation_no_++;
-
-        // アニメーション番号をリセットする
-        if (animation_no_ > animation3)
-        {
-            animation_no_ = animation1;
-        }
-
-        // ランダムで大場先生の向きを変更
-        if (int pattern_manager = animation_counter_ % 200)
-        {
-            if (pattern_manager <= 130
-                )
-            {
-                animation_pattern_ = normal;
-            }
-            else
-            {
-                animation_pattern_ = turn;
-            }
-        }
-   
-
     // 1Pコントローラの入力を取得
     const GamePad::State pad = Pad::getState();
     const GamePad::ButtonStateTracker pad_tracker = Pad::getTracker();
@@ -121,22 +57,6 @@ void Player::update()
     // キーボードの入力を取得
     const Keyboard::State key = Key::getState();
     const Keyboard::KeyboardStateTracker key_tracker = Key::getTracker();
-
-    // 連打数を加算する
-    if( pad_tracker.a == GamePad::ButtonStateTracker::PRESSED || key_tracker.pressed.Enter )
-    {
-        mash_point1_++;
-	
-			Adx::play(5);
-    }
-
-    if( pad_tracker2.a == GamePad::ButtonStateTracker::PRESSED || key_tracker.pressed.Space )
-    {
-        mash_point2_++;
-    }
-
-    // アニメーションカウンタを加算
-    animation_counter_++;
 
 }
 
@@ -178,5 +98,4 @@ void Player::draw2()  //チャリ
 void Player::destroy()
 {
     SAFE_RELEASE( texture_1 );
-    SAFE_RELEASE( texture_2 );
 }

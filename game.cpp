@@ -15,6 +15,9 @@ Game::~Game()
 bool Game::init()
 {
     //ƒƒ“ƒo‰Šú‰»
+    if (!ui_.init()) { return false;}
+    if (!player_.init()) { return false; }
+
 
     return true;
 }
@@ -24,6 +27,7 @@ bool Game::update()
 {
     player_.update();
     ui_.update();
+    pov_.update();
 
     return true;
 }
@@ -32,6 +36,7 @@ bool Game::update()
 void Game::draw()
 {
     ui_.draw();
+    ui_.inputdraw();
 }
 
 //”jŠü
