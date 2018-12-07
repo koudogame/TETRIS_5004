@@ -220,7 +220,6 @@ int WINAPI WinMain( HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLin
                 //更新処理
                 Pad::update();
                 Key::update();
-                Adx::update();
 
                 //シーン処理
                 switch (work_no)
@@ -309,16 +308,6 @@ int WINAPI WinMain( HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLin
                         PostQuitMessage(0);
                     }
 
-                    if (oba)
-                    {
-                        Adx::stop();
-                        Adx::play(1);
-                    }
-                    else
-                    {
-                        Adx::stop();
-                        Adx::play(4);
-                    }
                     //次の処理へ
                     work_no = kGameUpdate;
                     break;
@@ -423,7 +412,9 @@ int WINAPI WinMain( HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLin
     title.destroy();
     result.destroy();
     game.destroy();
-
+    ui.destroy();
+    credit.destroy();
+    option.destroy();
     Common::destroy();
     Sprite::destroy();
     Direct3D::destroy();

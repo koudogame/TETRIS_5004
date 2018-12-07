@@ -63,5 +63,4 @@ void Credit::destroy()
 {
     //テクスチャの開放
     SAFE_RELEASE( texture_ );
-    SAFE_RELEASE( Ctexture_ );
 }

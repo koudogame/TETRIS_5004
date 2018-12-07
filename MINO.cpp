@@ -17,6 +17,8 @@ bool Mino::init()
         //ƒGƒ‰[
         return false;
     }
+
+    oldtime = timeGetTime();
     return true;
 }
 
@@ -29,6 +31,13 @@ bool Mino::update()
     const Keyboard::State state = Key::getState();
     const Keyboard::KeyboardStateTracker key_tracker = Key::getTracker();
 
+    nowtime = timeGetTime();
+
+    if (nowtime - oldtime >= 500)
+    {
+        down++;
+        oldtime = nowtime;
+    }
     if (state.Left)
     {
         cnt++;
@@ -67,12 +76,13 @@ bool Mino::update()
 
     if (cnt == 1)
     {
-        left++;
+        pos--;
     }
     if (acnt == 1)
     {
-        right++;
+        pos++;
     }
+
     if (bcnt == 1)
     {
         down++;
@@ -83,7 +93,19 @@ bool Mino::update()
         up++;
     }
     
+    if (down >= 21)
+    {
+        down = 0;
+    }
 
+    if (pos < 0)
+    {
+        pos = 0;
+    }
+    if (pos > 9)
+    {
+        pos = 9;
+    }
     return true;
 }
 
@@ -96,7 +118,7 @@ void Mino::draw()
     rect.bottom = rect.top + 28;
     rect.right = rect.left + 26;
 
-    Sprite::draw(texture_, Vector2(510+(25*right)-(25*left),246+(25*down)-(25*up)-75),&rect);
+    Sprite::draw(texture_, Vector2(510+(25*pos),246+(25*down)-(25*up)-75),&rect);
     //x510
     //y246
 }
