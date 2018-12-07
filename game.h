@@ -11,6 +11,7 @@
 #include"result.h"
 #include"field.h"
 #include"time_limit.h"
+#include"MINO.h"
 
 //Class
 class Game
@@ -25,6 +26,7 @@ private:
     Field field_;                       //フィールドクラス
     TimeLimit timelimit_;               //タイムリミットクラス
     Pov pov_;                           //povクラス
+    Mino mino_;
 public:
     Game();                             // コンストラクタ
     ~Game();                            // デストラクタ
