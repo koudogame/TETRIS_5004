@@ -180,6 +180,7 @@ int WINAPI WinMain( HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLin
     bool oba = false;
     bool exit = false;
     bool bikerand = false;
+    int back[22][12];
 
     ui.init();
 
