@@ -4,15 +4,15 @@
 Title::Title()
 {  
     texture_ = NULL;
+    
 }
-
-// 決定音待ち時間
-const int wait = 550;
 
 //デストラクタ
 Title::~Title()
 {
 }
+
+Pov pov_;
 
 //初期化
 bool Title::init()
@@ -41,19 +41,30 @@ int Title::update()
     // キーボードの入力を取得
     const Keyboard::State state = Key::getState();
     const Keyboard::KeyboardStateTracker key_tracker = Key::getTracker();
+    
+    pov = pov_.update();
 
+    if (state.Enter||pad.buttons.a)
+    {
+        penter = 1;
+    }
+    else
+    {
+        penter = 0;
+    }
 
-    // 下が押されたら
+    // 上が押されたら
+    if (key_tracker.pressed.Up || pad_tracker.dpadUp == GamePad::ButtonStateTracker::PRESSED)
+    {
+        menu--;
+
+    }
+    // 上が押されたら
     if (key_tracker.pressed.Down || pad_tracker.dpadDown == GamePad::ButtonStateTracker::PRESSED)
     {
         menu++;
     }
 
-    // 上が押されたら
-    else if (key_tracker.pressed.Up || pad_tracker.dpadUp == GamePad::ButtonStateTracker::PRESSED)
-    {
-        menu--;
-    }
     if (menu == 0 && key_tracker.pressed.Enter)
     {
         return 2;
@@ -100,7 +111,7 @@ void Title::dpaddraw()
     RECT trim;
 
     trim.top = 725;
-    trim.left = 5;
+    trim.left = 5 + (230 * pov)-3*pov;
     trim.bottom = trim.top + 220;
     trim.right = trim.left + 220;
 
@@ -113,7 +124,7 @@ void Title::buttondraw()
 {
 
     RECT btrim;
-    btrim.top = 463;
+    btrim.top = 463+(129*penter);
     btrim.left = 1536;
     btrim.bottom = btrim.top+129;
     btrim.right = btrim.left + 128;

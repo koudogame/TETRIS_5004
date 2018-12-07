@@ -7,9 +7,10 @@
 #include"texture.h"
 #include"sprite.h"
 #include"pad.h"
-#include"player.h"
 #include"adx.h"
 #include"Error.h"
+#include"pov.h"
+
 
 class Title
 {
@@ -36,6 +37,8 @@ public:
     void destroy();                             // 破棄
     int menu = 0;
 
-    bool oba = false;                           //大場先生出現
     bool tmp = false;                           //モード切替時のフラグ判定用
+    int penter = 0;                             //決定が押された
+    int pov = 0;
+
 };

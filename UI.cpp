@@ -60,6 +60,4 @@ void UI::draw()
 void UI::destroy()
 {
     SAFE_RELEASE(texture_);
-    SAFE_RELEASE(Mtexture_);
-    SAFE_RELEASE(Ptexture_);
 }
