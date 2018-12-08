@@ -33,10 +33,6 @@ bool Option::update()
         pstart = 0;
     }
 
-    if (pad_tracker.a == GamePad::ButtonStateTracker::PRESSED || key_tracker.pressed.Enter)
-    {
-    }
-
     return true;
 }
 
@@ -53,6 +49,5 @@ void Option::draw()
 
 void Option::destroy()
 {
-
     SAFE_RELEASE(texture_);
 }

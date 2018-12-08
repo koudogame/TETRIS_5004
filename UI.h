@@ -16,10 +16,6 @@ class UI
 {
 private:
     ID3D11ShaderResourceView* texture_;  // UIテクスチャ
-    ID3D11ShaderResourceView* Mtexture_; //メーターのテクスチャ
-    ID3D11ShaderResourceView* Ptexture_; //仕切りのテクスチャ
-    Vector2 position;                    // メーターの座標
-    RECT trim;                           //メーターのトリミング範囲
 
 public:
     UI();                     //コンストラクタ

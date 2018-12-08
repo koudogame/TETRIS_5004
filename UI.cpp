@@ -4,10 +4,7 @@ Pov pov2_;
 
 UI::UI()
 {
-
     texture_ = NULL;
-    Mtexture_ = NULL;
-    Ptexture_ = NULL;
 }
 
 bool UI::init()
