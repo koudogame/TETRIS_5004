@@ -83,49 +83,79 @@ void UI::draw()
     Sprite::draw(texture_, Vector2::Zero);
 }
 
-void UI::inputdraw()
+void UI::inputdraw(int type)
 {
-    //十字キー
-    RECT trim;
-    trim.top = 725;
-    trim.left = 5 + (230 * uipov) - 3 * uipov;
-    trim.bottom = trim.top + 220;
-    trim.right = trim.left + 220;
-    Sprite::draw(texture_, Vector2(49, 425), &trim);
+    //*******************************************
+    //****************  type  *****************//
+    // 1・タイトル
+    // 2・ランキング・クレジット
+    // 3・リザルト・オプション
+    // 4・テトリスシングル
+    // 5・ぷよぷよシングル
+    // 6・テトリスマルチ
+    //*******************************************
 
-    //Aボタン
-    RECT atrim;
-    atrim.top = 463 + (128* penter);
-    atrim.left = 1536;
-    atrim.bottom = atrim.top + 129;
-    atrim.right = atrim.left + 128;
-    Sprite::draw(texture_, Vector2(1002, 519), &atrim);
 
-    //Bボタン
-    RECT btrim;
-    btrim.top = 463 + (pspace * 128);
-    btrim.left = 1664;
-    btrim.bottom = btrim.top + 129;
-    btrim.right = btrim.left + 129;
-    Sprite::draw(texture_, Vector2(1100, 320), &btrim);
+    if(type==1||type==3 ||type == 4 ||type == 5)
+    {
+        //十字キー
+        RECT trim;
+        trim.top = 725;
+        trim.left = 5 + (230 * uipov) - 3 * uipov;
+        trim.bottom = trim.top + 220;
+        trim.right = trim.left + 220;
 
-    //LBボタン
-    RECT lbtrim;
-    lbtrim.top = 464 + (plb * 128);
-    lbtrim.left = 1280;
-    lbtrim.bottom = lbtrim.top + 128;
-    lbtrim.right = lbtrim.left + 128;
+        Sprite::draw(texture_, Vector2(49, 425), &trim);
+    }
 
-    Sprite::draw(texture_, Vector2(38, 230), &lbtrim);
+    if (type!=5)
+    {
+        //Aボタン
+        RECT atrim;
+        atrim.top = 463 + (128 * penter);
+        atrim.left = 1536;
+        atrim.bottom = atrim.top + 129;
+        atrim.right = atrim.left + 128;
 
-    //STARTボタン
-    RECT strim;
-    strim.top = 336+(pstart*64);
-    strim.left = 1920;
-    strim.bottom = strim.top + 64;
-    strim.right = strim.left + 128;
+        Sprite::draw(texture_, Vector2(1002, 519), &atrim);
+    }
 
-    Sprite::draw(texture_, Vector2(1063, 82), &strim);
+    if(type==4||type==5)
+    {
+        //Bボタン
+        RECT btrim;
+        btrim.top = 463 + (pspace * 128);
+        btrim.left = 1664;
+        btrim.bottom = btrim.top + 129;
+        btrim.right = btrim.left + 129;
+
+        Sprite::draw(texture_, Vector2(1100, 320), &btrim);
+    }
+
+    if (type==4)
+    {
+        //LBボタン
+        RECT lbtrim;
+        lbtrim.top = 464 + (plb * 128);
+        lbtrim.left = 1280;
+        lbtrim.bottom = lbtrim.top + 128;
+        lbtrim.right = lbtrim.left + 128;
+
+        Sprite::draw(texture_, Vector2(38, 230), &lbtrim);
+    }
+
+    if (type==3 || type==4 || type==5)
+    {
+        //STARTボタン
+        RECT strim;
+        strim.top = 336 + (pstart * 64);
+        strim.left = 1920;
+        strim.bottom = strim.top + 64;
+        strim.right = strim.left + 128;
+
+        Sprite::draw(texture_, Vector2(1063, 82), &strim);
+    }
+
 
 }
 

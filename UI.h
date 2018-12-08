@@ -26,9 +26,10 @@ public:
     bool init();              //‰Šú‰»
     void update();            //XV
     void draw();              //•`‰æ
-    void inputdraw();
+    void inputdraw(int type);
     void destroy();           //”jŠü
 
+    //“ü—Íó‘Ô
     int uipov = 0; //\š“ü—Íó‘Ô•`‰æ
     int penter = 0; //A“ü—Íó‘Ô•`‰æ
     int pspace = 0; //B“ü—Íó‘Ô

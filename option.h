@@ -23,8 +23,6 @@ public:
     bool init();        //‰Šú‰»
     bool update();       //XV
     void draw();        //•`‰æ
-    void buttondraw();
-    void dpaddraw();
     void destroy();     //”jŠü
 
     int pstart = 0;

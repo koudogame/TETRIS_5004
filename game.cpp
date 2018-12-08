@@ -37,7 +37,7 @@ bool Game::update()
 void Game::draw()
 {
     ui_.draw();
-    ui_.inputdraw();
+    ui_.inputdraw(4);
     mino_.draw();
     
 }

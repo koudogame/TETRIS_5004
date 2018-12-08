@@ -176,7 +176,6 @@ int WINAPI WinMain( HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLin
 
     int no = 0;
     int num = 0;
-    int p2;
     bool oba = false;
     bool exit = false;
     bool bikerand = false;
@@ -211,12 +210,6 @@ int WINAPI WinMain( HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLin
             {
                 t2 = t1;                                                                            //今の時間を前回の時間とする
                 t3 = dt % 16;                                                                       //誤差分を吸収
-
-                if (!bikerand)
-                {
-                    p2 = rand() % 3;
-                    bikerand = true;
-                }
 
                 //更新処理
                 Pad::update();
@@ -255,7 +248,7 @@ int WINAPI WinMain( HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLin
 
                 case kTitleUpdate:
                     no = title.update(); //タイトル更新
-
+                    ui.update();
                     if (no == 2)
                     {
                         work_no = kGameInit;
@@ -369,8 +362,7 @@ int WINAPI WinMain( HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLin
                     break;
                 case kTitleUpdate:
                     title.draw();  //タイトル背景
-                    title.dpaddraw();  //タイトル十字
-                    title.buttondraw(); //タイトルAボタン
+                    ui.inputdraw(1);
                     title.cursordraw(); //タイトルカーソル
                     break;
                 case kStartUpdate:
@@ -383,17 +375,15 @@ int WINAPI WinMain( HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLin
                     break;
                 case kResultUpdate:
                     result.draw();       //背景
-                    result.scoredraw1(); //1Pのスコア描画
-                    result.scoredraw2(); //2Pのスコア描画
-                    result.arrowdraw();  //リザルト矢印
+                    ui.inputdraw(3);
                     break;
                 case kCreditUpdate:
                     credit.draw(); //クレジット背景
-                    credit.buttondraw(); //クレジットボタン
+                    ui.inputdraw(2);
                     break;
                 case kOptionUpdate:
                     option.draw(); //オプション背景
-                    ui.inputdraw(); //入力状態表示
+                    ui.inputdraw(3); //入力状態表示
                 }
 
                 //スプライト描画終了

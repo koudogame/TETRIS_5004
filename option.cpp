@@ -23,7 +23,7 @@ bool Option::update()
     const Keyboard::State state = Key::getState();
     const Keyboard::KeyboardStateTracker key_tracker = Key::getTracker();
 
-    if (pad.buttons.start)
+    if (pad.buttons.start||state.LeftControl)
     {
         pstart = 1;
         return false;
@@ -49,43 +49,6 @@ void Option::draw()
     rect.right = rect.left + 1280;
 
     Sprite::draw(texture_, Vector2::Zero);
-}
-
-void Option::buttondraw()
-{
-
-
-    RECT btrim;
-    btrim.top = 463;
-    btrim.left = 1536;
-    btrim.bottom = btrim.top + 129;
-    btrim.right = btrim.left + 128;
-
-
-    Sprite::draw(texture_, Vector2(1002, 519), &btrim);
-
-    //STARTƒ{ƒ^ƒ“
-    RECT strim;
-    strim.top = 336 + (pstart * 64);
-    strim.left = 1920;
-    strim.bottom = strim.top + 64;
-    strim.right = strim.left + 128;
-
-    Sprite::draw(texture_, Vector2(1063, 82), &strim);
-}
-
-void Option::dpaddraw()
-{
-    RECT trim;
-
-    trim.top = 725;
-    trim.left = 5;
-    trim.bottom = trim.top + 220;
-    trim.right = trim.left + 220;
-
-
-    Sprite::draw(texture_, Vector2(49, 425), &trim);
-
 }
 
 void Option::destroy()
