@@ -157,6 +157,7 @@
     <ClCompile Include="pad.cpp" />
     <ClCompile Include="player.cpp" />
     <ClCompile Include="pov.cpp" />
+    <ClCompile Include="ranking.cpp" />
     <ClCompile Include="result.cpp" />
     <ClCompile Include="scene.cpp" />
     <ClCompile Include="sprite.cpp" />
@@ -182,6 +183,7 @@
     <ClInclude Include="pad.h" />
     <ClInclude Include="player.h" />
     <ClInclude Include="pov.h" />
+    <ClInclude Include="ranking.h" />
     <ClInclude Include="release.h" />
     <ClInclude Include="result.h" />
     <ClInclude Include="scene.h" />

@@ -33,71 +33,43 @@ bool Mino::update()
 
     nowtime = timeGetTime();
 
+    //‰º
+    if (pad_tracker.dpadDown == GamePad::ButtonStateTracker::PRESSED || key_tracker.pressed.Down)
+    {
+        down++;
+    }
+    //ã
+    if (pad_tracker.dpadUp == GamePad::ButtonStateTracker::PRESSED || key_tracker.pressed.Up)
+    {
+        down--;
+    }
+    //¶
+    if (pad_tracker.dpadLeft == GamePad::ButtonStateTracker::PRESSED || key_tracker.pressed.Left)
+    {
+        pos--;
+    }
+    //‰E
+    if (pad_tracker.dpadRight == GamePad::ButtonStateTracker::PRESSED || key_tracker.pressed.Right)
+    {
+        pos++;
+    }
+
+    //ŽÀŽžŠÔ‚Å—Ž‚Æ‚·
     if (nowtime - oldtime >= 500)
     {
         down++;
         oldtime = nowtime;
     }
-    if (state.Left)
-    {
-        cnt++;
-    }
-    else
-    {
-        cnt = 0;
-    }
 
-    if (state.Down)
-    {
-        bcnt++;
-    }
-    else
-    {
-        bcnt = 0;
-    }
-
-    if (state.Up)
-    {
-        ccnt++;
-    }
-    else
-    {
-        ccnt = 0;
-    }
-
-    if (state.Right)
-    {
-        acnt++;
-    }
-    else
-    {
-        acnt = 0;
-    }
-
-    if (cnt == 1)
-    {
-        pos--;
-    }
-    if (acnt == 1)
-    {
-        pos++;
-    }
-
-    if (bcnt == 1)
-    {
-        down++;
-    }
-
-    if (ccnt == 1)
-    {
-        up++;
-    }
-    
+    //ˆÚ“®§ŒÀ
     if (down >= 21)
     {
         down = 0;
     }
-
+    if (down < 0)
+    {
+        down = 0;
+    }
     if (pos < 0)
     {
         pos = 0;

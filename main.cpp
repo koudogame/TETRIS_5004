@@ -15,6 +15,7 @@
 #include"scene.h"
 #include"credit.h"
 #include"option.h"
+#include"ranking.h"
 using namespace DirectX;
 using namespace SimpleMath;
 
@@ -45,7 +46,10 @@ enum
     kResultUpdate,       // ゲーム終了
 
     kOptionInit,         //オプション初期化
-    kOptionUpdate        //オプション更新
+    kOptionUpdate,       //オプション更新
+
+    kRankingInit,        //ランキング初期化
+    kRankingUpdate       //ランキング更新
 
 };
 
@@ -173,6 +177,7 @@ int WINAPI WinMain( HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLin
     Credit credit;
     Option option;
     UI ui;
+    Ranking ranking;
 
     int no = 0;
     int num = 0;
@@ -252,6 +257,10 @@ int WINAPI WinMain( HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLin
                     if (no == 2)
                     {
                         work_no = kGameInit;
+                    }
+                    else if (no == 3)
+                    {
+                        work_no = kRankingInit;
                     }
                     else if (no == 4)
                     {
@@ -333,6 +342,7 @@ int WINAPI WinMain( HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLin
                     {
                         exit = true;
                     }
+                    break;
                 case kOptionInit:
                     if (!option.init())
                     {
@@ -343,6 +353,20 @@ int WINAPI WinMain( HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLin
                 case kOptionUpdate:
                     ui.update();
                     if (!option.update())
+                    {
+                        work_no = kTitleUpdate;
+                    }
+                    break;
+                case kRankingInit:
+                    if (!ranking.init())
+                    {
+                        //エラー
+                        PostQuitMessage(0);
+                    }
+                    work_no = kRankingUpdate;
+                    break;
+                case kRankingUpdate:
+                    if (!ranking.update())
                     {
                         work_no = kTitleUpdate;
                     }
@@ -384,6 +408,10 @@ int WINAPI WinMain( HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLin
                 case kOptionUpdate:
                     option.draw(); //オプション背景
                     ui.inputdraw(3); //入力状態表示
+                case kRankingUpdate:
+                    ranking.draw();
+                    ui.inputdraw(2);
+                    break;
                 }
 
                 //スプライト描画終了
@@ -406,6 +434,7 @@ int WINAPI WinMain( HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLin
     ui.destroy();
     credit.destroy();
     option.destroy();
+    ranking.destroy();
     Common::destroy();
     Sprite::destroy();
     Direct3D::destroy();
