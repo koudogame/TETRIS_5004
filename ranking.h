@@ -13,6 +13,7 @@ class Ranking
 private:
     ID3D11ShaderResourceView* texture_;
 public:
+    Ranking();
     bool init();
     bool update();
     void draw();

@@ -1,5 +1,10 @@
 #include "ranking.h"
 
+Ranking::Ranking()
+{
+    texture_ = NULL;
+}
+
 bool Ranking::init()
 {
     //テクスチャの読み込み

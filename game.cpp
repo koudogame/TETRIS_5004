@@ -39,6 +39,7 @@ void Game::draw()
     ui_.draw();
     ui_.inputdraw(4);
     mino_.draw();
+    mino_.maindraw();
     
 }
 

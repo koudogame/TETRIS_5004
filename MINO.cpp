@@ -54,6 +54,17 @@ bool Mino::update()
         pos++;
     }
 
+    if (state.Down)
+    {
+        cnt++;
+    }
+    else
+    {
+        cnt = 0;
+    }
+
+ 
+
     //é¿éûä‘Ç≈óéÇ∆Ç∑
     if (nowtime - oldtime >= 500)
     {
@@ -61,11 +72,19 @@ bool Mino::update()
         oldtime = nowtime;
     }
 
-    //à⁄ìÆêßå¿
-    if (down >= 21)
+    if (down > 21)
     {
         down = 0;
     }
+    
+    //êœÇ›è„Ç∞
+    if (main[down+1][pos+1]!=0)
+    {
+        main[down][pos+1] = 1;
+        down = 0;
+    }
+
+    //à⁄ìÆêßå¿
     if (down < 0)
     {
         down = 0;
@@ -90,9 +109,41 @@ void Mino::draw()
     rect.bottom = rect.top + 28;
     rect.right = rect.left + 26;
 
-    Sprite::draw(texture_, Vector2(510+(25*pos),246+(25*down)-(25*up)-75),&rect);
+    Sprite::draw(texture_, Vector2(510 + (25 * pos), 246 + (25 * down) - (25 * up) - 75), &rect);
+
+/*
+    for (int i = 0; i < 4; i++)
+    {
+        for (int j = 0; j < 4; j++)
+        {
+            Sprite::draw(texture_, Vector2(510 + (25 * pos)+(j*25), 246 + (25 * down) - (25 * up) - 75+(i*25)), &rect);
+        }
+
+    }*/
+
     //x510
     //y246
+}
+
+void Mino::maindraw()
+{
+    //êœÇ›Ç†Ç™ÇÈÇ‚Ç¬
+
+    RECT rect;
+    rect.top = 955;
+    rect.left = 687;
+    rect.bottom = rect.top + 28;
+    rect.right = rect.left + 26;
+    for (int i = 0; i < 22; i++)
+    {
+        for (int j = 0; j < 12; j++)
+        {
+            if(main[i][j]!=0)
+            Sprite::draw(texture_, Vector2(510 + (25 * j)-25, 246 + (25 * i) - 75), &rect);
+
+        }
+    }
+
 }
 
 void Mino::destroy()
