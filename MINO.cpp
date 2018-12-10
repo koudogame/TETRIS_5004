@@ -32,7 +32,6 @@ bool Mino::update()
     const Keyboard::KeyboardStateTracker key_tracker = Key::getTracker();
 
     nowtime = timeGetTime();
-    acnt = 0;
 
     //下
     if (pad_tracker.dpadDown == GamePad::ButtonStateTracker::PRESSED || key_tracker.pressed.Down)
@@ -85,32 +84,22 @@ bool Mino::update()
     }
 
  
-    for (int i = 0; i < 20; i++)
+    for (int i = 0; i < 21; i++)
     {
         for (int j = 1; j < 11; j++)
         {
-            if (main[i][j] != 0)
+            if (main[i][j] == 0)
             {
-                clearlinepos[i] = 1;
-
-                //acnt++;
-
-                //clearlinepos[i] = 0; //そろっていない行にマーキング
-                break;
+                clearlinepos[i] = 1;  //空欄を確認 
+                break;  //空欄があったら次の行へ
             }
         }
 
-        //if (acnt == 10)
-        //{
-        //    clearlinepos[i] = 1;
-        //    
-        //}
-        //acnt = 0;
     }
 
     for (int i = 1; i < 20; i++)
     {
-        if (clearlinepos[i] == 1)
+        if (clearlinepos[i] == 0)
         {
             for (int j = 1; j < 11; j++)
             {
