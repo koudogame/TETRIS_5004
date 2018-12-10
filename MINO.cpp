@@ -32,6 +32,7 @@ bool Mino::update()
     const Keyboard::KeyboardStateTracker key_tracker = Key::getTracker();
 
     nowtime = timeGetTime();
+    acnt = 0;
 
     //下
     if (pad_tracker.dpadDown == GamePad::ButtonStateTracker::PRESSED || key_tracker.pressed.Down)
@@ -41,7 +42,11 @@ bool Mino::update()
     //上
     if (pad_tracker.dpadUp == GamePad::ButtonStateTracker::PRESSED || key_tracker.pressed.Up)
     {
-        down--;
+        //ハードドロップ
+        while (main[down + 1][pos + 1] == 0)
+        {
+            down++;
+        }
     }
     //左
     if (pad_tracker.dpadLeft == GamePad::ButtonStateTracker::PRESSED || key_tracker.pressed.Left)
@@ -63,7 +68,9 @@ bool Mino::update()
         cnt = 0;
     }
 
- 
+
+
+
 
     //実時間で落とす
     if (nowtime - oldtime >= 500)
@@ -76,11 +83,70 @@ bool Mino::update()
     {
         down = 0;
     }
-    
-    //積み上げ
-    if (main[down+1][pos+1]!=0)
+
+ 
+    for (int i = 0; i < 20; i++)
     {
-        main[down][pos+1] = 1;
+        for (int j = 1; j < 11; j++)
+        {
+            if (main[i][j] != 0)
+            {
+                clearlinepos[i] = 1;
+
+                //acnt++;
+
+                //clearlinepos[i] = 0; //そろっていない行にマーキング
+                break;
+            }
+        }
+
+        //if (acnt == 10)
+        //{
+        //    clearlinepos[i] = 1;
+        //    
+        //}
+        //acnt = 0;
+    }
+
+    for (int i = 1; i < 20; i++)
+    {
+        if (clearlinepos[i] == 1)
+        {
+            for (int j = 1; j < 11; j++)
+            {
+                main[i][j] = 0;
+            }
+            clearlinepos[i] = 0;
+        }
+    }
+
+    //if (acnt == 10)
+    //{
+    //    advance = true;
+    //    acnt = 0;
+    //}
+    //else
+    //{
+    //    advance = false;
+    //}
+
+    //if (advance)
+    //{
+    //    for (int i = 20; i > 0; i--)
+    //    {
+    //        for (int j = 1; j < 11; j++)
+    //        {
+    //            sub[i][j] = main[i - 1][j];
+    //            main[i - 1][j] = main[i][j];
+    //            main[i][j] = 0;
+    //        }
+    //    }
+    //}
+
+    //積み上げ
+    if (main[down + 1][pos + 1] != 0)
+    {
+        main[down][pos + 1] = 1;
         down = 0;
     }
 
@@ -97,6 +163,8 @@ bool Mino::update()
     {
         pos = 9;
     }
+    acnt = 0;
+
     return true;
 }
 
@@ -111,16 +179,6 @@ void Mino::draw()
 
     Sprite::draw(texture_, Vector2(510 + (25 * pos), 246 + (25 * down) - (25 * up) - 75), &rect);
 
-/*
-    for (int i = 0; i < 4; i++)
-    {
-        for (int j = 0; j < 4; j++)
-        {
-            Sprite::draw(texture_, Vector2(510 + (25 * pos)+(j*25), 246 + (25 * down) - (25 * up) - 75+(i*25)), &rect);
-        }
-
-    }*/
-
     //x510
     //y246
 }
@@ -129,21 +187,30 @@ void Mino::maindraw()
 {
     //積みあがるやつ
 
+    //枠
     RECT rect;
     rect.top = 955;
-    rect.left = 687;
+    rect.left = 687+(25*8);
     rect.bottom = rect.top + 28;
     rect.right = rect.left + 26;
+
+    //青
+    RECT trim;
+    trim.top = 955;
+    trim.left = 687;
+    trim.bottom = trim.top + 28;
+    trim.right = trim.left + 26;
+
     for (int i = 0; i < 22; i++)
     {
         for (int j = 0; j < 12; j++)
         {
-            if(main[i][j]!=0)
+         if(main[i][j]>=9)
             Sprite::draw(texture_, Vector2(510 + (25 * j)-25, 246 + (25 * i) - 75), &rect);
-
+         else if (main[i][j] >= 1)
+             Sprite::draw(texture_, Vector2(510 + (25 * j) - 25, 246 + (25 * i) - 75), &trim);
         }
     }
-
 }
 
 void Mino::destroy()

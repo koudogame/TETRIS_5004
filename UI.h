@@ -11,6 +11,16 @@
 #include"pov.h"
 
 #define SPEED 5
+enum
+{
+    NOT_FOUND,
+    Title_,          //タイトル
+    rank_credit,    //ランキング・クレジット
+    result_option,  //リザルトオプション
+    tetoris_s,      //テトリスシングル
+    puyopuyo,       //ぷよぷよ
+    tetris_multi    //テトリスシングル
+};
 
 class UI
 {

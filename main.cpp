@@ -386,7 +386,7 @@ int WINAPI WinMain( HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLin
                     break;
                 case kTitleUpdate:
                     title.draw();  //タイトル背景
-                    ui.inputdraw(1);
+                    ui.inputdraw(Title_);
                     title.cursordraw(); //タイトルカーソル
                     break;
                 case kStartUpdate:
@@ -399,18 +399,19 @@ int WINAPI WinMain( HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLin
                     break;
                 case kResultUpdate:
                     result.draw();       //背景
-                    ui.inputdraw(3);
+                    ui.inputdraw(result_option);
                     break;
                 case kCreditUpdate:
                     credit.draw(); //クレジット背景
-                    ui.inputdraw(2);
+                    ui.inputdraw(rank_credit);
                     break;
                 case kOptionUpdate:
                     option.draw(); //オプション背景
-                    ui.inputdraw(3); //入力状態表示
+                    ui.inputdraw(result_option); //入力状態表示
+                    break;
                 case kRankingUpdate:
                     ranking.draw();
-                    ui.inputdraw(2);
+                    ui.inputdraw(rank_credit);
                     break;
                 }
 
@@ -428,6 +429,7 @@ int WINAPI WinMain( HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLin
     CoUninitialize();
 
     //インターフェースの解放（確保した順の逆に開放していく)
+    scene.destroy();
     title.destroy();
     result.destroy();
     game.destroy();

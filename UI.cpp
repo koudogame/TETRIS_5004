@@ -93,7 +93,7 @@ void UI::inputdraw(int type)
     //*******************************************
 
 
-    if(type==1||type==3 ||type == 4 ||type == 5)
+    if(type==Title_||type==result_option ||type == tetoris_s ||type == puyopuyo)
     {
         //十字キー
         RECT trim;
@@ -105,7 +105,7 @@ void UI::inputdraw(int type)
         Sprite::draw(texture_, Vector2(49, 425), &trim);
     }
 
-    if (type!=5)
+    if (type!=tetris_multi)
     {
         //Aボタン
         RECT atrim;
@@ -117,7 +117,7 @@ void UI::inputdraw(int type)
         Sprite::draw(texture_, Vector2(1002, 519), &atrim);
     }
 
-    if(type==4||type==5)
+    if(type==puyopuyo||type==tetris_multi)
     {
         //Bボタン
         RECT btrim;
@@ -129,7 +129,7 @@ void UI::inputdraw(int type)
         Sprite::draw(texture_, Vector2(1100, 320), &btrim);
     }
 
-    if (type==4)
+    if (type==tetoris_s)
     {
         //LBボタン
         RECT lbtrim;
@@ -141,7 +141,7 @@ void UI::inputdraw(int type)
         Sprite::draw(texture_, Vector2(38, 230), &lbtrim);
     }
 
-    if (type==3 || type==4 || type==5)
+    if (type==result_option || type==tetoris_s || type==puyopuyo)
     {
         //STARTボタン
         RECT strim;

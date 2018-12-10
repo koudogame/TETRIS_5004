@@ -37,7 +37,7 @@ bool Game::update()
 void Game::draw()
 {
     ui_.draw();
-    ui_.inputdraw(4);
+    ui_.inputdraw(tetoris_s);
     mino_.draw();
     mino_.maindraw();
     
@@ -50,6 +50,7 @@ void Game::destroy()
     field_.destroy();
     player_.destroy();
     ui_.destroy();
+    mino_.destroy();
     start_.destroy();
     timelimit_.destroy();
 }
