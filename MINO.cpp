@@ -95,6 +95,7 @@ bool Mino::update()
         }
     }
 
+    //Á‚³‚ê‚½Œã‚Ì—‚Æ‚·ˆ—
     for (int i = 0; i < 21; i++)
     {
         if (clearlinepos[i] == 0)
@@ -117,12 +118,18 @@ bool Mino::update()
             }
         }
     }
-
-    //Ï‚İã‚°
-    if (main[down + 1][pos + 1] != 0)
+    for (int i = 0; i < 4; i++)
     {
-        main[down][pos + 1] = 1;
-        down = 0;
+        for (int j = 0; j < 4; j++)
+        {
+            //Ï‚İã‚°
+            if (main[down + 1+i][pos + 1+j] != 0)
+            {
+                main[down+i][pos + 1] = 1;
+                down = 0;
+            }
+        }
+
     }
 
     //ˆÚ“®§ŒÀ
@@ -147,7 +154,17 @@ void Mino::draw()
     rect.bottom = rect.top + 28;
     rect.right = rect.left + 26;
 
-                Sprite::draw(texture_, Vector2(510 + (25 * pos), 246 + (25 * down) - (25 * up) - 75), &rect);
+    //•`‰æ
+    for (int i = 0; i < 4; i++)
+    {
+        for (int j = 0; j < 4; j++)
+        {
+            if(test[i][j]==1)
+            Sprite::draw(texture_, Vector2(510 + (25 * pos)+(25*j), 246 + (25 * down) - (25 * up) - 75+(25*i)), &rect);
+
+        }
+    }
+    //Sprite::draw(texture_, Vector2(510 + (25 * pos), 246 + (25 * down) - (25 * up) - 75), &rect);
 
     //x510
     //y246
@@ -175,9 +192,9 @@ void Mino::maindraw()
     {
         for (int j = 0; j < 12; j++)
         {
-         if(main[i][j]>=9)
+         if(main[i][j]==9) //˜g
             Sprite::draw(texture_, Vector2(510 + (25 * j)-25, 246 + (25 * i) - 75), &rect);
-         else if (main[i][j] >= 1)
+         else if (main[i][j] == 1) //Â
              Sprite::draw(texture_, Vector2(510 + (25 * j) - 25, 246 + (25 * i) - 75), &trim);
         }
     }
