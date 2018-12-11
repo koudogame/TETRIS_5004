@@ -67,10 +67,6 @@ bool Mino::update()
         cnt = 0;
     }
 
-
-
-
-
     //実時間で落とす
     if (nowtime - oldtime >= 500)
     {
@@ -83,7 +79,6 @@ bool Mino::update()
         down = 0;
     }
 
- 
     //ブロックを消す処理
     for (int i = 0; i < 21; i++)
     {
@@ -99,18 +94,28 @@ bool Mino::update()
                 clearlinepos[i] = 0;    //ブロックがあるときは0
             }
         }
-
     }
 
-    for (int i = 1; i < 20; i++)
+    for (int i = 0; i < 21; i++)
     {
         if (clearlinepos[i] == 0)
         {
             for (int j = 1; j < 11; j++)
             {
-                main[i][j] = 0;
+                main[i][j] = 0; 
             }
             clearlinepos[i] = 0;
+
+            for (int k = i; k > 0; k--)
+            {
+                for (int l = 1; l < 11; l++)
+                {
+                    //ミノ落とし
+                    sub[k][l] = main[k][l];
+                    main[k][l] = main[k - 1][l];
+                    main[k - 1][l] = sub[k][l];
+                }
+            }
         }
     }
 
@@ -134,7 +139,6 @@ bool Mino::update()
     {
         pos = 9;
     }
-    acnt = 0;
 
     return true;
 }

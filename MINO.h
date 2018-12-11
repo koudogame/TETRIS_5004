@@ -59,7 +59,5 @@ public:
 
     //カウント
     int cnt = 0;
-    int acnt = 0;
-    //フラグ
-    bool advance = false;  //繰り上げ（そろった行を消す)
+
 };
