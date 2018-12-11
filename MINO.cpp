@@ -84,6 +84,7 @@ bool Mino::update()
     }
 
  
+    //ブロックを消す処理
     for (int i = 0; i < 21; i++)
     {
         for (int j = 1; j < 11; j++)
@@ -92,6 +93,10 @@ bool Mino::update()
             {
                 clearlinepos[i] = 1;  //空欄を確認 
                 break;  //空欄があったら次の行へ
+            }
+            else
+            {
+                clearlinepos[i] = 0;    //ブロックがあるときは0
             }
         }
 
@@ -108,29 +113,6 @@ bool Mino::update()
             clearlinepos[i] = 0;
         }
     }
-
-    //if (acnt == 10)
-    //{
-    //    advance = true;
-    //    acnt = 0;
-    //}
-    //else
-    //{
-    //    advance = false;
-    //}
-
-    //if (advance)
-    //{
-    //    for (int i = 20; i > 0; i--)
-    //    {
-    //        for (int j = 1; j < 11; j++)
-    //        {
-    //            sub[i][j] = main[i - 1][j];
-    //            main[i - 1][j] = main[i][j];
-    //            main[i][j] = 0;
-    //        }
-    //    }
-    //}
 
     //積み上げ
     if (main[down + 1][pos + 1] != 0)

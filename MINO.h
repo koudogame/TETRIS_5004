@@ -47,7 +47,7 @@ public:
     };
     int sub[22][12] = { 0 }; //サブ
     int test[4][4]; //流す用テスト
-    int clearlinepos[20] = { 0 }; //横一列そろっている場所の確認用
+    int clearlinepos[21] = { 0 }; //横一列そろっている場所の確認用
 
     int nowtime = 0;
     int oldtime = 0;
