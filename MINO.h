@@ -6,6 +6,17 @@
 #include"pad.h"
 #include<ctime>
 
+enum
+{
+    i, //棒
+    o, //四角
+    t, //T字
+    j, //J字
+    l, //L字
+    s, //S字
+    z  //Z字
+};
+
 class Mino
 {
 private:
@@ -46,11 +57,19 @@ public:
         {9,9,9,9,9,9,9,9,9,9,9,9},
     };
     int sub[22][12] = { 0 }; //サブ
-    int test[4][4]; //流す用テスト
+    int test[4][4] = {
+        {0,0,0,0},
+        {0,1,1,0},
+        {0,0,1,0},
+        {0,0,1,0}
+    }; //流す用テスト
     int clearlinepos[21] = { 0 }; //横一列そろっている場所の確認用
+    int tmp[4][4] = { 0 };
 
     int nowtime = 0;
     int oldtime = 0;
+
+    int time = 1;
 
     //方向キー
     int up = 0;
@@ -59,5 +78,6 @@ public:
 
     //カウント
     int cnt = 0;
+    bool downf = false;
 
 };

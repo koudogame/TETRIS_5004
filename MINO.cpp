@@ -32,12 +32,6 @@ bool Mino::update()
     const Keyboard::KeyboardStateTracker key_tracker = Key::getTracker();
 
     nowtime = timeGetTime();
-
-    //‰º
-    if (pad_tracker.dpadDown == GamePad::ButtonStateTracker::PRESSED || key_tracker.pressed.Down)
-    {
-        down++;
-    }
     //ã
     if (pad_tracker.dpadUp == GamePad::ButtonStateTracker::PRESSED || key_tracker.pressed.Up)
     {
@@ -57,26 +51,31 @@ bool Mino::update()
     {
         pos++;
     }
-
+    //‰º
     if (state.Down)
     {
-        cnt++;
+        downf = true;
     }
     else
     {
-        cnt = 0;
+        downf = false;
     }
 
-    //ÀŠÔ‚Å—‚Æ‚·
-    if (nowtime - oldtime >= 500)
+    if (downf)
     {
+        time = 50;
+    }
+    else
+    {
+        time = 1;
+    }
+ 
+    //ÀŠÔ‚Å—‚Æ‚·
+    if (nowtime - oldtime >= 500/time)
+    {
+        cnt = 0;
         down++;
         oldtime = nowtime;
-    }
-
-    if (down > 21)
-    {
-        down = 0;
     }
 
     //ƒuƒƒbƒN‚ğÁ‚·ˆ—
@@ -127,10 +126,6 @@ bool Mino::update()
     }
 
     //ˆÚ“®§ŒÀ
-    if (down < 0)
-    {
-        down = 0;
-    }
     if (pos < 0)
     {
         pos = 0;
@@ -152,7 +147,7 @@ void Mino::draw()
     rect.bottom = rect.top + 28;
     rect.right = rect.left + 26;
 
-    Sprite::draw(texture_, Vector2(510 + (25 * pos), 246 + (25 * down) - (25 * up) - 75), &rect);
+                Sprite::draw(texture_, Vector2(510 + (25 * pos), 246 + (25 * down) - (25 * up) - 75), &rect);
 
     //x510
     //y246
