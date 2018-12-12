@@ -18,6 +18,18 @@ bool Mino::init()
         return false;
     }
 
+    //枠の生成
+    for (int i = 0; i < 22; i++)
+    {
+        for (int j = 0; j < 12; j++)
+        {
+            main[i][0] = 9;
+            main[i][11] = 9; 
+            main[21][j] = 9;
+
+        }
+    }
+
     oldtime = timeGetTime();
     return true;
 }
@@ -31,44 +43,109 @@ bool Mino::update()
     const Keyboard::State state = Key::getState();
     const Keyboard::KeyboardStateTracker key_tracker = Key::getTracker();
 
+    //フラグがオンならオフにしておく
+    if (collision_down)
+    {
+        collision_down = false;
+    }
+    if (collision_left)
+    {
+        collision_left = false;
+    }
+    if (collision_right)
+    {
+        collision_right = false;
+    }
+
     nowtime = timeGetTime();
     //上
     if (pad_tracker.dpadUp == GamePad::ButtonStateTracker::PRESSED || key_tracker.pressed.Up)
     {
         //ハードドロップ
-        while (main[down + 1][pos + 1] == 0)
+        while (main[down+1 ][pos] == 0)
         {
             down++;
         }
     }
-    //左
-    if (pad_tracker.dpadLeft == GamePad::ButtonStateTracker::PRESSED || key_tracker.pressed.Left)
+    if (!collision_left)
     {
-        pos--;
+        //左
+        if (pad_tracker.dpadLeft == GamePad::ButtonStateTracker::PRESSED || key_tracker.pressed.Left)
+        {
+            pos--;
+        }
+    
     }
-    //右
-    if (pad_tracker.dpadRight == GamePad::ButtonStateTracker::PRESSED || key_tracker.pressed.Right)
+    if (!collision_right)
     {
-        pos++;
+        //右
+        if (pad_tracker.dpadRight == GamePad::ButtonStateTracker::PRESSED || key_tracker.pressed.Right)
+        {
+            pos++;
+        }
     }
-    //下
-    if (state.Down)
+    if (!collision_down)
     {
-        downf = true;
-    }
-    else
-    {
-        downf = false;
+        //下
+        if (state.Down)
+        {
+            downf = true;
+        }
+        else
+        {
+            downf = false;
+        }
+
+        if (downf)
+        {
+            time = 50;
+        }
+        else
+        {
+            time = 1;
+        }
     }
 
-    if (downf)
-    {
-        time = 50;
+    //当たり判定
+    //左側
+    for (int y = 0; y < block_height; y++) {
+        for (int x = 0; x < block_width; x++) {
+            if (test[y][x] != 0) {
+                if (main[down + y][pos + x-1] != 0) {
+                    collision_left = true;
+                }
+                else
+                {
+                    collision_left = false;
+                }
+            }
+        }
     }
-    else
-    {
-        time = 1;
+    //右側
+    for (int y = 0; y < block_height; y++) {
+        for (int x = 0; x < block_width; x++) {
+            if (test[y][x] != 0) {
+                if (main[down + y][pos + (x + 1)] != 0) {
+                    collision_right = true;
+                }
+                else
+                {
+                    collision_right = false;
+                }
+            }
+        }
     }
+    //下側
+    for (int y = 0; y < block_height; y++) {
+        for (int x = 0; x < block_width; x++) {
+            if (test[y][x] != 0) {
+                if (main[down + y][pos + x] != 0) {
+                    collision_down = true;
+                }
+            }
+        }
+    }
+
  
     //実時間で落とす
     if (nowtime - oldtime >= 500/time)
@@ -102,6 +179,7 @@ bool Mino::update()
         {
             for (int j = 1; j < 11; j++)
             {
+                //配列の初期化
                 main[i][j] = 0; 
             }
             clearlinepos[i] = 0;
@@ -118,28 +196,19 @@ bool Mino::update()
             }
         }
     }
-    for (int i = 0; i < 4; i++)
+    //下が当たっていたら積む
+    if (collision_down)
     {
-        for (int j = 0; j < 4; j++)
+        for (int i = 0; i < 4; i++)
         {
-            //積み上げ
-            if (main[down + 1+i][pos + 1+j] != 0)
+            for (int j = 0; j < 4; j++)
             {
-                main[down+i][pos + 1] = 1;
-                down = 0;
+                if (test[i][j] != 0&&main[down+i-1][pos+j]==0)
+                    main[down + i - 1][pos + j] = test[i][j];
             }
+
         }
-
-    }
-
-    //移動制限
-    if (pos < 0)
-    {
-        pos = 0;
-    }
-    if (pos > 9)
-    {
-        pos = 9;
+        down = 0;
     }
 
     return true;
@@ -160,7 +229,7 @@ void Mino::draw()
         for (int j = 0; j < 4; j++)
         {
             if(test[i][j]==1)
-            Sprite::draw(texture_, Vector2(510 + (25 * pos)+(25*j), 246 + (25 * down) - (25 * up) - 75+(25*i)), &rect);
+            Sprite::draw(texture_, Vector2(510 + (25 * pos)+(25*j)-25, 246 + (25 * down) - (25 * up) - 75+(25*i)), &rect);
 
         }
     }
@@ -204,4 +273,9 @@ void Mino::destroy()
 {
     //破棄
     SAFE_RELEASE(texture_);
+}
+
+void Mino::create_block()
+{
+
 }
