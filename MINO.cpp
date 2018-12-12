@@ -43,21 +43,9 @@ bool Mino::update()
     const Keyboard::State state = Key::getState();
     const Keyboard::KeyboardStateTracker key_tracker = Key::getTracker();
 
-    //フラグがオンならオフにしておく
-    if (collision_down)
-    {
-        collision_down = false;
-    }
-    if (collision_left)
-    {
-        collision_left = false;
-    }
-    if (collision_right)
-    {
-        collision_right = false;
-    }
-
+    //現在の時間を取得
     nowtime = timeGetTime();
+
     //上
     if (pad_tracker.dpadUp == GamePad::ButtonStateTracker::PRESSED || key_tracker.pressed.Up)
     {
@@ -142,10 +130,13 @@ bool Mino::update()
                 if (main[down + y][pos + x] != 0) {
                     collision_down = true;
                 }
+                else
+                {
+                    collision_down = false;
+                }
             }
         }
     }
-
  
     //実時間で落とす
     if (nowtime - oldtime >= 500/time)
@@ -228,7 +219,7 @@ void Mino::draw()
     {
         for (int j = 0; j < 4; j++)
         {
-            if(test[i][j]==1)
+            if(test[i][j]!=0)
             Sprite::draw(texture_, Vector2(510 + (25 * pos)+(25*j)-25, 246 + (25 * down) - (25 * up) - 75+(25*i)), &rect);
 
         }
