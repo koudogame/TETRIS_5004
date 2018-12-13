@@ -1,8 +1,8 @@
 #pragma once
 
 
-#define field_width 11
-#define field_height 21
+#define field_width 12
+#define field_height 22
 
 
 #define block_width 4
@@ -28,12 +28,13 @@ public:
     void draw();
     void maindraw();
     void destroy();
+    void reset();
 
     //ミノ
     int main[22][12]{ 0 };
     int sub[22][12] = { 0 }; //サブ
-    int next1[7]{ 1,2,3,4,5,6,7 }; //ネクストパターン1
-    int mino[7][4][4] = {
+    int next1[7]{ 0,1,2,3,4,5,6 }; //ネクストパターン1
+    const int mino[7][4][4] = {
         { //Iミノ
         {0,0,1,0},
         {0,0,1,0},
@@ -116,4 +117,11 @@ public:
 
     int block = 0;
     int next = 0;  //次のブロック
+    int a = 0;
+
+    bool harddrop = false;
+    bool Accumulate = false;
+
+    int down_now_time = 0;
+    int down_old_time = 0;
 };
