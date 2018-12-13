@@ -301,12 +301,54 @@ void Mino::maindraw()
     rect.bottom = rect.top + 28;
     rect.right = rect.left + 26;
 
-    //青
+    //水色
     RECT trim;
     trim.top = 955;
     trim.left = 687;
     trim.bottom = trim.top + 28;
     trim.right = trim.left + 26;
+
+    //オレンジ
+    RECT Ltrim;
+    Ltrim.top = 955;
+    Ltrim.left = 687+(25 * 1);
+    Ltrim.bottom = Ltrim.top + 28;
+    Ltrim.right = Ltrim.left + 26;
+
+    //緑
+    RECT Strim;
+    Strim.top = 955;
+    Strim.left = 687 + (25 * 2);
+    Strim.bottom = Strim.top + 28;
+    Strim.right = Strim.left + 26;
+
+    //赤
+    RECT Ztrim;
+    Ztrim.top = 955;
+    Ztrim.left = 687 + (25 * 3);
+    Ztrim.bottom = Ztrim.top + 28;
+    Ztrim.right = Ztrim.left + 26;
+
+    //青
+    RECT Jtrim;
+    Jtrim.top = 955;
+    Jtrim.left = 687 + (25 * 4);
+    Jtrim.bottom = Jtrim.top + 28;
+    Jtrim.right = Jtrim.left + 26;
+
+    //黄色
+    RECT Otrim;
+    Otrim.top = 955;
+    Otrim.left = 687 + (25 * 5);
+    Otrim.bottom = Otrim.top + 28;
+    Otrim.right = Otrim.left + 26;
+
+    //紫
+    RECT Ttrim;
+    Ttrim.top = 955;
+    Ttrim.left = 687 + (25 * 6);
+    Ttrim.bottom = Ttrim.top + 28;
+    Ttrim.right = Ttrim.left + 26;
 
     for (int i = 0; i < 22; i++)
     {
@@ -314,8 +356,21 @@ void Mino::maindraw()
         {
          if(main[i][j]==9) //枠
             Sprite::draw(texture_, Vector2(510 + (25 * j)-25, 246 + (25 * i) - 75), &rect);
-         else if (main[i][j] == 1) //青
+         else if (main[i][j] == 1) //水色
              Sprite::draw(texture_, Vector2(510 + (25 * j) - 25, 246 + (25 * i) - 75), &trim);
+         else if (main[i][j] == 2 ) //黄色
+             Sprite::draw(texture_, Vector2(510 + (25 * j) - 25, 246 + (25 * i) - 75), &Otrim);
+         else if (main[i][j] == 3) //紫
+             Sprite::draw(texture_, Vector2(510 + (25 * j) - 25, 246 + (25 * i) - 75), &Ttrim);
+         else if (main[i][j] == 4) //青
+             Sprite::draw(texture_, Vector2(510 + (25 * j) - 25, 246 + (25 * i) - 75), &Jtrim);
+         else if (main[i][j] == 5) //オレンジ
+             Sprite::draw(texture_, Vector2(510 + (25 * j) - 25, 246 + (25 * i) - 75), &Ltrim);
+         else if (main[i][j] == 6) //緑
+             Sprite::draw(texture_, Vector2(510 + (25 * j) - 25, 246 + (25 * i) - 75), &Strim);
+         else if (main[i][j] == 7) //赤
+             Sprite::draw(texture_, Vector2(510 + (25 * j) - 25, 246 + (25 * i) - 75), &Ztrim);
+
         }
     }
 }
