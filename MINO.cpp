@@ -19,9 +19,9 @@ bool Mino::init()
     }
 
     //枠の生成
-    for (int i = 0; i < 22; i++)
+    for (int i = 0; i < field_height; i++)
     {
-        for (int j = 0; j < 12; j++)
+        for (int j = 0; j < field_width; j++)
         {
             main[i][0] = 9;
             main[i][11] = 9; 
@@ -43,51 +43,44 @@ bool Mino::update()
     const Keyboard::State state = Key::getState();
     const Keyboard::KeyboardStateTracker key_tracker = Key::getTracker();
 
-    //フラグがオンならオフにしておく
-    if (collision_down)
+    //ネクストブロックのパターンをシャッフル
+    if (shuffle)
     {
-        collision_down = false;
+        for (int i = 0; i < 7; i++)
+        {
+            int j = rand() % 7;
+            int t = next1[i];
+            next1[i] = next1[j];
+            next1[j] = t;
+        }
+        shuffle = false;
     }
-    if (collision_left)
+    a = next1[next];
+
+    //現在の時間を取得
+    nowtime = timeGetTime();
+    collision_down = false;
+    collision_left = false;
+    collision_right = false;
+
+    if (nextblock)
     {
-        collision_left = false;
-    }
-    if (collision_right)
-    {
-        collision_right = false;
+        for (int i = 0; i < 4; i++)
+        {
+            for (int j = 0; j < 4; j++)
+            {
+                test[i][j] = mino[a][i][j];
+            }
+        }
+        pos = 3;
+        down = 0;
+        nextblock = false;
     }
 
-    nowtime = timeGetTime();
-    //上
-    if (pad_tracker.dpadUp == GamePad::ButtonStateTracker::PRESSED || key_tracker.pressed.Up)
-    {
-        //ハードドロップ
-        while (main[down+1 ][pos] == 0)
-        {
-            down++;
-        }
-    }
-    if (!collision_left)
-    {
-        //左
-        if (pad_tracker.dpadLeft == GamePad::ButtonStateTracker::PRESSED || key_tracker.pressed.Left)
-        {
-            pos--;
-        }
-    
-    }
-    if (!collision_right)
-    {
-        //右
-        if (pad_tracker.dpadRight == GamePad::ButtonStateTracker::PRESSED || key_tracker.pressed.Right)
-        {
-            pos++;
-        }
-    }
     if (!collision_down)
     {
         //下
-        if (state.Down)
+        if (state.Down || pad.dpad.down)
         {
             downf = true;
         }
@@ -111,13 +104,10 @@ bool Mino::update()
     for (int y = 0; y < block_height; y++) {
         for (int x = 0; x < block_width; x++) {
             if (test[y][x] != 0) {
-                if (main[down + y][pos + x-1] != 0) {
+                if (main[down + y][pos + (x - 1)] != 0) {
                     collision_left = true;
                 }
-                else
-                {
-                    collision_left = false;
-                }
+
             }
         }
     }
@@ -128,10 +118,7 @@ bool Mino::update()
                 if (main[down + y][pos + (x + 1)] != 0) {
                     collision_right = true;
                 }
-                else
-                {
-                    collision_right = false;
-                }
+
             }
         }
     }
@@ -146,13 +133,26 @@ bool Mino::update()
         }
     }
 
- 
-    //実時間で落とす
-    if (nowtime - oldtime >= 500/time)
+    //下が当たっていたら積む
+    if (nowtime - oldtime >= 500 && collision_down)
     {
-        cnt = 0;
-        down++;
-        oldtime = nowtime;
+        Accumulate = true;
+    }
+    else
+    {
+        Accumulate = false;
+
+    }
+
+    if (!collision_down&&!Accumulate)
+    {
+        //実時間で落とす
+        if (nowtime - oldtime >= 500 / time)
+        {
+            down++;
+            oldtime = nowtime;
+        }
+
     }
 
     //ブロックを消す処理
@@ -167,7 +167,7 @@ bool Mino::update()
             }
             else
             {
-                clearlinepos[i] = 0;    //ブロックがあるときは0
+                clearlinepos[i] = 0;    //ブロックで埋まっているときは0
             }
         }
     }
@@ -180,7 +180,7 @@ bool Mino::update()
             for (int j = 1; j < 11; j++)
             {
                 //配列の初期化
-                main[i][j] = 0; 
+                main[i][j] = 0;
             }
             clearlinepos[i] = 0;
 
@@ -196,19 +196,113 @@ bool Mino::update()
             }
         }
     }
-    //下が当たっていたら積む
-    if (collision_down)
+
+
+    if (Accumulate)
     {
         for (int i = 0; i < 4; i++)
         {
             for (int j = 0; j < 4; j++)
             {
-                if (test[i][j] != 0&&main[down+i-1][pos+j]==0)
+                if (test[i][j] != 0 && main[down + i - 1][pos + j] == 0)
                     main[down + i - 1][pos + j] = test[i][j];
             }
-
         }
-        down = 0;
+
+        nextblock = true;
+        next++;
+        if (next > 6)
+        {
+            shuffle = true;
+            next = 0;
+        }
+    }
+
+    //上
+    if (pad_tracker.dpadUp == GamePad::ButtonStateTracker::PRESSED || key_tracker.pressed.Up)
+    {
+
+    }
+    if (!collision_left)
+    {
+        //左
+        if (pad_tracker.dpadLeft == GamePad::ButtonStateTracker::PRESSED || key_tracker.pressed.Left)
+        {
+            pos--;
+            Accumulate = false;
+            oldtime = timeGetTime();
+        }
+
+    }
+    if (!collision_right)
+    {
+        //右
+        if (pad_tracker.dpadRight == GamePad::ButtonStateTracker::PRESSED || key_tracker.pressed.Right)
+        {
+            pos++;
+            Accumulate = false;
+            oldtime = timeGetTime();
+        }
+    }
+
+    //回転90
+    if (key_tracker.pressed.Enter || pad_tracker.a == GamePad::ButtonStateTracker::PRESSED)
+    {
+        rotation_a = true;
+    }
+    else
+    {
+        rotation_a = false;
+    }
+
+    if (key_tracker.pressed.RightShift || pad_tracker.b == GamePad::ButtonStateTracker::PRESSED)
+    {
+        rotation_b = true;
+    }
+    else
+    {
+        rotation_b = false;
+    }
+
+    if (rotation_a && !rotation_b)
+    {
+        for (int i = 0; i < 4; i++)
+        {
+            for (int j = 0; j < 4; j++)
+            {
+                //tmp[i][j] =test[i][j];
+                tmp[i][j] = test[j][i];
+            }
+        }
+
+        for (int i = 0; i < 4; i++)
+        {
+            for (int j = 0; j < 4; j++)
+            {
+                //test[i][4 - j] = tmp[i][j];
+                test[i][4 - j] = tmp[i][j];
+            }
+        }
+    }
+
+    //回転270
+    if (!rotation_a && rotation_b)
+    {
+        for (int i = 0; i < 4; i++)
+        {
+            for (int j = 0; j < 4; j++)
+            {
+                tmp[i][j] = test[j][i];
+            }
+        }
+
+        for (int i = 0; i < 4; i++)
+        {
+            for (int j = 0; j < 4; j++)
+            {
+                test[4 - i][j] = tmp[i][j];
+            }
+        }
     }
 
     return true;
@@ -216,25 +310,91 @@ bool Mino::update()
 
 void Mino::draw()
 {
-
+    //水色
     RECT rect;
     rect.top = 955;
     rect.left = 687;
-    rect.bottom = rect.top + 28;
+    rect.bottom = rect.top + 26;
     rect.right = rect.left + 26;
+
+    //オレンジ
+    RECT Ltrim;
+    Ltrim.top = 955;
+    Ltrim.left = 687 + (25 * 1);
+    Ltrim.bottom = Ltrim.top + 26;
+    Ltrim.right = Ltrim.left + 26;
+
+    //緑
+    RECT Strim;
+    Strim.top = 955;
+    Strim.left = 687 + (25 * 2);
+    Strim.bottom = Strim.top + 26;
+    Strim.right = Strim.left + 26;
+
+    //赤
+    RECT Ztrim;
+    Ztrim.top = 955;
+    Ztrim.left = 687 + (25 * 3);
+    Ztrim.bottom = Ztrim.top + 26;
+    Ztrim.right = Ztrim.left + 26;
+
+    //青
+    RECT Jtrim;
+    Jtrim.top = 955;
+    Jtrim.left = 687 + (25 * 4);
+    Jtrim.bottom = Jtrim.top + 26;
+    Jtrim.right = Jtrim.left + 26;
+
+    //黄色
+    RECT Otrim;
+    Otrim.top = 955;
+    Otrim.left = 687 + (25 * 5);
+    Otrim.bottom = Otrim.top + 26;
+    Otrim.right = Otrim.left + 26;
+
+    //紫
+    RECT Ttrim;
+    Ttrim.top = 955;
+    Ttrim.left = 687 + (25 * 6);
+    Ttrim.bottom = Ttrim.top + 26;
+    Ttrim.right = Ttrim.left + 26;
 
     //描画
     for (int i = 0; i < 4; i++)
     {
         for (int j = 0; j < 4; j++)
         {
-            if(test[i][j]==1)
-            Sprite::draw(texture_, Vector2(510 + (25 * pos)+(25*j)-25, 246 + (25 * down) - (25 * up) - 75+(25*i)), &rect);
+            //if (test[i][j] == 1)
+            //    Sprite::draw(texture_, Vector2(510 + (25 * pos) + (25 * j) - 25, 246 + (25 * down) - (25 * up) - 75 + (25 * i)), &rect);
+            //else if (test[i][j] == 2)
+            //    Sprite::draw(texture_, Vector2(510 + (25 * pos) + (25 * j) - 25, 246 + (25 * down) - (25 * up) - 75 + (25 * i)), &Otrim);
+            //else if (test[i][j] == 3)
+            //    Sprite::draw(texture_, Vector2(510 + (25 * pos) + (25 * j) - 25, 246 + (25 * down) - (25 * up) - 75 + (25 * i)), &Ttrim);
+            //else if (test[i][j] == 4)
+            //    Sprite::draw(texture_, Vector2(510 + (25 * pos) + (25 * j) - 25, 246 + (25 * down) - (25 * up) - 75 + (25 * i)), &Jtrim);
+            //else if (test[i][j] == 5)
+            //    Sprite::draw(texture_, Vector2(510 + (25 * pos) + (25 * j) - 25, 246 + (25 * down) - (25 * up) - 75 + (25 * i)), &Ltrim);
+            //else if (test[i][j] == 6)
+            //    Sprite::draw(texture_, Vector2(510 + (25 * pos) + (25 * j) - 25, 246 + (25 * down) - (25 * up) - 75 + (25 * i)), &Strim);
+            //else if (test[i][j] == 7)
+            //    Sprite::draw(texture_, Vector2(510 + (25 * pos) + (25 * j) - 25, 246 + (25 * down) - (25 * up) - 75 + (25 * i)), &Ztrim);
 
+            if (test[i][j] == 1)
+                Sprite::draw(texture_, Vector2(510 + (25 * pos) + (25 * j) - 25, 246 + (25 * down) - (25 * up) - 100 + (25 * i)), &rect);
+            else if (test[i][j] == 2)
+                Sprite::draw(texture_, Vector2(510 + (25 * pos) + (25 * j) - 25, 246 + (25 * down) - (25 * up) - 100 + (25 * i)), &Otrim);
+            else if (test[i][j] == 3)
+                Sprite::draw(texture_, Vector2(510 + (25 * pos) + (25 * j) - 25, 246 + (25 * down) - (25 * up) - 100 + (25 * i)), &Ttrim);
+            else if (test[i][j] == 4)
+                Sprite::draw(texture_, Vector2(510 + (25 * pos) + (25 * j) - 25, 246 + (25 * down) - (25 * up) - 100 + (25 * i)), &Jtrim);
+            else if (test[i][j] == 5)
+                Sprite::draw(texture_, Vector2(510 + (25 * pos) + (25 * j) - 25, 246 + (25 * down) - (25 * up) - 100 + (25 * i)), &Ltrim);
+            else if (test[i][j] == 6)
+                Sprite::draw(texture_, Vector2(510 + (25 * pos) + (25 * j) - 25, 246 + (25 * down) - (25 * up) - 100 + (25 * i)), &Strim);
+            else if (test[i][j] == 7)
+                Sprite::draw(texture_, Vector2(510 + (25 * pos) + (25 * j) - 25, 246 + (25 * down) - (25 * up) - 100 + (25 * i)), &Ztrim);
         }
     }
-    //Sprite::draw(texture_, Vector2(510 + (25 * pos), 246 + (25 * down) - (25 * up) - 75), &rect);
-
     //x510
     //y246
 }
@@ -250,12 +410,54 @@ void Mino::maindraw()
     rect.bottom = rect.top + 28;
     rect.right = rect.left + 26;
 
-    //青
+    //水色
     RECT trim;
     trim.top = 955;
     trim.left = 687;
     trim.bottom = trim.top + 28;
     trim.right = trim.left + 26;
+
+    //オレンジ
+    RECT Ltrim;
+    Ltrim.top = 955;
+    Ltrim.left = 687+(25 * 1);
+    Ltrim.bottom = Ltrim.top + 28;
+    Ltrim.right = Ltrim.left + 26;
+
+    //緑
+    RECT Strim;
+    Strim.top = 955;
+    Strim.left = 687 + (25 * 2);
+    Strim.bottom = Strim.top + 28;
+    Strim.right = Strim.left + 26;
+
+    //赤
+    RECT Ztrim;
+    Ztrim.top = 955;
+    Ztrim.left = 687 + (25 * 3);
+    Ztrim.bottom = Ztrim.top + 28;
+    Ztrim.right = Ztrim.left + 26;
+
+    //青
+    RECT Jtrim;
+    Jtrim.top = 955;
+    Jtrim.left = 687 + (25 * 4);
+    Jtrim.bottom = Jtrim.top + 28;
+    Jtrim.right = Jtrim.left + 26;
+
+    //黄色
+    RECT Otrim;
+    Otrim.top = 955;
+    Otrim.left = 687 + (25 * 5);
+    Otrim.bottom = Otrim.top + 28;
+    Otrim.right = Otrim.left + 26;
+
+    //紫
+    RECT Ttrim;
+    Ttrim.top = 955;
+    Ttrim.left = 687 + (25 * 6);
+    Ttrim.bottom = Ttrim.top + 28;
+    Ttrim.right = Ttrim.left + 26;
 
     for (int i = 0; i < 22; i++)
     {
@@ -263,8 +465,20 @@ void Mino::maindraw()
         {
          if(main[i][j]==9) //枠
             Sprite::draw(texture_, Vector2(510 + (25 * j)-25, 246 + (25 * i) - 75), &rect);
-         else if (main[i][j] == 1) //青
+         else if (main[i][j] == 1) //水色
              Sprite::draw(texture_, Vector2(510 + (25 * j) - 25, 246 + (25 * i) - 75), &trim);
+         else if (main[i][j] == 2 ) //黄色
+             Sprite::draw(texture_, Vector2(510 + (25 * j) - 25, 246 + (25 * i) - 75), &Otrim);
+         else if (main[i][j] == 3) //紫
+             Sprite::draw(texture_, Vector2(510 + (25 * j) - 25, 246 + (25 * i) - 75), &Ttrim);
+         else if (main[i][j] == 4) //青
+             Sprite::draw(texture_, Vector2(510 + (25 * j) - 25, 246 + (25 * i) - 75), &Jtrim);
+         else if (main[i][j] == 5) //オレンジ
+             Sprite::draw(texture_, Vector2(510 + (25 * j) - 25, 246 + (25 * i) - 75), &Ltrim);
+         else if (main[i][j] == 6) //緑
+             Sprite::draw(texture_, Vector2(510 + (25 * j) - 25, 246 + (25 * i) - 75), &Strim);
+         else if (main[i][j] == 7) //赤
+             Sprite::draw(texture_, Vector2(510 + (25 * j) - 25, 246 + (25 * i) - 75), &Ztrim);
         }
     }
 }
@@ -275,7 +489,7 @@ void Mino::destroy()
     SAFE_RELEASE(texture_);
 }
 
-void Mino::create_block()
+void Mino::reset()
 {
 
 }

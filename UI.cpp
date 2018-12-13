@@ -50,7 +50,7 @@ void UI::update()
         plb = 0;
     }
 
-    if (state.Space||pad.buttons.b)
+    if (state.RightShift||pad.buttons.b)
     {
         pspace = 1;
     }
@@ -92,7 +92,6 @@ void UI::inputdraw(int type)
     // 6・テトリスマルチ
     //*******************************************
 
-
     if(type==Title_||type==result_option ||type == tetoris_s ||type == puyopuyo)
     {
         //十字キー
@@ -117,12 +116,12 @@ void UI::inputdraw(int type)
         Sprite::draw(texture_, Vector2(1002, 519), &atrim);
     }
 
-    if(type==puyopuyo||type==tetris_multi)
+    if(type==puyopuyo||type==tetoris_s)
     {
         //Bボタン
         RECT btrim;
         btrim.top = 463 + (pspace * 128);
-        btrim.left = 1664;
+        btrim.left = 1663;
         btrim.bottom = btrim.top + 129;
         btrim.right = btrim.left + 129;
 

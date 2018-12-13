@@ -284,6 +284,8 @@ int WINAPI WinMain( HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLin
                     {
                         //ƒ^ƒCƒgƒ‹‚Ö–ß‚é
                         work_no = kTitleUpdate;
+                        credit.destroy();
+
                     }
                     break;
                 case kStartInit:
@@ -434,7 +436,6 @@ int WINAPI WinMain( HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLin
     result.destroy();
     game.destroy();
     ui.destroy();
-    credit.destroy();
     option.destroy();
     ranking.destroy();
     Common::destroy();
