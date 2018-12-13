@@ -45,33 +45,11 @@ bool Mino::update()
 
     //現在の時間を取得
     nowtime = timeGetTime();
+    collision_down = false;
+    collision_left = false;
+    collision_right = false;
 
-    //上
-    if (pad_tracker.dpadUp == GamePad::ButtonStateTracker::PRESSED || key_tracker.pressed.Up)
-    {
-        //ハードドロップ
-        while (main[down+1 ][pos] == 0)
-        {
-            down++;
-        }
-    }
-    if (!collision_left)
-    {
-        //左
-        if (pad_tracker.dpadLeft == GamePad::ButtonStateTracker::PRESSED || key_tracker.pressed.Left)
-        {
-            pos--;
-        }
-    
-    }
-    if (!collision_right)
-    {
-        //右
-        if (pad_tracker.dpadRight == GamePad::ButtonStateTracker::PRESSED || key_tracker.pressed.Right)
-        {
-            pos++;
-        }
-    }
+
     if (!collision_down)
     {
         //下
@@ -99,13 +77,10 @@ bool Mino::update()
     for (int y = 0; y < block_height; y++) {
         for (int x = 0; x < block_width; x++) {
             if (test[y][x] != 0) {
-                if (main[down + y][pos + x-1] != 0) {
+                if (main[down + y][pos +( x-1)] != 0) {
                     collision_left = true;
                 }
-                else
-                {
-                    collision_left = false;
-                }
+
             }
         }
     }
@@ -116,10 +91,7 @@ bool Mino::update()
                 if (main[down + y][pos + (x + 1)] != 0) {
                     collision_right = true;
                 }
-                else
-                {
-                    collision_right = false;
-                }
+
             }
         }
     }
@@ -130,20 +102,22 @@ bool Mino::update()
                 if (main[down + y][pos + x] != 0) {
                     collision_down = true;
                 }
-                else
-                {
-                    collision_down = false;
-                }
             }
         }
     }
  
-    //実時間で落とす
-    if (nowtime - oldtime >= 500/time)
+
+
+    if (!collision_down)
     {
-        cnt = 0;
-        down++;
-        oldtime = nowtime;
+        //実時間で落とす
+        if (nowtime - oldtime >= 500 / time)
+        {
+            cnt = 0;
+            down++;
+            oldtime = nowtime;
+        }
+
     }
 
     //ブロックを消す処理
@@ -158,7 +132,7 @@ bool Mino::update()
             }
             else
             {
-                clearlinepos[i] = 0;    //ブロックがあるときは0
+                clearlinepos[i] = 0;    //ブロックで埋まっているときは0
             }
         }
     }
@@ -200,6 +174,94 @@ bool Mino::update()
 
         }
         down = 0;
+        pos = 3;
+    }
+
+    //上
+    if (pad_tracker.dpadUp == GamePad::ButtonStateTracker::PRESSED || key_tracker.pressed.Up)
+    {
+        //ハードドロップ(今できない)
+        while (main[down + 1][pos] == 0)
+        {
+            down++;
+        }
+    }
+    if (!collision_left)
+    {
+        //左
+        if (pad_tracker.dpadLeft == GamePad::ButtonStateTracker::PRESSED || key_tracker.pressed.Left)
+        {
+            pos--;
+        }
+
+    }
+    if (!collision_right)
+    {
+        //右
+        if (pad_tracker.dpadRight == GamePad::ButtonStateTracker::PRESSED || key_tracker.pressed.Right)
+        {
+            pos++;
+        }
+    }
+
+    //回転90
+    if (key_tracker.pressed.Enter||pad_tracker.a==GamePad::ButtonStateTracker::PRESSED)
+    {
+        rotation_a = true;
+    }
+    else
+    {
+        rotation_a = false;
+    }
+
+    if (key_tracker.pressed.RightShift||pad_tracker.b==GamePad::ButtonStateTracker::PRESSED)
+    {
+        rotation_b = true;
+    }
+    else
+    {
+        rotation_b = false;
+    }
+
+    if (rotation_a&&!rotation_b)
+    {
+        for (int i = 0; i < 4; i++)
+        {
+            for (int j = 0; j < 4; j++)
+            {
+                tmp[i][j] = test[j][i];
+            }
+        }
+
+
+        for (int i = 0; i < 4; i++)
+        {
+            for (int j = 0; j < 4; j++)
+            {
+                test[i][4 - j] = tmp[i][j];
+            }
+        }
+    }
+
+    //回転270
+    if (!rotation_a && rotation_b)
+    {
+        for (int i = 0; i < 4; i++)
+        {
+            for (int j = 0; j < 4; j++)
+            {
+                tmp[i][j] = test[j][i];
+            }
+        }
+
+
+        for (int i = 0; i < 4; i++)
+        {
+            for (int j = 0; j < 4; j++)
+            {
+                test[i][4 - j] = tmp[i][j];
+            }
+        }
     }
 
     return true;
@@ -264,9 +326,4 @@ void Mino::destroy()
 {
     //破棄
     SAFE_RELEASE(texture_);
-}
-
-void Mino::create_block()
-{
-
 }

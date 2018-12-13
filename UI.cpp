@@ -117,12 +117,12 @@ void UI::inputdraw(int type)
         Sprite::draw(texture_, Vector2(1002, 519), &atrim);
     }
 
-    if(type==puyopuyo||type==tetris_multi)
+    if(type==puyopuyo||type==tetoris_s)
     {
         //Bƒ{ƒ^ƒ“
         RECT btrim;
         btrim.top = 463 + (pspace * 128);
-        btrim.left = 1664;
+        btrim.left = 1663;
         btrim.bottom = btrim.top + 129;
         btrim.right = btrim.left + 129;
 

@@ -4,8 +4,10 @@
 #define field_width 11
 #define field_height 21
 
+
 #define block_width 4
 #define block_height 4
+
 
 #include"texture.h"
 #include"player.h"
@@ -39,12 +41,56 @@ public:
     void draw();
     void maindraw();
     void destroy();
-    void create_block();
 
     //ミノ
     int back[22][12]; //流すよう配列
     int main[22][12]{ 0 };
     int sub[22][12] = { 0 }; //サブ
+    int mino[7][4][4] = {
+        { //Iミノ
+        {0,0,0,0},
+        {0,0,0,0},
+        {1,1,1,1},
+        {0,0,0,0}
+        },
+        { //Oミノ
+        {0,0,0,0},
+        {0,1,1,0},
+        {0,1,1,0},
+        {0,0,0,0}
+        },
+        { //Tミノ
+        {0,0,0,0},
+        {0,0,1,0},
+        {0,1,1,1},
+        {0,0,0,0}
+        },
+        { //Jミノ
+        {0,0,0,0},
+        {0,0,1,0},
+        {0,0,1,0},
+        {0,1,1,0}
+        },
+        { //Lミノ
+        {0,0,0,0},
+        {0,0,1,0},
+        {0,0,1,0},
+        {0,0,1,1}
+        },
+        { //Sミノ
+        {0,0,0,0},
+        {0,1,0,0},
+        {0,1,1,0},
+        {0,0,1,0}
+        },
+        { //Zミノ
+        {0,0,0,0},
+        {0,0,1,0},
+        {0,1,1,0},
+        {0,1,0,0}
+        }
+    };
+
     int test[4][4] = {
         {0,0,0,0},
         {0,1,0,0},
@@ -62,7 +108,7 @@ public:
     //方向キー
     int up = 0;
     int down = 0;
-    int pos = 0;
+    int pos = 3;
 
     //カウント
     int cnt = 0;
@@ -71,5 +117,7 @@ public:
     bool collision_left = false;
     bool collision_right = false;
     bool collision_down = false;
+    bool rotation_a = false;
+    bool rotation_b = false;
 
 };
