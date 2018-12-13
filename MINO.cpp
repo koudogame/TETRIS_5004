@@ -34,7 +34,7 @@ bool Mino::init()
     return true;
 }
 
-bool Mino::update()
+bool Mino::update(int minotype)
 {
 
     const GamePad::State pad = Pad::getState();
@@ -49,11 +49,19 @@ bool Mino::update()
     collision_left = false;
     collision_right = false;
 
+    if (nextblock)
+    {
+        block = minotype;
+        pos = 3;
+        down = 0;
+        nextblock = false;
+    }
+
 
     if (!collision_down)
     {
         //下
-        if (state.Down)
+        if (state.Down||pad.dpad.down)
         {
             downf = true;
         }
@@ -173,8 +181,7 @@ bool Mino::update()
             }
 
         }
-        down = 0;
-        pos = 3;
+        nextblock = true;
     }
 
     //上
@@ -267,20 +274,74 @@ bool Mino::update()
 
 void Mino::draw()
 {
-
+    //水色
     RECT rect;
     rect.top = 955;
     rect.left = 687;
     rect.bottom = rect.top + 28;
     rect.right = rect.left + 26;
 
+    //オレンジ
+    RECT Ltrim;
+    Ltrim.top = 955;
+    Ltrim.left = 687 + (25 * 1);
+    Ltrim.bottom = Ltrim.top + 28;
+    Ltrim.right = Ltrim.left + 26;
+
+    //緑
+    RECT Strim;
+    Strim.top = 955;
+    Strim.left = 687 + (25 * 2);
+    Strim.bottom = Strim.top + 28;
+    Strim.right = Strim.left + 26;
+
+    //赤
+    RECT Ztrim;
+    Ztrim.top = 955;
+    Ztrim.left = 687 + (25 * 3);
+    Ztrim.bottom = Ztrim.top + 28;
+    Ztrim.right = Ztrim.left + 26;
+
+    //青
+    RECT Jtrim;
+    Jtrim.top = 955;
+    Jtrim.left = 687 + (25 * 4);
+    Jtrim.bottom = Jtrim.top + 28;
+    Jtrim.right = Jtrim.left + 26;
+
+    //黄色
+    RECT Otrim;
+    Otrim.top = 955;
+    Otrim.left = 687 + (25 * 5);
+    Otrim.bottom = Otrim.top + 28;
+    Otrim.right = Otrim.left + 26;
+
+    //紫
+    RECT Ttrim;
+    Ttrim.top = 955;
+    Ttrim.left = 687 + (25 * 6);
+    Ttrim.bottom = Ttrim.top + 28;
+    Ttrim.right = Ttrim.left + 26;
+
     //描画
     for (int i = 0; i < 4; i++)
     {
         for (int j = 0; j < 4; j++)
         {
-            if(mino[block][i][j]!=0)
+            if(mino[block][i][j]==1)
             Sprite::draw(texture_, Vector2(510 + (25 * pos)+(25*j)-25, 246 + (25 * down) - (25 * up) - 75+(25*i)), &rect);
+            else if (mino[block][i][j] ==2)
+                Sprite::draw(texture_, Vector2(510 + (25 * pos) + (25 * j) - 25, 246 + (25 * down) - (25 * up) - 75 + (25 * i)), &Otrim);
+            else if (mino[block][i][j] == 3)
+                Sprite::draw(texture_, Vector2(510 + (25 * pos) + (25 * j) - 25, 246 + (25 * down) - (25 * up) - 75 + (25 * i)), &Ttrim);
+            else if (mino[block][i][j] == 4)
+                Sprite::draw(texture_, Vector2(510 + (25 * pos) + (25 * j) - 25, 246 + (25 * down) - (25 * up) - 75 + (25 * i)), &Jtrim);
+            else if (mino[block][i][j] == 5)
+                Sprite::draw(texture_, Vector2(510 + (25 * pos) + (25 * j) - 25, 246 + (25 * down) - (25 * up) - 75 + (25 * i)), &Ltrim);
+            else if (mino[block][i][j] == 6)
+                Sprite::draw(texture_, Vector2(510 + (25 * pos) + (25 * j) - 25, 246 + (25 * down) - (25 * up) - 75 + (25 * i)), &Strim);
+            else if (mino[block][i][j] == 7)
+                Sprite::draw(texture_, Vector2(510 + (25 * pos) + (25 * j) - 25, 246 + (25 * down) - (25 * up) - 75 + (25 * i)), &Ztrim);
 
         }
     }

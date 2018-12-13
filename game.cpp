@@ -14,6 +14,7 @@ Game::~Game()
 //‰Šú‰»
 bool Game::init()
 {
+    srand(time(NULL));
     //ƒƒ“ƒo‰Šú‰»
     if (!ui_.init()) { return false;}
     if (!player_.init()) { return false; }
@@ -25,10 +26,12 @@ bool Game::init()
 //XV
 bool Game::update()
 {
+    minotype = rand() % 7;
+
     player_.update();
     ui_.update();
     pov_.update();
-    mino_.update();
+    mino_.update(minotype);
 
     return true;
 }

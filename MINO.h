@@ -38,7 +38,7 @@ public:
     Mino();
 
     bool init();
-    bool update();
+    bool update(int minotype);
     void draw();
     void maindraw();
     void destroy();
@@ -120,6 +120,7 @@ public:
     bool collision_down = false;
     bool rotation_a = false;
     bool rotation_b = false;
+    bool nextblock = false;
 
     int block = 0;
 };

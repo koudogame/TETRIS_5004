@@ -35,5 +35,5 @@ public:
     void draw();                // •`‰æ
     void destroy();                     // ”jŠü
 
-    int tmp = 0;
+    int minotype = 0; //ƒ~ƒm‚ÌŽí—Þ
 };
