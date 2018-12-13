@@ -197,9 +197,9 @@ bool Mino::update()
         }
     }
 
-
     if (Accumulate)
     {
+        //積み上げ
         for (int i = 0; i < 4; i++)
         {
             for (int j = 0; j < 4; j++)
@@ -232,7 +232,6 @@ bool Mino::update()
             Accumulate = false;
             oldtime = timeGetTime();
         }
-
     }
     if (!collision_right)
     {
@@ -270,7 +269,6 @@ bool Mino::update()
         {
             for (int j = 0; j < 4; j++)
             {
-                //tmp[i][j] =test[i][j];
                 tmp[i][j] = test[j][i];
             }
         }
@@ -279,7 +277,6 @@ bool Mino::update()
         {
             for (int j = 0; j < 4; j++)
             {
-                //test[i][4 - j] = tmp[i][j];
                 test[i][4 - j] = tmp[i][j];
             }
         }
@@ -364,21 +361,6 @@ void Mino::draw()
     {
         for (int j = 0; j < 4; j++)
         {
-            //if (test[i][j] == 1)
-            //    Sprite::draw(texture_, Vector2(510 + (25 * pos) + (25 * j) - 25, 246 + (25 * down) - (25 * up) - 75 + (25 * i)), &rect);
-            //else if (test[i][j] == 2)
-            //    Sprite::draw(texture_, Vector2(510 + (25 * pos) + (25 * j) - 25, 246 + (25 * down) - (25 * up) - 75 + (25 * i)), &Otrim);
-            //else if (test[i][j] == 3)
-            //    Sprite::draw(texture_, Vector2(510 + (25 * pos) + (25 * j) - 25, 246 + (25 * down) - (25 * up) - 75 + (25 * i)), &Ttrim);
-            //else if (test[i][j] == 4)
-            //    Sprite::draw(texture_, Vector2(510 + (25 * pos) + (25 * j) - 25, 246 + (25 * down) - (25 * up) - 75 + (25 * i)), &Jtrim);
-            //else if (test[i][j] == 5)
-            //    Sprite::draw(texture_, Vector2(510 + (25 * pos) + (25 * j) - 25, 246 + (25 * down) - (25 * up) - 75 + (25 * i)), &Ltrim);
-            //else if (test[i][j] == 6)
-            //    Sprite::draw(texture_, Vector2(510 + (25 * pos) + (25 * j) - 25, 246 + (25 * down) - (25 * up) - 75 + (25 * i)), &Strim);
-            //else if (test[i][j] == 7)
-            //    Sprite::draw(texture_, Vector2(510 + (25 * pos) + (25 * j) - 25, 246 + (25 * down) - (25 * up) - 75 + (25 * i)), &Ztrim);
-
             if (test[i][j] == 1)
                 Sprite::draw(texture_, Vector2(510 + (25 * pos) + (25 * j) - 25, 246 + (25 * down) - (25 * up) - 100 + (25 * i)), &rect);
             else if (test[i][j] == 2)
@@ -407,56 +389,56 @@ void Mino::maindraw()
     RECT rect;
     rect.top = 955;
     rect.left = 687+(25*8);
-    rect.bottom = rect.top + 28;
+    rect.bottom = rect.top + 26;
     rect.right = rect.left + 26;
 
     //水色
     RECT trim;
     trim.top = 955;
     trim.left = 687;
-    trim.bottom = trim.top + 28;
+    trim.bottom = trim.top + 26;
     trim.right = trim.left + 26;
 
     //オレンジ
     RECT Ltrim;
     Ltrim.top = 955;
     Ltrim.left = 687+(25 * 1);
-    Ltrim.bottom = Ltrim.top + 28;
+    Ltrim.bottom = Ltrim.top + 26;
     Ltrim.right = Ltrim.left + 26;
 
     //緑
     RECT Strim;
     Strim.top = 955;
     Strim.left = 687 + (25 * 2);
-    Strim.bottom = Strim.top + 28;
+    Strim.bottom = Strim.top + 26;
     Strim.right = Strim.left + 26;
 
     //赤
     RECT Ztrim;
     Ztrim.top = 955;
     Ztrim.left = 687 + (25 * 3);
-    Ztrim.bottom = Ztrim.top + 28;
+    Ztrim.bottom = Ztrim.top + 26;
     Ztrim.right = Ztrim.left + 26;
 
     //青
     RECT Jtrim;
     Jtrim.top = 955;
     Jtrim.left = 687 + (25 * 4);
-    Jtrim.bottom = Jtrim.top + 28;
+    Jtrim.bottom = Jtrim.top + 26;
     Jtrim.right = Jtrim.left + 26;
 
     //黄色
     RECT Otrim;
     Otrim.top = 955;
     Otrim.left = 687 + (25 * 5);
-    Otrim.bottom = Otrim.top + 28;
+    Otrim.bottom = Otrim.top + 26;
     Otrim.right = Otrim.left + 26;
 
     //紫
     RECT Ttrim;
     Ttrim.top = 955;
     Ttrim.left = 687 + (25 * 6);
-    Ttrim.bottom = Ttrim.top + 28;
+    Ttrim.bottom = Ttrim.top + 26;
     Ttrim.right = Ttrim.left + 26;
 
     for (int i = 0; i < 22; i++)

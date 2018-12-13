@@ -33,7 +33,7 @@ public:
     //ミノ
     int main[22][12]{ 0 };
     int sub[22][12] = { 0 }; //サブ
-    int next1[7]{ 0,1,2,3,4,5,6 }; //ネクストパターン1
+    int next1[7]{ 0,1,2,3,4,5,6 }; //ネクストパターン
     const int mino[7][4][4] = {
         { //Iミノ
         {0,0,1,0},
@@ -100,7 +100,6 @@ public:
 
     //カウント
     int cnt = 0;
-    bool downf = false;
 
     //当たり判定
     bool collision_left = false;
@@ -124,4 +123,7 @@ public:
 
     int down_now_time = 0;
     int down_old_time = 0;
+
+    bool downf = false;
+
 };
