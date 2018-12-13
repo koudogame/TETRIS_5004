@@ -76,7 +76,7 @@ bool Mino::update()
     //ç∂ë§
     for (int y = 0; y < block_height; y++) {
         for (int x = 0; x < block_width; x++) {
-            if (test[y][x] != 0) {
+            if (mino[block][y][x] != 0) {
                 if (main[down + y][pos +( x-1)] != 0) {
                     collision_left = true;
                 }
@@ -87,7 +87,7 @@ bool Mino::update()
     //âEë§
     for (int y = 0; y < block_height; y++) {
         for (int x = 0; x < block_width; x++) {
-            if (test[y][x] != 0) {
+            if (mino[block][y][x] != 0) {
                 if (main[down + y][pos + (x + 1)] != 0) {
                     collision_right = true;
                 }
@@ -98,7 +98,7 @@ bool Mino::update()
     //â∫ë§
     for (int y = 0; y < block_height; y++) {
         for (int x = 0; x < block_width; x++) {
-            if (test[y][x] != 0) {
+            if (mino[block][y][x] != 0) {
                 if (main[down + y][pos + x] != 0) {
                     collision_down = true;
                 }
@@ -168,8 +168,8 @@ bool Mino::update()
         {
             for (int j = 0; j < 4; j++)
             {
-                if (test[i][j] != 0&&main[down+i-1][pos+j]==0)
-                    main[down + i - 1][pos + j] = test[i][j];
+                if (mino[block][i][j] != 0&&main[down+i-1][pos+j]==0)
+                    main[down + i - 1][pos + j] = mino[block][i][j];
             }
 
         }
@@ -229,16 +229,15 @@ bool Mino::update()
         {
             for (int j = 0; j < 4; j++)
             {
-                tmp[i][j] = test[j][i];
+                tmp[i][j] = mino[block][j][i];
             }
         }
-
 
         for (int i = 0; i < 4; i++)
         {
             for (int j = 0; j < 4; j++)
             {
-                test[i][4 - j] = tmp[i][j];
+                mino[block][i][4 - j] = tmp[i][j];
             }
         }
     }
@@ -250,16 +249,15 @@ bool Mino::update()
         {
             for (int j = 0; j < 4; j++)
             {
-                tmp[i][j] = test[j][i];
+                tmp[i][j] = mino[block][j][i];
             }
         }
-
 
         for (int i = 0; i < 4; i++)
         {
             for (int j = 0; j < 4; j++)
             {
-                test[i][4 - j] = tmp[i][j];
+                mino[block][i][4 - j] = tmp[i][j];
             }
         }
     }
@@ -281,7 +279,7 @@ void Mino::draw()
     {
         for (int j = 0; j < 4; j++)
         {
-            if(test[i][j]!=0)
+            if(mino[block][i][j]!=0)
             Sprite::draw(texture_, Vector2(510 + (25 * pos)+(25*j)-25, 246 + (25 * down) - (25 * up) - 75+(25*i)), &rect);
 
         }

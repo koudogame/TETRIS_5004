@@ -15,6 +15,7 @@
 #include"key.h"
 #include"pad.h"
 #include<ctime>
+    
 
 
 
@@ -120,4 +121,5 @@ public:
     bool rotation_a = false;
     bool rotation_b = false;
 
+    int block = 0;
 };
