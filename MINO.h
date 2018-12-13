@@ -15,20 +15,6 @@
 #include"key.h"
 #include"pad.h"
 #include<ctime>
-    
-
-
-
-enum
-{
-    i, //棒
-    o, //四角
-    t, //T字
-    j, //J字
-    l, //L字
-    s, //S字
-    z  //Z字
-};
 
 class Mino
 {
@@ -38,21 +24,21 @@ public:
     Mino();
 
     bool init();
-    bool update(int minotype);
+    bool update();
     void draw();
     void maindraw();
     void destroy();
 
     //ミノ
-    int back[22][12]; //流すよう配列
     int main[22][12]{ 0 };
     int sub[22][12] = { 0 }; //サブ
+    int next1[7]{ 1,2,3,4,5,6,7 }; //ネクストパターン1
     int mino[7][4][4] = {
         { //Iミノ
-        {0,0,0,0},
-        {0,0,0,0},
-        {1,1,1,1},
-        {0,0,0,0}
+        {0,0,1,0},
+        {0,0,1,0},
+        {0,0,1,0},
+        {0,0,1,0}
         },
         { //Oミノ
         {0,0,0,0},
@@ -115,12 +101,19 @@ public:
     int cnt = 0;
     bool downf = false;
 
+    //当たり判定
     bool collision_left = false;
     bool collision_right = false;
     bool collision_down = false;
+
+    //回転
     bool rotation_a = false;
     bool rotation_b = false;
+
+    //ネクスト
     bool nextblock = false;
+    bool shuffle = true;  //ネクストブロックの配列要素をシャッフル
 
     int block = 0;
+    int next = 0;  //次のブロック
 };

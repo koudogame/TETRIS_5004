@@ -50,7 +50,7 @@ void UI::update()
         plb = 0;
     }
 
-    if (state.Space||pad.buttons.b)
+    if (state.RightShift||pad.buttons.b)
     {
         pspace = 1;
     }
@@ -91,7 +91,6 @@ void UI::inputdraw(int type)
     // 5・ぷよぷよシングル
     // 6・テトリスマルチ
     //*******************************************
-
 
     if(type==Title_||type==result_option ||type == tetoris_s ||type == puyopuyo)
     {

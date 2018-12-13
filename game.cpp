@@ -31,7 +31,7 @@ bool Game::update()
     player_.update();
     ui_.update();
     pov_.update();
-    mino_.update(minotype);
+    mino_.update();
 
     return true;
 }
