@@ -111,7 +111,7 @@ public:
     bool rotation_b = false;
 
     //ネクスト
-    bool nextblock = false;
+    bool nextblock = true;
     bool shuffle = true;  //ネクストブロックの配列要素をシャッフル
 
     int block = 0;

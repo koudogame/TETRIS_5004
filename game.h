@@ -10,7 +10,6 @@
 #include"time.h"
 #include"result.h"
 #include"field.h"
-#include"time_limit.h"
 #include"MINO.h"
 
 //Class
@@ -21,10 +20,8 @@ private:
     UI ui_;                             //uiクラス
     Title title_;                       // タイトルクラス
     Start start_;                       //スタートクラス
-    TimeLimit time_;                    //タイムクラス
     Result result_;                     //リザルトクラス
     Field field_;                       //フィールドクラス
-    TimeLimit timelimit_;               //タイムリミットクラス
     Pov pov_;                           //povクラス
     Mino mino_;
 public:

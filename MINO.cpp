@@ -56,16 +56,11 @@ bool Mino::update()
         shuffle = false;
     }
 
-
     //Œ»İ‚ÌŠÔ‚ğæ“¾
     nowtime = timeGetTime();
     collision_down = false;
     collision_left = false;
     collision_right = false;
-    if (cnt < 50)
-    {
-        cnt = 0;
-    }
 
     if (nextblock)
     {
@@ -74,15 +69,6 @@ bool Mino::update()
         down = 0;
         nextblock = false;
     }
-
-    for (int i = 0; i < 4; i++)
-    {
-        for (int j = 0; j < 4; j++)
-        {
-            test[i][j] = mino[block][i][j];
-        }
-    }
-
 
     if (!collision_down)
     {
@@ -137,10 +123,8 @@ bool Mino::update()
                     collision_down = true;
                 }
             }
-        }
+        } 
     }
- 
-
 
     if (!collision_down)
     {

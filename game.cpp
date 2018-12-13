@@ -55,5 +55,4 @@ void Game::destroy()
     ui_.destroy();
     mino_.destroy();
     start_.destroy();
-    timelimit_.destroy();
 }
