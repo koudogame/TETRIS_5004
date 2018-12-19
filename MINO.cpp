@@ -30,6 +30,15 @@ bool Mino::init()
         }
     }
 
+    //初期のミノ決定
+    for (int i = 0; i < 7; i++)
+    {
+        int j = rand() % 7;
+        int t = next1[i];
+        next1[i] = next1[j];
+        next1[j] = t;
+    }
+
     oldtime = timeGetTime();
     return true;
 }
@@ -49,13 +58,31 @@ bool Mino::update()
         for (int i = 0; i < 7; i++)
         {
             int j = rand() % 7;
-            int t = next1[i];
-            next1[i] = next1[j];
-            next1[j] = t;
+            int t = next2[i];
+            next2[i] = next2[j];
+            next2[j] = t;
         }
         shuffle = false;
     }
-    a = next1[next];
+
+    if (shift)
+    {
+        for (int i = 0; i < 7; i++)
+        {
+            next1[i] = next1[i+1];
+
+        }
+        next1[6] = next2[0];
+
+        for (int i = 0; i < 7; i++)
+        {
+            next2[i] = next2[i + 1];
+
+        }
+        shift = false;
+        
+    }
+    a = next1[0];
 
     //現在の時間を取得
     nowtime = timeGetTime();
@@ -211,6 +238,7 @@ bool Mino::update()
 
         nextblock = true;
         next++;
+        shift = true;
         if (next > 6)
         {
             shuffle = true;
@@ -244,7 +272,6 @@ bool Mino::update()
         }
     }
 
-    //回転90
     if (key_tracker.pressed.Enter || pad_tracker.a == GamePad::ButtonStateTracker::PRESSED)
     {
         rotation_a = true;
@@ -263,6 +290,7 @@ bool Mino::update()
         rotation_b = false;
     }
 
+    //回転90
     if (rotation_a && !rotation_b)
     {
         for (int i = 0; i < 4; i++)
@@ -461,6 +489,125 @@ void Mino::maindraw()
              Sprite::draw(texture_, Vector2(510 + (25 * j) - 25, 246 + (25 * i) - 75), &Strim);
          else if (main[i][j] == 7) //赤
              Sprite::draw(texture_, Vector2(510 + (25 * j) - 25, 246 + (25 * i) - 75), &Ztrim);
+        }
+    }
+}
+
+//ネクストブロックの表示
+void Mino::nextdraw()
+{
+    //水色
+    RECT trim;
+    trim.top = 967;
+    trim.left = 913;
+    trim.bottom = trim.top + 14;
+    trim.right = trim.left + 14;
+
+    //オレンジ
+    RECT Ltrim;
+    Ltrim.top = 967;
+    Ltrim.left = 928;
+    Ltrim.bottom = Ltrim.top + 14;
+    Ltrim.right = Ltrim.left + 14;
+
+    //緑
+    RECT Strim;
+    Strim.top = 967;
+    Strim.left = 943;
+    Strim.bottom = Strim.top + 14;
+    Strim.right = Strim.left + 14;
+
+    //赤
+    RECT Ztrim;
+    Ztrim.top = 967;
+    Ztrim.left = 958;
+    Ztrim.bottom = Ztrim.top + 14;
+    Ztrim.right = Ztrim.left + 14;
+
+    //青
+    RECT Jtrim;
+    Jtrim.top = 967;
+    Jtrim.left = 973;
+    Jtrim.bottom = Jtrim.top + 14;
+    Jtrim.right = Jtrim.left + 14;
+
+    //黄色
+    RECT Otrim;
+    Otrim.top = 967;
+    Otrim.left = 988;
+    Otrim.bottom = Otrim.top + 14;
+    Otrim.right = Otrim.left + 14;
+
+    //紫
+    RECT Ttrim;
+    Ttrim.top = 967;
+    Ttrim.left = 1003;
+    Ttrim.bottom = Ttrim.top + 14;
+    Ttrim.right = Ttrim.left + 14;
+
+    //1個目
+    for (int i = 0; i < 4; i++)
+    {
+        for (int j = 0; j < 4; j++)
+        {
+            if (mino[next1[1]][i][j]== 0+1) //水色
+                Sprite::draw(texture_, Vector2(610 + (14 * j), 99 + (15 * i)), &trim);
+            else if (mino[next1[1]][i][j] == 1+1) //黄色
+                Sprite::draw(texture_, Vector2(610 + (14 * j), 99 + (15 * i)), &Otrim);
+            else if (mino[next1[1]][i][j] == 2+1) //紫
+                Sprite::draw(texture_, Vector2(610 + (14 * j), 99 + (15 * i)), &Ttrim);
+            else if (mino[next1[1]][i][j] == 3+1) //青
+                Sprite::draw(texture_, Vector2(610 + (14 * j), 99 + (15 * i)), &Jtrim);
+            else if (mino[next1[1]][i][j] == 4+1) //オレンジ
+                Sprite::draw(texture_, Vector2(610 + (14 * j), 99 + (15 * i)), &Ltrim);
+            else if (mino[next1[1]][i][j] == 5+1) //緑
+                Sprite::draw(texture_, Vector2(610 + (14 * j), 99 + (15 * i)), &Strim);
+            else if (mino[next1[1]][i][j] == 6+1) //赤
+                Sprite::draw(texture_, Vector2(610 + (14 * j), 99 + (15 * i)), &Ztrim);
+        }
+    }
+
+    //2個目
+    for (int i = 0; i < 4; i++)
+    {
+        for (int j = 0; j < 4; j++)
+        {
+            if (mino[next1[2]][i][j] == 0 + 1) //水色
+                Sprite::draw(texture_, Vector2(654 + (14 * j), 99 + (15 * i)), &trim);
+            else if (mino[next1[2]][i][j] == 1 + 1) //黄色
+                Sprite::draw(texture_, Vector2(654 + (14 * j), 99 + (15 * i)), &Otrim);
+            else if (mino[next1[2]][i][j] == 2 + 1) //紫
+                Sprite::draw(texture_, Vector2(654 + (14 * j), 99 + (15 * i)), &Ttrim);
+            else if (mino[next1[2]][i][j] == 3 + 1) //青
+                Sprite::draw(texture_, Vector2(654 + (14 * j), 99 + (15 * i)), &Jtrim);
+            else if (mino[next1[2]][i][j] == 4 + 1) //オレンジ
+                Sprite::draw(texture_, Vector2(654 + (14 * j), 99 + (15 * i)), &Ltrim);
+            else if (mino[next1[2]][i][j] == 5 + 1) //緑
+                Sprite::draw(texture_, Vector2(654 + (14 * j), 99 + (15 * i)), &Strim);
+            else if (mino[next1[2]][i][j] == 6 + 1) //赤
+                Sprite::draw(texture_, Vector2(654 + (14 * j), 99 + (15 * i)), &Ztrim);
+        }
+    }
+
+    //3個目
+    for (int i = 0; i < 4; i++)
+    {
+        for (int j = 0; j < 4; j++)
+        {
+            if (mino[next1[3]][i][j] == 0 + 1) //水色
+                Sprite::draw(texture_, Vector2(699 + (14 * j), 99 + (15 * i)), &trim);
+            else if (mino[next1[3]][i][j] == 1 + 1) //黄色
+                Sprite::draw(texture_, Vector2(699 + (14 * j), 99 + (15 * i)), &Otrim);
+            else if (mino[next1[3]][i][j] == 2 + 1) //紫
+                Sprite::draw(texture_, Vector2(699 + (14 * j), 99 + (15 * i)), &Ttrim);
+            else if (mino[next1[3]][i][j] == 3 + 1) //青
+                Sprite::draw(texture_, Vector2(699 + (14 * j), 99 + (15 * i)), &Jtrim);
+            else if (mino[next1[3]][i][j] == 4 + 1) //オレンジ
+                Sprite::draw(texture_, Vector2(699 + (14 * j), 99 + (15 * i)), &Ltrim);
+            else if (mino[next1[3]][i][j] == 5 + 1) //緑
+                Sprite::draw(texture_, Vector2(699 + (14 * j), 99 + (15 * i)), &Strim);
+            else if (mino[next1[3]][i][j] == 6 + 1) //赤
+                Sprite::draw(texture_, Vector2(699 + (14 * j), 99 + (15 * i)), &Ztrim);
         }
     }
 }

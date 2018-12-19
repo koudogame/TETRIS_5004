@@ -43,6 +43,7 @@ void Game::draw()
     ui_.inputdraw(tetoris_s);
     mino_.draw();
     mino_.maindraw();
+    mino_.nextdraw();
     
 }
 
