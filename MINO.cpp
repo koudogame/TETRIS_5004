@@ -160,7 +160,6 @@ bool Mino::update()
                 nextblock = false;
 
             }
-            holdf = false;
         }
     }
 
@@ -300,6 +299,8 @@ bool Mino::update()
         next++;
         shift = true;
         holdbutton = false;
+        holdf = false;
+
         if (next > 6)
         {
             shuffle = true;
