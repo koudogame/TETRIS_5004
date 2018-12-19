@@ -108,22 +108,30 @@ bool Mino::update()
         down = 0;
         nextblock = false;
     }
-    
-    //ミノのホールド
-    if (key_tracker.pressed.LeftShift || pad_tracker.leftShoulder == GamePad::ButtonStateTracker::PRESSED)
-    {
-        holdf = true;
-    }
-
 
     if (holdf)
     {
         if (!holdbutton)
         {
-
-            if (!holdcheck)
+            if (holdcheck)
             {
+                //ホールド(2回目以降)
+                for (int i = 0; i < 4; i++)
+                {
+                    for (int j = 0; j < 4; j++)
+                    {
+                        holdtmp[i][j] = test[i][j];
+                        test[i][j] = hold[i][j];
+                        hold[i][j] = holdtmp[i][j];
+                    }
+                }
+                holdbutton = true;
+                pos = 3;
+                down = 0;
 
+            }
+            else if (!holdcheck)
+            {
                 //ホールド(初回)
                 for (int i = 0; i < 4; i++)
                 {
@@ -152,25 +160,8 @@ bool Mino::update()
                 nextblock = false;
 
             }
-            else
-            {
-                //ホールド(2回目以降)
-                for (int i = 0; i < 4; i++)
-                {
-                    for (int j = 0; j < 4; j++)
-                    {
-                        holdtmp[i][j] = test[i][j];
-                        test[i][j] = hold[i][j];
-                        hold[i][j] = holdtmp[i][j];
-                    }
-                }
-                holdbutton = true;
-
-            }
             holdf = false;
         }
-
-
     }
 
     if (!collision_down)
@@ -314,6 +305,12 @@ bool Mino::update()
             shuffle = true;
             next = 0;
         }
+    }
+
+    //ミノのホールド
+    if (key_tracker.pressed.LeftShift || pad_tracker.leftShoulder == GamePad::ButtonStateTracker::PRESSED)
+    {
+        holdf = true;
     }
 
     //上
