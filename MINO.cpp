@@ -360,6 +360,7 @@ bool Mino::update()
         rotation_b = false;
     }
 
+    //Tƒ~ƒm‚Í—áŠO”»’è‚Å‰ñ“]Ž²‚¸‚ç‚·
     //‰ñ“]90
     if (rotation_a && !rotation_b)
     {
@@ -375,9 +376,17 @@ bool Mino::update()
         {
             for (int j = 0; j < 4; j++)
             {
-                test[i][4 - j] = tmp[i][j];
+                test[i][3 - j] = tmp[i][j];
             }
         }
+
+        //for (int i = 0; i < 4; i++)
+        //{
+        //    for (int j = 0; j < 4; j++)
+        //    {
+        //        test[i][4 - j] = tmp[i][j];
+        //    }
+        //}
     }
 
     //‰ñ“]270
@@ -395,9 +404,17 @@ bool Mino::update()
         {
             for (int j = 0; j < 4; j++)
             {
-                test[4 - i][j] = tmp[i][j];
+                test[3 - i][j] = tmp[i][j];
             }
         }
+
+        //for (int i = 0; i < 4; i++)
+        //{
+        //    for (int j = 0; j < 4; j++)
+        //    {
+        //        test[4 - i][j] = tmp[i][j];
+        //    }
+        //}
     }
 
     return true;
