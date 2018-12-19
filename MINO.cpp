@@ -57,6 +57,11 @@ bool Mino::update()
     {
         for (int i = 0; i < 7; i++)
         {
+            next2[i] = next0[i];
+        }
+
+        for (int i = 0; i < 7; i++)
+        {
             int j = rand() % 7;
             int t = next2[i];
             next2[i] = next2[j];
