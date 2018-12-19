@@ -28,11 +28,12 @@ public:
     void draw();
     void maindraw();
     void nextdraw();
+    void holddraw();
     void destroy();
     void reset();
 
     //ミノ
-    int main[22][12]{ 0 };
+    int main[22][12]{ 0 };  //積みあがる本体
     int sub[22][12] = { 0 }; //サブ
     const int next0[7]{ 0,1,2,3,4,5,6 }; //ネクストパターン 見本
     int next1[7]{ 0,1,2,3,4,5,6 }; //ネクストパターン
@@ -89,17 +90,19 @@ public:
         {0,0,1,0}
     }; //流す用テスト
     int clearlinepos[21] = { 0 }; //横一列そろっている場所の確認用
+   
+    //回転時のtmp
     int tmp[4][4] = { 0 };
 
-    int nowtime = 0;
-    int oldtime = 0;
-
-    int time = 1;
+    //時間関係
+    int nowtime = 0; //現在の時間
+    int oldtime = 0; //前回の時間
+    int time = 1;    //落下にかかる時間
 
     //方向キー
-    int up = 0;
-    int down = 0;
-    int pos = 3;
+    int up = 0;   //上
+    int down = 0; //下
+    int pos = 3;  //横
 
     //カウント
     int cnt = 0;
@@ -110,24 +113,33 @@ public:
     bool collision_down = false;
 
     //回転
-    bool rotation_a = false;
-    bool rotation_b = false;
+    bool rotation_a = false; //90
+    bool rotation_b = false; //270
 
     //ネクスト
-    bool nextblock = true;
+    bool nextblock = true; //次のブロックを出す
     bool shuffle = false;  //ネクストブロックの配列要素をシャッフル
-    bool shift = false;
-
-    int block = 0;
-    int next = 0;  //次のブロック
-    int a = 0;
-
+    bool shift = false;    //ネクストブロックの描画時のシフト用
+    int next = 0;          //次のブロック
+    int a = 0;             //配列の添え字
+    
+    //ハードドロップ
     bool harddrop = false;
+
+    //積み上げ
     bool Accumulate = false;
 
+    //ミノが下がる時間
     int down_now_time = 0;
     int down_old_time = 0;
 
     bool downf = false;
+
+    //ホールド関係
+    bool holdf = false;        //ホールド
+    bool holdcheck = false;    //すでにホールド中かの判定(ホールド中ならtrue)
+    bool holdbutton = false;   //すでにホールドを使用したかの判定
+    int holdtmp[4][4] = { 0 }; //ホールドtmp
+    int hold[4][4] = { 0 };    //ホールド用
 
 };

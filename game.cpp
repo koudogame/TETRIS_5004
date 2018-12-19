@@ -44,6 +44,7 @@ void Game::draw()
     mino_.draw();
     mino_.maindraw();
     mino_.nextdraw();
+    mino_.holddraw();
     
 }
 

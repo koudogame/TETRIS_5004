@@ -184,7 +184,6 @@ int WINAPI WinMain( HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLin
     bool oba = false;
     bool exit = false;
     bool bikerand = false;
-    int back[22][12];
 
     ui.init();
 
@@ -337,7 +336,6 @@ int WINAPI WinMain( HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLin
                     if (num == 1)
                     {
                         game.destroy(); //ゲーム内の情報をすべて破棄
-                        bikerand = false; //バイクのランダム生成を開始
                         work_no = kTitleInit; //タイトルへ
                     }
                     else if (num == 2)
