@@ -55,14 +55,7 @@ bool Mino::update()
     //初期化(テスト用)
     if (pad_tracker.rightShoulder == GamePad::ButtonStateTracker::PRESSED || key_tracker.pressed.Space)
     {
-        //初期化
-        for (int i = 0; i < field_height-1; i++)
-        {
-            for (int j = 1; j < field_width-1; j++)
-            {
-                main[i][j] = 0;
-            }
-        }
+        reset();
     }
 
     //ネクストブロックのパターンをシャッフル
@@ -805,14 +798,11 @@ void Mino::destroy()
 void Mino::reset()
 {
     //初期化
-    for (int i = 0; i < field_height; i++)
+    for (int i = 0; i < field_height - 1; i++)
     {
-        for (int j = 0; j < field_width; j++)
+        for (int j = 1; j < field_width - 1; j++)
         {
-            main[i][0] = 9;
-            main[i][11] = 9;
-            main[21][j] = 9;
-
+            main[i][j] = 0;
         }
     }
 }
