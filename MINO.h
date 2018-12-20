@@ -106,6 +106,8 @@ public:
 
     //ƒJƒEƒ“ƒg
     int cnt = 0;
+    int right = 0;
+    int left = 0;
 
     //“–‚½‚è”»’è
     bool collision_left = false;

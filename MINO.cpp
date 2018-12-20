@@ -322,21 +322,31 @@ bool Mino::update()
     if (!collision_left)
     {
         //ç∂
-        if (pad_tracker.dpadLeft == GamePad::ButtonStateTracker::PRESSED || key_tracker.pressed.Left)
+        if (state.Left||pad.dpad.left)
         {
-            pos--;
+            left++;
             Accumulate = false;
-            oldtime = timeGetTime();
+        }
+
+        if (left %50==7)
+        {
+            left = 0;
+            pos--;
         }
     }
     if (!collision_right)
     {
         //âE
-        if (pad_tracker.dpadRight == GamePad::ButtonStateTracker::PRESSED || key_tracker.pressed.Right)
+        if (state.Right||pad.dpad.right)
+        {
+            right++;
+            Accumulate = false;
+        }
+
+        if (right % 50==7)
         {
             pos++;
-            Accumulate = false;
-            oldtime = timeGetTime();
+            right = 0;
         }
     }
 

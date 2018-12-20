@@ -407,6 +407,8 @@ int WINAPI WinMain( HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLin
                     break;
                 case kOptionUpdate:
                     option.draw(); //オプション背景
+                    option.cursordraw();
+                    option.opdraw();
                     ui.inputdraw(result_option); //入力状態表示
                     break;
                 case kRankingUpdate:
@@ -432,6 +434,7 @@ int WINAPI WinMain( HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLin
     scene.destroy();
     title.destroy();
     result.destroy();
+    credit.destroy();
     game.destroy();
     ui.destroy();
     option.destroy();
