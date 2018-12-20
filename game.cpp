@@ -26,6 +26,7 @@ bool Game::init()
 //XV
 bool Game::update()
 {
+    int num = 0;
     minotype = rand() % 7;
 
     player_.update();

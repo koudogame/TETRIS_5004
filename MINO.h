@@ -144,4 +144,5 @@ public:
     int holdtmp[4][4] = { 0 }; //ホールドtmp
     int hold[4][4] = { 0 };    //ホールド用
 
+
 };
