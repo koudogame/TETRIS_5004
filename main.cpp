@@ -361,6 +361,7 @@ int WINAPI WinMain( HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLin
                     ui.update();
                     if (!option.update())
                     {
+                        option.destroy();
                         work_no = kTitleUpdate;
                     }
                     break;
@@ -375,6 +376,7 @@ int WINAPI WinMain( HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLin
                 case kRankingUpdate:
                     if (!ranking.update())
                     {
+                        ranking.destroy();
                         work_no = kTitleUpdate;
                     }
                     break;
