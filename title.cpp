@@ -73,6 +73,10 @@ int Title::update()
     {
         return 3; //ランキング
     }
+    else if (menu == 2 && (key_tracker.pressed.Enter || pad_tracker.a == GamePad::ButtonStateTracker::PRESSED))
+    {
+        return 6; //ランキング
+    }
     else if (menu == 3 && (key_tracker.pressed.Enter|| pad_tracker.a == GamePad::ButtonStateTracker::PRESSED))
     {
         return 4; //オプション

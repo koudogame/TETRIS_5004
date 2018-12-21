@@ -40,13 +40,23 @@ bool Game::update()
 //•`‰æ
 void Game::draw()
 {
-    ui_.draw();
+    ui_.draw(tetoris_s);
     ui_.inputdraw(tetoris_s);
     mino_.draw();
     mino_.maindraw();
     mino_.nextdraw();
     mino_.holddraw();
     
+}
+
+void Game::drawmulti()
+{
+    ui_.draw(tetris_multi);
+    mino_.draw();
+    mino_.maindraw();
+    mino_.nextdraw();
+    mino_.holddraw();
+
 }
 
 //”jŠü

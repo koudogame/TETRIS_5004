@@ -19,19 +19,20 @@ enum
     result_option,  //リザルトオプション
     tetoris_s,      //テトリスシングル
     puyopuyo,       //ぷよぷよ
-    tetris_multi    //テトリスシングル
+    tetris_multi    //テトリスマルチ
 };
 
 class UI
 {
 private:
     ID3D11ShaderResourceView* texture_;  // UIテクスチャ
+    ID3D11ShaderResourceView* texture2_;  // UIテクスチャ
 
 public:
     UI();                     //コンストラクタ
     bool init();              //初期化
     void update();            //更新
-    void draw();              //描画
+    void draw(int type);              //描画
     void inputdraw(int type);
     void destroy();           //破棄
 

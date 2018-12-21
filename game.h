@@ -30,6 +30,7 @@ public:
     bool init();                // ‰Šú‰»
     bool update();              // XV
     void draw();                // •`‰æ
+    void drawmulti();                // •`‰æ
     void destroy();                     // ”jŠü
 
     int minotype = 0; //ƒ~ƒm‚Ìí—Ş

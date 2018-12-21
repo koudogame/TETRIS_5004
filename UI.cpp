@@ -5,6 +5,7 @@ Pov pov2_;
 UI::UI()
 {
     texture_ = NULL;
+    texture2_ = NULL;
 }
 
 bool UI::init()
@@ -13,6 +14,7 @@ bool UI::init()
 
 
     texture_ = Texture::load(L"Tetris11_SingleT.png");
+    texture2_ = Texture::load(L"Tetris14_Versus.png");
 
     if (texture_ == NULL)
     {
@@ -69,7 +71,7 @@ void UI::update()
     }
 }
 
-void UI::draw()
+void UI::draw(int type)
 {
     RECT rect;
     rect.top = 0;
@@ -77,7 +79,15 @@ void UI::draw()
     rect.bottom = rect.top + 720;
     rect.right = rect.left + 1280;
 
-    Sprite::draw(texture_, Vector2::Zero);
+    if (type == tetoris_s)
+    {
+        Sprite::draw(texture_, Vector2::Zero,&rect);
+    }
+    else if (type == tetris_multi)
+    {
+        Sprite::draw(texture2_, Vector2::Zero,&rect);
+    }
+
 }
 
 void UI::inputdraw(int type)
@@ -158,4 +168,5 @@ void UI::inputdraw(int type)
 void UI::destroy()
 {
     SAFE_RELEASE(texture_);
+    SAFE_RELEASE(texture2_);
 }

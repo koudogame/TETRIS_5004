@@ -308,7 +308,6 @@ bool Mino::update()
         shift = true;
         holdbutton = false;
         holdf = false;
-
         next++;
 
         if (next > 6)

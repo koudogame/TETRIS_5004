@@ -49,7 +49,10 @@ enum
     kOptionUpdate,       //オプション更新
 
     kRankingInit,        //ランキング初期化
-    kRankingUpdate       //ランキング更新
+    kRankingUpdate,      //ランキング更新
+
+    k4ptetrisInit,       //4人テトリス初期化
+    k4ptetrisUpdate      //4人テトリス更新
 
 };
 
@@ -269,6 +272,10 @@ int WINAPI WinMain( HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLin
                     {
                         work_no = kCreditInit;
                     }
+                    else if (no == 6)
+                    {
+                        work_no = k4ptetrisInit;
+                    }
                     break;
                 case kCreditInit:
                     if (!credit.init())
@@ -371,6 +378,19 @@ int WINAPI WinMain( HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLin
                         work_no = kTitleUpdate;
                     }
                     break;
+                case k4ptetrisInit:
+                    if (!game.init())
+                    {
+                        PostQuitMessage(0);
+                    }
+                    work_no = k4ptetrisUpdate;
+                    break;
+                case k4ptetrisUpdate:
+                    if (!game.update())
+                    {
+                        work_no = kResultInit;
+                    }
+                    break;
                 }
 
                 //画面クリア
@@ -414,6 +434,10 @@ int WINAPI WinMain( HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLin
                 case kRankingUpdate:
                     ranking.draw();
                     ui.inputdraw(rank_credit);
+                    break;
+                case k4ptetrisUpdate:
+                    game.drawmulti();
+                    ui.inputdraw(tetris_multi);
                     break;
                 }
 
