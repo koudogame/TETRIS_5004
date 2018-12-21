@@ -12,6 +12,7 @@ bool Option::init()
         return false;
     }
 
+    opmenu = 0;
     return true;
 }
 
