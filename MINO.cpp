@@ -337,7 +337,7 @@ bool Mino::update()
             Accumulate = false;
         }
 
-        if (left %50==7)
+        if (left %50==7||pad_tracker.dpadLeft==GamePad::ButtonStateTracker::PRESSED||key_tracker.pressed.Left)
         {
             left = 0;
             pos--;
@@ -352,7 +352,7 @@ bool Mino::update()
             Accumulate = false;
         }
 
-        if (right % 50==7)
+        if (right % 50==7 || pad_tracker.dpadRight == GamePad::ButtonStateTracker::PRESSED || key_tracker.pressed.Right)
         {
             pos++;
             right = 0;
