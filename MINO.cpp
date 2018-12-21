@@ -61,11 +61,13 @@ bool Mino::update()
     //ネクストブロックのパターンをシャッフル
     if (shuffle)
     {
+        //見本からコピー
         for (int i = 0; i < 7; i++)
         {
             next2[i] = next0[i];
         }
 
+        //シャッフル
         for (int i = 0; i < 7; i++)
         {
             int j = rand() % 7;
@@ -93,7 +95,6 @@ bool Mino::update()
         shift = false;
         
     }
-    a = next1[0];
 
     //現在の時間を取得
     nowtime = timeGetTime();
@@ -103,6 +104,8 @@ bool Mino::update()
 
     if (nextblock)
     {
+        a = next1[0];
+
         for (int i = 0; i < 4; i++)
         {
             for (int j = 0; j < 4; j++)
@@ -244,7 +247,6 @@ bool Mino::update()
             down++;
             oldtime = nowtime;
         }
-
     }
 
     //ブロックを消す処理
@@ -301,11 +303,13 @@ bool Mino::update()
             }
         }
 
+        //フラグ更新
         nextblock = true;
-        next++;
         shift = true;
         holdbutton = false;
         holdf = false;
+
+        next++;
 
         if (next > 6)
         {
@@ -374,7 +378,6 @@ bool Mino::update()
         rotation_b = false;
     }
 
-    //Tミノは例外判定で回転軸ずらす
     //回転90
     if (rotation_a && !rotation_b)
     {
@@ -386,21 +389,28 @@ bool Mino::update()
             }
         }
 
-        for (int i = 0; i < 4; i++)
+        //Tミノは例外判定で回転軸ずらす
+        if (a == 2)
         {
-            for (int j = 0; j < 4; j++)
+            for (int i = 0; i < 4; i++)
             {
-                test[i][3 - j] = tmp[i][j];
+                for (int j = 0; j < 4; j++)
+                {
+                    test[i][4 - j] = tmp[i][j];
+                }
+            }
+        }
+        else
+        {
+            for (int i = 0; i < 4; i++)
+            {
+                for (int j = 0; j < 4; j++)
+                {
+                    test[i][3 - j] = tmp[i][j];
+                }
             }
         }
 
-        //for (int i = 0; i < 4; i++)
-        //{
-        //    for (int j = 0; j < 4; j++)
-        //    {
-        //        test[i][4 - j] = tmp[i][j];
-        //    }
-        //}
     }
 
     //回転270
@@ -414,23 +424,29 @@ bool Mino::update()
             }
         }
 
-        for (int i = 0; i < 4; i++)
+
+        //Tミノは例外判定で回転軸ずらす
+        if (a == 2)
         {
-            for (int j = 0; j < 4; j++)
+            for (int i = 0; i < 4; i++)
             {
-                test[3 - i][j] = tmp[i][j];
+                for (int j = 0; j < 4; j++)
+                {
+                    test[4 - i][j] = tmp[i][j];
+                }
             }
         }
-
-        //for (int i = 0; i < 4; i++)
-        //{
-        //    for (int j = 0; j < 4; j++)
-        //    {
-        //        test[4 - i][j] = tmp[i][j];
-        //    }
-        //}
+        else
+        {
+            for (int i = 0; i < 4; i++)
+            {
+                for (int j = 0; j < 4; j++)
+                {
+                    test[3 - i][j] = tmp[i][j];
+                }
+            }
+        }
     }
-
     return true;
 }
 
@@ -506,8 +522,6 @@ void Mino::draw()
                 Sprite::draw(texture_, Vector2(510 + (25 * pos) + (25 * j) - 25, 246 + (25 * down) - (25 * up) - 100 + (25 * i)), &Ztrim);
         }
     }
-    //x510
-    //y246
 }
 
 void Mino::maindraw()
@@ -716,7 +730,6 @@ void Mino::nextdraw()
 //ホールドしたブロックの描画
 void Mino::holddraw()
 {
-
     //水色
     RECT trim;
     trim.top = 967;
@@ -766,7 +779,6 @@ void Mino::holddraw()
     Ttrim.bottom = Ttrim.top + 14;
     Ttrim.right = Ttrim.left + 14;
 
-    //1個目
     for (int i = 0; i < 4; i++)
     {
         for (int j = 0; j < 4; j++)
