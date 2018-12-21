@@ -86,14 +86,12 @@ bool Mino::update()
 
         }
         next1[6] = next2[0];
-
         for (int i = 0; i < 7; i++)
         {
             next2[i] = next2[i + 1];
 
         }
         shift = false;
-        
     }
 
     //Œ»Ý‚ÌŽžŠÔ‚ðŽæ“¾
@@ -137,7 +135,6 @@ bool Mino::update()
                 holdbutton = true;
                 pos = 3;
                 down = 0;
-
             }
             else if (!holdcheck)
             {
@@ -167,7 +164,6 @@ bool Mino::update()
                 pos = 3;
                 down = 0;
                 nextblock = false;
-
             }
         }
     }
@@ -336,7 +332,6 @@ bool Mino::update()
             left++;
             Accumulate = false;
         }
-
         if (left %50==7||pad_tracker.dpadLeft==GamePad::ButtonStateTracker::PRESSED||key_tracker.pressed.Left)
         {
             left = 0;
@@ -351,7 +346,6 @@ bool Mino::update()
             right++;
             Accumulate = false;
         }
-
         if (right % 50==7 || pad_tracker.dpadRight == GamePad::ButtonStateTracker::PRESSED || key_tracker.pressed.Right)
         {
             pos++;
@@ -409,7 +403,6 @@ bool Mino::update()
                 }
             }
         }
-
     }
 
     //‰ñ“]270
@@ -422,7 +415,6 @@ bool Mino::update()
                 tmp[i][j] = test[j][i];
             }
         }
-
 
         //Tƒ~ƒm‚Í—áŠO”»’è‚Å‰ñ“]Ž²‚¸‚ç‚·
         if (a != 0&&a!=1)
