@@ -25,12 +25,13 @@ public:
 
     bool init();
     bool update();
+    void srsystem(); //スーパーローテーションシステム
     void draw();
-    void maindraw();
-    void nextdraw();
-    void holddraw();
-    void destroy();
-    void reset();
+    void maindraw(); //積みあがる配列の描画
+    void nextdraw(); //ネクストブロックの描画
+    void holddraw(); //ホールドしているブロックの描画
+    void destroy();  //破棄
+    void reset();    //積み上げ配列の範囲内の全情報を初期化
 
     //ミノ
     int main[22][12]{ 0 };  //積みあがる本体
@@ -144,5 +145,8 @@ public:
     int holdtmp[4][4] = { 0 }; //ホールドtmp
     int hold[4][4] = { 0 };    //ホールド用
 
+    bool srs = false; //スーパーローテーション
+
+    int srstest = 0;
 
 };

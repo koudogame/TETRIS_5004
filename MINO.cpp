@@ -78,6 +78,7 @@ bool Mino::update()
         shuffle = false;
     }
 
+    //ネクストブロックの押出し
     if (shift)
     {
         for (int i = 0; i < 7; i++)
@@ -224,6 +225,23 @@ bool Mino::update()
         }
     }
 
+    //スーパーローテーション用当たり判定
+    for (int y = 0; y < block_height; y++) {
+        for (int x = 0; x < block_width; x++) {
+            if (test[y][x] != 0) {
+                if (main[down][pos] != 0) {
+                    srs = true;
+                }
+            }
+        }
+    }
+
+    //回転先が埋まっていた場合スーパーローテーション関数で補正をかける
+    if (srs)
+    {
+        srsystem();
+    }
+
     //下が当たっていたら積む
     if (nowtime - oldtime >= 500 && collision_down)
     {
@@ -319,10 +337,49 @@ bool Mino::update()
         holdf = true;
     }
 
-    //上
+    //上(ハードドロップ)
     if (pad_tracker.dpadUp == GamePad::ButtonStateTracker::PRESSED || key_tracker.pressed.Up)
     {
+        while (!collision_down)
+        {
+            down++;
 
+            //下側
+            for (int y = 0; y < block_height; y++) {
+                for (int x = 0; x < block_width; x++) {
+                    if (test[y][x] != 0) {
+                        if (main[down + y][pos + x] != 0) {
+                            collision_down = true;
+                        }
+                    }
+                }
+            }
+
+
+        }
+
+        //積み上げ
+        for (int i = 0; i < 4; i++)
+        {
+            for (int j = 0; j < 4; j++)
+            {
+                if (test[i][j] != 0 && main[down + i - 1][pos + j] == 0)
+                    main[down + i - 1][pos + j] = test[i][j];
+            }
+        }
+
+        //フラグ更新
+        nextblock = true;
+        shift = true;
+        holdbutton = false;
+        holdf = false;
+        next++;
+
+        if (next > 6)
+        {
+            shuffle = true;
+            next = 0;
+        }
     }
     if (!collision_left)
     {
@@ -439,6 +496,26 @@ bool Mino::update()
         }
     }
     return true;
+}
+
+void Mino::srsystem()
+{
+    //どこかにぶつかっている状態での回転に補正をかける
+    if ((collision_down || collision_left || collision_right) && (rotation_a || rotation_b))
+    {
+        switch (srstest)
+        {
+        case 1:
+            pos++;
+        case 2:
+            pos--;
+        case 3:
+            down++;
+        case 4:
+            down--;
+
+        }
+    }
 }
 
 void Mino::draw()
