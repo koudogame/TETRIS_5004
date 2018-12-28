@@ -1,13 +1,10 @@
 #pragma once
 
-
 #define field_width 12
 #define field_height 22
 
-
 #define block_width 4
 #define block_height 4
-
 
 #include"texture.h"
 #include"player.h"

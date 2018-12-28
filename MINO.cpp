@@ -52,6 +52,12 @@ bool Mino::update()
     const Keyboard::State state = Key::getState();
     const Keyboard::KeyboardStateTracker key_tracker = Key::getTracker();
 
+    //ゲームオーバー処理
+    if (main[0][3] != 0)
+    {
+        reset();
+    }
+
     //初期化(テスト用)
     if (pad_tracker.rightShoulder == GamePad::ButtonStateTracker::PRESSED || key_tracker.pressed.Space)
     {
@@ -354,8 +360,6 @@ bool Mino::update()
                     }
                 }
             }
-
-
         }
 
         //積み上げ
@@ -507,12 +511,16 @@ void Mino::srsystem()
         {
         case 1:
             pos++;
+            break;
         case 2:
             pos--;
+            break;
         case 3:
             down++;
+            break;
         case 4:
             down--;
+            break;
 
         }
     }
