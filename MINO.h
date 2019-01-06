@@ -162,4 +162,7 @@ public:
 	//スコア
 	int scorestock = 0; //スコア加算用変数
 
+    // 消去数
+    int erase = 0;
+    int fall_speed = 1;
 };

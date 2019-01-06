@@ -225,7 +225,7 @@ bool Mino::update()
 	for (int y = 0; y < block_height; y++) {
 		for (int x = 0; x < block_width; x++) {
 			if (test[y][x] != 0) {
-				if (main[down + y][pos + x-2] != 0) {
+				if (main[down + y][pos + (x-2)] != 0) {
 					collision_left = true;
 				}
 				else
@@ -294,10 +294,11 @@ bool Mino::update()
 
 	}
 
+
 	if (!collision_down && !Accumulate)
 	{
 		//ÀŠÔ‚Å—‚Æ‚·
-		if (nowtime - oldtime >= 500 / time)
+		if (nowtime - oldtime >= 500 / (time+erase))
 		{
 			down++;
 			oldtime = nowtime;
@@ -343,8 +344,18 @@ bool Mino::update()
 					main[k - 1][l] = sub[k][l];
 				}
 			}
+
+            erase++;
+
 		}
 	}
+
+    //ƒ‰ƒCƒ“Á‹”‚Å—‰º‘¬“x•ÏX
+    if (erase % 10 == 0)
+    {
+        erase = 0;
+        fall_speed++;
+    }
 
 	if (Accumulate)
 	{
