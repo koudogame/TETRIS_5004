@@ -23,9 +23,9 @@ bool Mino::init()
     {
         for (int j = 0; j < field_width; j++)
         {
-            main[i][0] = 9;
-            main[i][11] = 9; 
-            main[21][j] = 9;
+            main[0][i][0] = 9;
+            main[0][i][11] = 9; 
+            main[0][21][j] = 9;
 
         }
     }
@@ -59,7 +59,7 @@ bool Mino::update()
 	const Keyboard::KeyboardStateTracker key_tracker = Key::getTracker();
 
 	//ゲームオーバー処理
-	if (main[0][5] != 0 && !gameover)
+	if (main[0][0][5] != 0 && !gameover)
 	{
 		gameover = true;
 	}
@@ -73,9 +73,9 @@ bool Mino::update()
 
 		for (int i = 1; i < 11; i++)
 		{
-			if (main[21 - overcnt][i] != 0)
+			if (main[0][21 - overcnt][i] != 0)
 			{
-				main[21 - overcnt][i] = 10;
+				main[0][21 - overcnt][i] = 10;
 			}
 		}
 
@@ -225,7 +225,7 @@ bool Mino::update()
 	for (int y = 0; y < block_height; y++) {
 		for (int x = 0; x < block_width; x++) {
 			if (test[y][x] != 0) {
-				if (main[down + y][pos + (x-2)] != 0) {
+				if (main[0][down + y][pos + (x-2)] != 0) {
 					collision_left = true;
 				}
 				else
@@ -240,7 +240,7 @@ bool Mino::update()
 	for (int y = 0; y < block_height; y++) {
 		for (int x = 0; x < block_width; x++) {
 			if (test[y][x] != 0) {
-				if (main[down + y][pos + (x + 1)] != 0) {
+				if (main[0][down + y][pos + (x + 1)] != 0) {
 					collision_right = true;
 				}
 				else
@@ -255,7 +255,7 @@ bool Mino::update()
 	for (int y = 0; y < block_height; y++) {
 		for (int x = 0; x < block_width; x++) {
 			if (test[y][x] != 0) {
-				if (main[down + y][pos + x] != 0) {
+				if (main[0][down + y][pos + x] != 0) {
 					collision_down = true;
 				}
 				else
@@ -270,7 +270,7 @@ bool Mino::update()
 	for (int y = 0; y < block_height; y++) {
 		for (int x = 0; x < block_width; x++) {
 			if (test[y][x] != 0) {
-				if (main[down][pos] != 0) {
+				if (main[0][down][pos] != 0) {
 					srs = true;
 				}
 			}
@@ -310,7 +310,7 @@ bool Mino::update()
 	{
 		for (int j = 1; j < 11; j++)
 		{
-			if (main[i][j] == 0)
+			if (main[0][i][j] == 0)
 			{
 				clearlinepos[i] = 1;  //空欄を確認 
 				break;  //空欄があったら次の行へ
@@ -330,7 +330,7 @@ bool Mino::update()
 			for (int j = 1; j < 11; j++)
 			{
 				//配列の初期化
-				main[i][j] = 0;
+				main[0][i][j] = 0;
 			}
 			clearlinepos[i] = 0;
 
@@ -339,9 +339,9 @@ bool Mino::update()
 				for (int l = 1; l < 11; l++)
 				{
 					//ミノ落とし
-					sub[k][l] = main[k][l];
-					main[k][l] = main[k - 1][l];
-					main[k - 1][l] = sub[k][l];
+					sub[k][l] = main[0][k][l];
+					main[0][k][l] = main[0][k - 1][l];
+					main[0][k - 1][l] = sub[k][l];
 				}
 			}
 
@@ -364,8 +364,8 @@ bool Mino::update()
 		{
 			for (int j = 0; j < 4; j++)
 			{
-				if (test[i][j] != 0 && main[down + i - 1][pos + j] == 0)
-					main[down + i - 1][pos + j] = test[i][j];
+				if (test[i][j] != 0 && main[0][down + i - 1][pos + j] == 0)
+					main[0][down + i - 1][pos + j] = test[i][j];
 			}
 		}
 
@@ -400,7 +400,7 @@ bool Mino::update()
 			for (int y = 0; y < block_height; y++) {
 				for (int x = 0; x < block_width; x++) {
 					if (test[y][x] != 0) {
-						if (main[down + y][pos + x] != 0) {
+						if (main[0][down + y][pos + x] != 0) {
 							collision_down = true;
 						}
 					}
@@ -413,8 +413,8 @@ bool Mino::update()
 		{
 			for (int j = 0; j < 4; j++)
 			{
-				if (test[i][j] != 0 && main[down + i - 1][pos + j] == 0)
-					main[down + i - 1][pos + j] = test[i][j];
+				if (test[i][j] != 0 && main[0][down + i - 1][pos + j] == 0)
+					main[0][down + i - 1][pos + j] = test[i][j];
 			}
 		}
 
@@ -720,23 +720,23 @@ void Mino::maindraw()
     {
         for (int j = 0; j < 12; j++)
         {
-			if (main[i][j] == 9) //枠
+			if (main[0][i][j] == 9) //枠
 				Sprite::draw(texture_, Vector2(510 + (25 * j) - 25, 246 + (25 * i) - 75), &rect);
-			else if (main[i][j] == 1) //水色
+			else if (main[0][i][j] == 1) //水色
 				Sprite::draw(texture_, Vector2(510 + (25 * j) - 25, 246 + (25 * i) - 75), &trim);
-			else if (main[i][j] == 2) //黄色
+			else if (main[0][i][j] == 2) //黄色
 				Sprite::draw(texture_, Vector2(510 + (25 * j) - 25, 246 + (25 * i) - 75), &Otrim);
-			else if (main[i][j] == 3) //紫
+			else if (main[0][i][j] == 3) //紫
 				Sprite::draw(texture_, Vector2(510 + (25 * j) - 25, 246 + (25 * i) - 75), &Ttrim);
-			else if (main[i][j] == 4) //青
+			else if (main[0][i][j] == 4) //青
 				Sprite::draw(texture_, Vector2(510 + (25 * j) - 25, 246 + (25 * i) - 75), &Jtrim);
-			else if (main[i][j] == 5) //オレンジ
+			else if (main[0][i][j] == 5) //オレンジ
 				Sprite::draw(texture_, Vector2(510 + (25 * j) - 25, 246 + (25 * i) - 75), &Ltrim);
-			else if (main[i][j] == 6) //緑
+			else if (main[0][i][j] == 6) //緑
 				Sprite::draw(texture_, Vector2(510 + (25 * j) - 25, 246 + (25 * i) - 75), &Strim);
-			else if (main[i][j] == 7) //赤
+			else if (main[0][i][j] == 7) //赤
 				Sprite::draw(texture_, Vector2(510 + (25 * j) - 25, 246 + (25 * i) - 75), &Ztrim);
-			else if (main[i][j] == 10)
+			else if (main[0][i][j] == 10)
 				Sprite::draw(texture_, Vector2(510 + (25 * j) - 25, 246 + (25 * i) - 75), &rect2);
 		}
     }
@@ -959,7 +959,7 @@ void Mino::reset()
     {
         for (int j = 1; j < field_width - 1; j++)
         {
-            main[i][j] = 0;
+            main[0][i][j] = 0;
         }
     }
 }
