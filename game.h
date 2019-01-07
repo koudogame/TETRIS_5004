@@ -11,6 +11,7 @@
 #include"result.h"
 #include"field.h"
 #include"MINO.h"
+#include"pause.h"
 
 //Class
 class Game

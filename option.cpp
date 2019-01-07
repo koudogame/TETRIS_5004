@@ -37,21 +37,21 @@ bool Option::update()
     }
 
     //難易度選択
-    if (opmenu == 0 && state.Left)
+    if (opmenu == 0 && (state.Left|| pad_tracker.dpadLeft == GamePad::ButtonStateTracker::PRESSED))
     {
         difficulty = 0;
     }
-    else if (opmenu == 0 && state.Right)
+    else if (opmenu == 0 && (state.Right || pad_tracker.dpadRight == GamePad::ButtonStateTracker::PRESSED))
     {
         difficulty = 1;
     }
 
     //ホールド
-    if (opmenu == 1 && state.Left)
+    if (opmenu == 1 && (state.Left || pad_tracker.dpadLeft == GamePad::ButtonStateTracker::PRESSED))
     {
         hold = 0;
     }
-    else if (opmenu == 1 && state.Right)
+    else if (opmenu == 1 && (state.Right || pad_tracker.dpadRight == GamePad::ButtonStateTracker::PRESSED))
     {
         hold = 1;
     }
@@ -77,41 +77,41 @@ bool Option::update()
     }
 
     //Hidden
-    if (opmenu == 3 && state.Left)
+    if (opmenu == 3 && (state.Left || pad_tracker.dpadLeft == GamePad::ButtonStateTracker::PRESSED))
     {
         hidden = 0;
     }
-    else if (opmenu == 3 && state.Right)
+    else if (opmenu == 3 && (state.Right || pad_tracker.dpadRight == GamePad::ButtonStateTracker::PRESSED))
     {
         hidden = 1;
     }
 
     //VS
-    if (opmenu == 4 && state.Left)
+    if (opmenu == 4 && (state.Left || pad_tracker.dpadLeft == GamePad::ButtonStateTracker::PRESSED))
     {
         vs = 0;
     }
-    else if (opmenu == 4 && state.Right)
+    else if (opmenu == 4 && (state.Right || pad_tracker.dpadRight == GamePad::ButtonStateTracker::PRESSED))
     {
         vs = 1;
     }
 
     //Reverse
-    if (opmenu == 5 && state.Left)
+    if (opmenu == 5 && (state.Left || pad_tracker.dpadLeft == GamePad::ButtonStateTracker::PRESSED))
     {
         reverse = 0;
     }
-    else if (opmenu == 5 && state.Right)
+    else if (opmenu == 5 &&( state.Right || pad_tracker.dpadRight == GamePad::ButtonStateTracker::PRESSED))
     {
         reverse = 1;
     }
 
     //score
-    if (opmenu == 6 && state.Left)
+    if (opmenu == 6 && (state.Left || pad_tracker.dpadLeft == GamePad::ButtonStateTracker::PRESSED))
     {
         score = 0;
     }
-    else if (opmenu == 6 && state.Right)
+    else if (opmenu == 6 && (state.Right || pad_tracker.dpadRight == GamePad::ButtonStateTracker::PRESSED))
     {
         score = 1;
     }

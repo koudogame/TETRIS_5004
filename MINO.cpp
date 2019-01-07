@@ -552,27 +552,10 @@ bool Mino::update()
 void Mino::srsystem()
 {
 	//‚Ç‚±‚©‚É‚Ô‚Â‚©‚Á‚Ä‚¢‚éó‘Ô‚Å‚Ì‰ñ“]‚É•â³‚ğ‚©‚¯‚é
-	if ((collision_down || collision_left || collision_right) && (rotation_a || rotation_b))
-	{
-		srstest++;
+    if ((collision_down || collision_left || collision_right) && (rotation_a || rotation_b))
+    {
 
-		switch (srstest)
-		{
-		case 1:
-			pos++;
-			break;
-		case 2:
-			pos--;
-			break;
-		case 3:
-			down++;
-			break;
-		case 4:
-			down--;
-			break;
-
-		}
-	}
+    }
 }
 
 void Mino::draw()
