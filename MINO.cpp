@@ -26,7 +26,6 @@ bool Mino::init()
             main[0][i][0] = 9;
             main[0][i][11] = 9; 
             main[0][21][j] = 9;
-
         }
     }
 
