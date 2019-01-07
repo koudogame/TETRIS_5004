@@ -22,12 +22,14 @@ public:
 
     bool init();
     bool update();
+    void ghostupdate();
     void srsystem(); //スーパーローテーションシステム
     void draw();
     void maindraw(); //積みあがる配列の描画
     void nextdraw(); //ネクストブロックの描画
     void holddraw(); //ホールドしているブロックの描画
-	void scoredraw(); //スコアとレベルの描画
+    void ghostdraw();
+    void scoredraw(); //スコアとレベルの描画
 	void destroy();  //破棄
     void reset();    //積み上げ配列の範囲内の全情報を初期化
 
@@ -160,4 +162,9 @@ public:
     // 消去数
     int erase = 0;
     int fall_speed = 1;
+
+    //ゴースト
+    int transparent = 50;
+    int ghost[4][4] = { 0 };
+    int gdown = 0;
 };

@@ -139,6 +139,7 @@ bool Mino::update()
 			for (int j = 0; j < 4; j++)
 			{
 				test[i][j] = mino[a][i][j];
+                ghost[i][j] = mino[a][i][j];
 			}
 		}
 		pos = 3;
@@ -549,6 +550,27 @@ bool Mino::update()
 	return true;
 }
 
+void Mino::ghostupdate()
+{
+
+    while (!collision_down)
+    {
+        gdown++;
+
+        //‰º‘¤
+        for (int y = 0; y < block_height; y++) {
+            for (int x = 0; x < block_width; x++) {
+                if (ghost[y][x] != 0) {
+                    if (main[0][gdown + y][pos + x] != 0) {
+                        collision_down = true;
+                    }
+                }
+            }
+        }
+    }
+
+}
+
 void Mino::srsystem()
 {
 	//‚Ç‚±‚©‚É‚Ô‚Â‚©‚Á‚Ä‚¢‚éó‘Ô‚Å‚Ì‰ñ“]‚É•â³‚ð‚©‚¯‚é
@@ -943,6 +965,81 @@ void Mino::reset()
         for (int j = 1; j < field_width - 1; j++)
         {
             main[0][i][j] = 0;
+        }
+    }
+}
+
+void Mino::ghostdraw()
+{
+
+    //…F
+    RECT rect;
+    rect.top = 955;
+    rect.left = 687;
+    rect.bottom = rect.top + 26;
+    rect.right = rect.left + 26;
+
+    //ƒIƒŒƒ“ƒW
+    RECT Ltrim;
+    Ltrim.top = 955;
+    Ltrim.left = 687 + (25 * 1);
+    Ltrim.bottom = Ltrim.top + 26;
+    Ltrim.right = Ltrim.left + 26;
+
+    //—Î
+    RECT Strim;
+    Strim.top = 955;
+    Strim.left = 687 + (25 * 2);
+    Strim.bottom = Strim.top + 26;
+    Strim.right = Strim.left + 26;
+
+    //Ô
+    RECT Ztrim;
+    Ztrim.top = 955;
+    Ztrim.left = 687 + (25 * 3);
+    Ztrim.bottom = Ztrim.top + 26;
+    Ztrim.right = Ztrim.left + 26;
+
+    //Â
+    RECT Jtrim;
+    Jtrim.top = 955;
+    Jtrim.left = 687 + (25 * 4);
+    Jtrim.bottom = Jtrim.top + 26;
+    Jtrim.right = Jtrim.left + 26;
+
+    //‰©F
+    RECT Otrim;
+    Otrim.top = 955;
+    Otrim.left = 687 + (25 * 5);
+    Otrim.bottom = Otrim.top + 26;
+    Otrim.right = Otrim.left + 26;
+
+    //Ž‡
+    RECT Ttrim;
+    Ttrim.top = 955;
+    Ttrim.left = 687 + (25 * 6);
+    Ttrim.bottom = Ttrim.top + 26;
+    Ttrim.right = Ttrim.left + 26;
+
+    //•`‰æ
+    for (int i = 0; i < 4; i++)
+    {
+        for (int j = 0; j < 4; j++)
+        {
+            if (test[i][j] == 1)
+                Sprite::draw(texture_, Vector2(510 + (25 * pos) + (25 * j) - 25, 246 + (25 * gdown) - (25 * up) - 100 + (25 * i)), &rect, transparent);
+            else if (test[i][j] == 2)
+                Sprite::draw(texture_, Vector2(510 + (25 * pos) + (25 * j) - 25, 246 + (25 * gdown) - (25 * up) - 100 + (25 * i)), &Otrim, transparent);
+            else if (test[i][j] == 3)
+                Sprite::draw(texture_, Vector2(510 + (25 * pos) + (25 * j) - 25, 246 + (25 * gdown) - (25 * up) - 100 + (25 * i)), &Ttrim, transparent);
+            else if (test[i][j] == 4)
+                Sprite::draw(texture_, Vector2(510 + (25 * pos) + (25 * j) - 25, 246 + (25 * gdown) - (25 * up) - 100 + (25 * i)), &Jtrim, transparent);
+            else if (test[i][j] == 5)
+                Sprite::draw(texture_, Vector2(510 + (25 * pos) + (25 * j) - 25, 246 + (25 * gdown) - (25 * up) - 100 + (25 * i)), &Ltrim, transparent);
+            else if (test[i][j] == 6)
+                Sprite::draw(texture_, Vector2(510 + (25 * pos) + (25 * j) - 25, 246 + (25 * gdown) - (25 * up) - 100 + (25 * i)), &Strim, transparent);
+            else if (test[i][j] == 7)
+                Sprite::draw(texture_, Vector2(510 + (25 * pos) + (25 * j) - 25, 246 + (25 * gdown) - (25 * up) - 100 + (25 * i)), &Ztrim, transparent);
         }
     }
 }
