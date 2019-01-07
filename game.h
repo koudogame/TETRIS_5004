@@ -25,6 +25,8 @@ private:
     Field field_;                       //フィールドクラス
     Pov pov_;                           //povクラス
     Mino mino_;
+    Pause pause_;
+
 public:
     Game();                             // コンストラクタ
     ~Game();                            // デストラクタ
@@ -35,4 +37,5 @@ public:
     void destroy();                     // 破棄
 
     int minotype = 0; //ミノの種類
+    int menu_type = 0;
 };

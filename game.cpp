@@ -26,13 +26,15 @@ bool Game::init()
 //更新
 bool Game::update()
 {
-    int num = 0;
-    minotype = rand() % 7;
-
+    menu_type = mino_.update();
+    if (menu_type == 2)
+    {
+        //メニュー
+        pause_.update();
+    }
     player_.update();
     ui_.update();
     pov_.update();
-    mino_.update();
 
     return true;
 }
@@ -46,7 +48,18 @@ void Game::draw()
     mino_.maindraw();
     mino_.nextdraw();
     mino_.holddraw();
-    mino_.ghostdraw();
+    if (menu_type == 2)
+    {
+        //ポーズ
+        pause_.draw();
+    }
+    else if(menu_type==3)
+    {
+
+        //ゲームオーバー
+        pause_.draw();
+
+    }
     
 }
 

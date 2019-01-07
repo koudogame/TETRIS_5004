@@ -21,7 +21,7 @@ public:
     Mino();
 
     bool init();
-    bool update();
+    int update();
     void ghostupdate();
     void srsystem(); //スーパーローテーションシステム
     void draw();

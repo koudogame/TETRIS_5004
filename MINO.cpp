@@ -43,7 +43,7 @@ bool Mino::init()
     return true;
 }
 
-bool Mino::update()
+int Mino::update()
 {
 
 	//Œ»İ‚ÌŠÔ‚ğæ“¾
@@ -547,7 +547,13 @@ bool Mino::update()
 		}
 	}
 
-	return true;
+    if (state.F1 || pad.buttons.start)
+    {
+        return 2;
+    }
+
+
+	return 1;
 }
 
 void Mino::ghostupdate()
