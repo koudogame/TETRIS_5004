@@ -117,7 +117,7 @@ bool Option::update()
     }
 
     //EXIT
-    if (opmenu == 7 && (key_tracker.pressed.Enter || pad_tracker.a == GamePad::ButtonStateTracker::PRESSED))
+    if (opmenu == 7 && (key_tracker.pressed.Enter || pad_tracker.a == GamePad::ButtonStateTracker::PRESSED)||pad_tracker.start)
     {
         pstart = 1;
         return false;
@@ -169,18 +169,18 @@ void Option::opdraw()
 {
     RECT rect;
 
-    rect.top = 950;
-    rect.left = 1188;
-    rect.bottom = rect.top + 20;
-    rect.right = rect.left + 12;
+    rect.top = 947;
+    rect.left = 1186;
+    rect.bottom = rect.top + 25;
+    rect.right = rect.left + 15;
 
-    Sprite::draw(texture_, Vector2(606+(149*difficulty),133), &rect); //難易度
-    Sprite::draw(texture_, Vector2(646+(108*hold),201), &rect); //ホールド
-    Sprite::draw(texture_, Vector2(597+(69*next),269), &rect); //ネクスト
-    Sprite::draw(texture_, Vector2(646+(108*hidden),337), &rect); //
-    Sprite::draw(texture_, Vector2(646+(108*vs),405), &rect); //VS
-    Sprite::draw(texture_, Vector2(646+(108*reverse),473), &rect); //リバーススクリーン
-    Sprite::draw(texture_, Vector2(606+(149*score),473+68), &rect); //スコアリセット
+    Sprite::draw(texture_, Vector2(604+(149*difficulty),130), &rect); //難易度
+    Sprite::draw(texture_, Vector2(644+(108*hold),198), &rect); //ホールド
+    Sprite::draw(texture_, Vector2(595+(69*next),266), &rect); //ネクスト
+    Sprite::draw(texture_, Vector2(644+(108*hidden),334), &rect); //
+    Sprite::draw(texture_, Vector2(644+(108*vs),402), &rect); //VS
+    Sprite::draw(texture_, Vector2(644+(108*reverse),470), &rect); //リバーススクリーン
+    Sprite::draw(texture_, Vector2(604+(149*score),473+65), &rect); //スコアリセット
 }
 
 void Option::destroy()

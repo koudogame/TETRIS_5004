@@ -25,23 +25,46 @@ bool Game::init()
 }
 
 //更新
-bool Game::update()
+int Game::update()
 {
     if (menu_type == 1)
     {
         menu_type = mino_.update();
     }
-
-    if (menu_type == 2)
+    else if (menu_type == 2) //ポーズ
     {
         //メニュー
-        pause_.update();
+        pausecnt=pause_.update();
+        
     }
+    else if (menu_type == 3) //ゲームオーバー
+    {
+
+    }
+
+    if (pausecnt == 2) //ゲームを続ける
+    {
+        pausecnt = 0;
+        menu_type = 1;
+    }
+    else if (pausecnt == 3) //リセット
+    {
+        pausecnt = 0;
+        menu_type = 1;
+        return 3;
+    }
+    else if (pausecnt == 4) //メインメニュー
+    {
+        pausecnt = 0;
+        menu_type = 1;
+        return 4;
+    }
+
     player_.update();
     ui_.update();
     pov_.update();
 
-    return true;
+    return 1;
 }
 
 //描画
@@ -49,23 +72,17 @@ void Game::draw()
 {
     ui_.draw(tetoris_s);
     ui_.inputdraw(tetoris_s);
-    mino_.draw();
     mino_.maindraw();
     mino_.nextdraw();
     mino_.holddraw();
+    mino_.draw();
+
+    //ポーズ
     if (menu_type == 2)
     {
-        //ポーズ
         pause_.draw();
+        pause_.cursordraw();
     }
-    else if(menu_type==3)
-    {
-
-        //ゲームオーバー
-        pause_.draw();
-
-    }
-    
 }
 
 void Game::drawmulti()
@@ -75,13 +92,12 @@ void Game::drawmulti()
     mino_.maindraw();
     mino_.nextdraw();
     mino_.holddraw();
-
 }
 
 //破棄
 void Game::destroy()
 {
-    pause_.destroy();
+   pause_.destroy();
     player_.destroy();
     ui_.destroy();
     mino_.destroy();

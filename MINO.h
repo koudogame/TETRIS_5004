@@ -28,22 +28,32 @@ public:
     bool init();
     int update();
     void ghostupdate();
-    void srsystem(); //スーパーローテーションシステム
+
+    void srsystem(); //スーパーローテーション
+    void change();
+
+    //描画
     void draw();
     void maindraw(); //積みあがる配列の描画
-    void collisionleft();
-    void collisionright();
-    void collisiondown();
     void nextdraw(); //ネクストブロックの描画
     void holddraw(); //ホールドしているブロックの描画
     void ghostdraw();
     void scoredraw(); //スコアとレベルの描画
+
 	void destroy();  //破棄
     void reset();    //積み上げ配列の範囲内の全情報を初期化
 
+    //当たり判定
+    void collisionleft();
+    void collisionright();
+    void collisiondown();
+
+    //ネクスト
+    void nextpattern();
+
     //ミノ
-    int main[4][22][12]{ 0 };  //積みあがる本体(人数分
-    int sub[22][12] = { 0 }; //サブ
+    int main[4][22][12]={ 0 };  //積みあがる本体(人数分
+    int sub[22][12] = { 9 }; //サブ
     const int next0[7]{ 0,1,2,3,4,5,6 }; //ネクストパターン 見本
     int next1[7]{ 0,1,2,3,4,5,6 }; //ネクストパターン
     int next2[7]{ 0,1,2,3,4,5,6 }; //ネクストパターン補充用
@@ -62,9 +72,9 @@ public:
         },
         { //Tミノ
         {0,0,0,0},
-        {0,3,0,0},
+        {0,0,3,0},
         {0,3,3,0},
-        {0,3,0,0}
+        {0,0,3,0}
         },
         { //Jミノ
         {0,0,0,0},
@@ -74,9 +84,9 @@ public:
         },
         { //Lミノ
         {0,0,0,0},
-        {0,5,0,0},
-        {0,5,0,0},
-        {0,5,5,0}
+        {0,0,5,0},
+        {0,0,5,0},
+        {0,0,5,5}
         },
         { //Sミノ
         {0,0,0,0},
@@ -92,14 +102,9 @@ public:
         }
     };
 
-    int test[4][4] = { 0 };
+    int test [4][4] = { 0 };
     int clearlinepos[21] = { 0 }; //横一列そろっている場所の確認用
    
-	//ゲーム開始時のカウントダウン関係
-	int timercnt = 0;
-	bool start = false;
-	bool goflag = false;
-
     //回転時のtmp
     int tmp[4][4] = { 0 };
 
@@ -122,27 +127,15 @@ public:
     bool collisionf = false;
     bool collision_down = false;
 
-    //回転
-    bool rotation_a = false; //90
-    bool rotation_b = false; //270
-
     //ネクスト
     bool nextblock = true; //次のブロックを出す
     bool shuffle = false;  //ネクストブロックの配列要素をシャッフル
     bool shift = false;    //ネクストブロックの描画時のシフト用
     int next = 0;          //次のブロック
     int a = 0;             //配列の添え字
-    
-    //ハードドロップ
-    bool harddrop = false;
 
     //積み上げ
     bool Accumulate = false;
-
-    //ミノが下がる時間
-    int down_now_time = 0;
-    int down_old_time = 0;
-
     bool downf = false;
 
     //ホールド関係
@@ -154,17 +147,10 @@ public:
 
     bool srs = false; //スーパーローテーション
 
-    int srstest = 0;
-
 	//ゲームオーバー処理関係
 	bool gameover = false; //ゲームオーバーになったときｔｒｕｅ
 	int overcnt = 0; //ゲームオーバーになった時の中身の入れ替え変数
-	
-	//レベル
-	int level = 1; //レベル
-
-	//スコア
-	int scorestock = 0; //スコア加算用変数
+    int overcnt2 = 0; //ゲームオーバーになってからメニューが表示されるまでの時間
 
     // 消去数
     int erase = 0;

@@ -60,15 +60,10 @@ int Mino::update()
     //ゲームオーバー処理
     if (main[0][0][5] != 0 && !gameover)
     {
-        gameover = true;
-    }
-
-    //ゲームオーバー演出
-    if (gameover)
-    {
         nextblock = false;
         shift = false;
         overcnt++;
+        overcnt2++;
 
         for (int i = 1; i < 11; i++)
         {
@@ -82,6 +77,18 @@ int Mino::update()
         {
             overcnt = 0;
         }
+
+        //ゲームオーバーメニュー
+        if (overcnt2 >= 40)
+        {
+            return 3;
+        }
+    }
+
+    //ポーズメニュー
+    if (key_tracker.pressed.F1 || pad_tracker.start ==GamePad::ButtonStateTracker::PRESSED)
+    {
+         return 2;
     }
 
     //初期化(テスト用)
@@ -91,133 +98,17 @@ int Mino::update()
         gameover = false;
     }
 
-    //ネクストブロックのパターンをシャッフル
-    if (shuffle)
-    {
-        //見本からコピー
-        for (int i = 0; i < 7; i++)
-        {
-            next2[i] = next0[i];
-        }
+    //ネクスト
+    nextpattern();
 
-        //シャッフル
-        for (int i = 0; i < 7; i++)
-        {
-            int j = rand() % 7;
-            int t = next2[i];
-            next2[i] = next2[j];
-            next2[j] = t;
-        }
-        shuffle = false;
+    //下
+    if (state.Down || pad.dpad.down)
+    {
+        time = 50;
     }
-
-    //ネクストブロックの押出し
-    if (shift)
+    else
     {
-        for (int i = 0; i < 7; i++)
-        {
-            next1[i] = next1[i + 1];
-
-        }
-        next1[6] = next2[0];
-        for (int i = 0; i < 7; i++)
-        {
-            next2[i] = next2[i + 1];
-
-        }
-        shift = false;
-    }
-
-
-    if (nextblock)
-    {
-        a = next1[0];
-
-        for (int i = 0; i < 4; i++)
-        {
-            for (int j = 0; j < 4; j++)
-            {
-                test[i][j] = mino[a][i][j];
-                ghost[i][j] = mino[a][i][j];
-            }
-        }
-        pos = 3;
-        down = 0;
-        nextblock = false;
-    }
-
-    if (holdf)
-    {
-        if (!holdbutton)
-        {
-            if (holdcheck)
-            {
-                //ホールド(2回目以降)
-                for (int i = 0; i < 4; i++)
-                {
-                    for (int j = 0; j < 4; j++)
-                    {
-                        holdtmp[i][j] = test[i][j];
-                        test[i][j] = hold[i][j];
-                        hold[i][j] = holdtmp[i][j];
-                    }
-                }
-                holdbutton = true;
-                pos = 3;
-                down = 0;
-            }
-            else if (!holdcheck)
-            {
-                //ホールド(初回)
-                for (int i = 0; i < 4; i++)
-                {
-                    for (int j = 0; j < 4; j++)
-                    {
-                        hold[i][j] = test[i][j];
-                    }
-                }
-
-                shift = true;
-                holdcheck = true;
-                next++;
-                holdbutton = true;
-
-                a = next1[1];
-                //次のブロックを出す
-                for (int i = 0; i < 4; i++)
-                {
-                    for (int j = 0; j < 4; j++)
-                    {
-                        test[i][j] = mino[a][i][j];
-                    }
-                }
-                pos = 3;
-                down = 0;
-                nextblock = false;
-            }
-        }
-    }
-
-    if (!collision_down)
-    {
-        //下
-        if (state.Down || pad.dpad.down)
-        {
-            downf = true;
-        }
-        else
-        {
-            downf = false;
-        }
-
-        if (downf)
-        {
-            time = 50;
-        }
-        else
-        {
-            time = 1;
-        }
+        time = 1;
     }
 
     //当たり判定
@@ -250,11 +141,10 @@ int Mino::update()
         Accumulate = false;
     }
 
-
     if (!collision_down && !Accumulate)
     {
         //実時間で落とす
-        if (nowtime - oldtime >= 500 / (time + erase))
+        if (nowtime - oldtime >= 500 / (time + fall_speed))
         {
             down++;
             oldtime = nowtime;
@@ -300,24 +190,21 @@ int Mino::update()
                     main[0][k - 1][l] = sub[k][l];
                 }
             }
-
             erase++;
-
         }
     }
 
     //ライン消去数で落下速度変更
-    if (erase % 10 == 0)
+    if (erase == 10)
     {
         erase = 0;
         fall_speed++;
     }
 
- 
     //ミノのホールド
     if (key_tracker.pressed.LeftShift || pad_tracker.leftShoulder == GamePad::ButtonStateTracker::PRESSED)
     {
-        holdf = true;
+        change();
     }
 
     //上(ハードドロップ)
@@ -405,41 +292,6 @@ int Mino::update()
 
     if (key_tracker.pressed.Enter || pad_tracker.a == GamePad::ButtonStateTracker::PRESSED)
     {
-        //回転90
-
-        for (int i = 0; i < 4; i++)
-        {
-            for (int j = 0; j < 4; j++)
-            {
-                tmp[i][j] = test[j][i];
-            }
-        }
-
-        //Tミノは例外判定で回転軸ずらす
-        if (a != 0 && a != 1)
-        {
-            for (int i = 0; i < 4; i++)
-            {
-                for (int j = 0; j < 4; j++)
-                {
-                    test[i][4 - j] = tmp[i][j];
-                }
-            }
-        }
-        else
-        {
-            for (int i = 0; i < 4; i++)
-            {
-                for (int j = 0; j < 4; j++)
-                {
-                    test[i][3 - j] = tmp[i][j];
-                }
-            }
-        }
-    }
-
-    if (key_tracker.pressed.RightShift || pad_tracker.b == GamePad::ButtonStateTracker::PRESSED)
-    {
         //回転270
 
         for (int i = 0; i < 4; i++)
@@ -472,6 +324,43 @@ int Mino::update()
             }
         }
     }
+
+    if (key_tracker.pressed.RightShift || pad_tracker.b == GamePad::ButtonStateTracker::PRESSED)
+    {
+       
+
+        //回転90
+
+        for (int i = 0; i < 4; i++)
+        {
+            for (int j = 0; j < 4; j++)
+            {
+                tmp[i][j] = test[j][i];
+            }
+        }
+
+        //Tミノは例外判定で回転軸ずらす
+        if (a != 0 && a != 1)
+        {
+            for (int i = 0; i < 4; i++)
+            {
+                for (int j = 0; j < 4; j++)
+                {
+                    test[i][4 - j] = tmp[i][j];
+                }
+            }
+        }
+        else
+        {
+            for (int i = 0; i < 4; i++)
+            {
+                for (int j = 0; j < 4; j++)
+                {
+                    test[i][3 - j] = tmp[i][j];
+                }
+            }
+        }
+    }
     if (Accumulate)
     {
         //積み上げ
@@ -499,15 +388,12 @@ int Mino::update()
     }
 
 
-    //ポーズメニュー
-    if (state.F1 || pad.buttons.start)
-    {
-        return 2;
-    }
+
 
     return 1;
 }
 
+//ゴースト更新
 void Mino::ghostupdate()
 {
 
@@ -528,6 +414,7 @@ void Mino::ghostupdate()
     }
 }
 
+//当たり判定
 void Mino::collisionleft()
 {
     collisionf = false;
@@ -565,13 +452,70 @@ void Mino::collisiondown()
     for (int y = 0; y < block_height; y++) {
         for (int x = 0; x < block_width; x++) {
             if (test[y][x] != 0) {
-                if (main[0][down + y][pos + x] != 0) {
+                if (main[0][down + y][pos + x] != 0 ) {
                     collision_down = true;
                 }
             }
         }
     }
+}
 
+void Mino::nextpattern()
+{
+    //ネクストブロックのパターンをシャッフル
+    if (shuffle)
+    {
+        //見本からコピー
+        for (int i = 0; i < 7; i++)
+        {
+            next2[i] = next0[i];
+        }
+
+        //シャッフル
+        for (int i = 0; i < 7; i++)
+        {
+            int j = rand() % 7;
+            int t = next2[i];
+            next2[i] = next2[j];
+            next2[j] = t;
+        }
+        shuffle = false;
+    }
+
+    //ネクストブロックの押出し
+    if (shift)
+    {
+        for (int i = 0; i < 7; i++)
+        {
+            next1[i] = next1[i + 1];
+
+        }
+        next1[6] = next2[0];
+        for (int i = 0; i < 7; i++)
+        {
+            next2[i] = next2[i + 1];
+
+        }
+        shift = false;
+    }
+
+
+    if (nextblock)
+    {
+        a = next1[0];
+
+        for (int i = 0; i < 4; i++)
+        {
+            for (int j = 0; j < 4; j++)
+            {
+                test[i][j] = mino[a][i][j];
+                ghost[i][j] = mino[a][i][j];
+            }
+        }
+        pos = 3;
+        down = 0;
+        nextblock = false;
+    }
 }
 
 void Mino::srsystem()
@@ -580,6 +524,61 @@ void Mino::srsystem()
 
 }
 
+//ホールド
+void Mino::change()
+{
+
+    if (!holdbutton)
+    {
+        if (holdcheck)
+        {
+            //ホールド(2回目以降)
+            for (int i = 0; i < 4; i++)
+            {
+                for (int j = 0; j < 4; j++)
+                {
+                    holdtmp[i][j] = test[i][j];
+                    test[i][j] = hold[i][j];
+                    hold[i][j] = holdtmp[i][j];
+                }
+            }
+            holdbutton = true;
+            pos = 3;
+            down = 0;
+        }
+        else if (!holdcheck)
+        {
+            //ホールド(初回)
+            for (int i = 0; i < 4; i++)
+            {
+                for (int j = 0; j < 4; j++)
+                {
+                    hold[i][j] = test[i][j];
+                }
+            }
+
+            shift = true;
+            holdcheck = true;
+            next++;
+            holdbutton = true;
+
+            a = next1[1];
+            //次のブロックを出す
+            for (int i = 0; i < 4; i++)
+            {
+                for (int j = 0; j < 4; j++)
+                {
+                    test[i][j] = mino[a][i][j];
+                }
+            }
+            pos = 3;
+            down = 0;
+            nextblock = false;
+        }
+    }
+}
+
+//操作するやつ
 void Mino::draw()
 {
     //水色
@@ -654,9 +653,9 @@ void Mino::draw()
     }
 }
 
+//積みあがるやつ
 void Mino::maindraw()
 {
-    //積みあがるやつ
 
     //枠
     RECT rect;
@@ -725,7 +724,7 @@ void Mino::maindraw()
     {
         for (int j = 0; j < 12; j++)
         {
-			if (main[0][i][j] == 9) //枠
+			if (main[0][i][j] ==9 ) //枠
 				Sprite::draw(texture_, Vector2(510 + (25 * j) - 25, 246 + (25 * i) - 75), &rect);
 			else if (main[0][i][j] == 1) //水色
 				Sprite::draw(texture_, Vector2(510 + (25 * j) - 25, 246 + (25 * i) - 75), &trim);
@@ -746,8 +745,6 @@ void Mino::maindraw()
 		}
     }
 }
-
-
 
 //ネクストブロックの表示
 void Mino::nextdraw()
@@ -942,6 +939,7 @@ void Mino::holddraw()
     }
 }
 
+//スコアの描画
 void Mino::scoredraw()
 {
 	RECT score;
@@ -953,12 +951,7 @@ void Mino::scoredraw()
 	Sprite::draw(texture_, Vector2(500, 10), &score);
 }
 
-void Mino::destroy()
-{
-    //破棄
-    SAFE_RELEASE(texture_);
-}
-
+//初期化(デバック用)
 void Mino::reset()
 {
     //初期化
@@ -969,8 +962,50 @@ void Mino::reset()
             main[0][i][j] = 0;
         }
     }
+
+    //nextpattern();
+
+    ////変数
+    //down = 0;
+    //next = 0;
+    //a = 0;
+    //nowtime = 0;
+    //oldtime = 0;
+    //time = 1;
+    //pos = 3;
+    //cnt = 0;
+    //right = 0;
+    //left = 0;
+    //overcnt = 0;
+    //overcnt2 = 0;
+    //erase = 0;
+    //fall_speed = 1;
+    //transparent = 50;
+    //gdown = 0;
+
+    ////配列
+    //main[4][22][12] = { 0 };
+    //sub[22][12] = { 0 };
+    //test[4][4] = { 0 };
+    //clearlinepos[21] = { 0 };
+    //tmp[4][4] = { 0 };
+    //ghost[4][4] = { 0 };
+
+    ////フラグの初期化
+    //nextblock = false;
+    //Accumulate = false;
+    //collisionf = false;
+    //collision_down = false;
+    //holdf = false;
+    //holdbutton = false;
+    //holdcheck = false;
+    //downf = false;
+    //srs = false;
+
+
 }
 
+//ゴーストの描画
 void Mino::ghostdraw()
 {
 
@@ -1044,4 +1079,10 @@ void Mino::ghostdraw()
                 Sprite::draw(texture_, Vector2(510 + (25 * pos) + (25 * j) - 25, 246 + (25 * gdown) - (25 * up) - 100 + (25 * i)), &Ztrim, transparent);
         }
     }
+}
+
+void Mino::destroy()
+{
+    //破棄
+    SAFE_RELEASE(texture_);
 }

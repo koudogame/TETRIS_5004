@@ -9,7 +9,7 @@ bool Pause::init()
 {
     texture_ = Texture::load(L"Tetris11_SingleT.png");
 
-    if (texture_ = NULL)
+    if (texture_ == NULL)
     {
         Error::showDialog("Tetris11_singleT.pngが読み込めません");
    
@@ -49,6 +49,22 @@ int Pause::update()
         menucnt = 0;
     }
 
+    //ゲームを続ける
+    if (menucnt == 0 && (pad_tracker.a == GamePad::ButtonStateTracker::PRESSED))
+    {
+        return 2;
+    }
+    //リセット
+    else if (menucnt == 1 && (pad_tracker.a == GamePad::ButtonStateTracker::PRESSED))
+    {
+        return 3;
+    }
+    //メインメニューに戻る
+    else if (menucnt == 2 && (pad_tracker.a == GamePad::ButtonStateTracker::PRESSED))
+    {
+        return 4;
+    }
+
 
 
     return 1;
@@ -58,26 +74,26 @@ void Pause::draw()
 {
 
     RECT rect;
-    rect.top = 303;
+    rect.top = 306;
     rect.left = 1280;
     rect.bottom = rect.top + 155;
-    rect.right = rect.left + 135;
+    rect.right = rect.left + 153;
 
-    Sprite::draw(texture_, Vector2(558+menucnt, 274), &rect);
+    Sprite::draw(texture_, Vector2(558, 274), &rect);
 
 }
 
 void Pause::cursordraw()
 {
 
-    RECT trim;
+    RECT rect;
 
-    trim.top = 957;
-    trim.left = 1550;
-    trim.bottom = trim.top + 67.5;
-    trim.right = trim.left + 498;
+    rect.top = 947;
+    rect.left = 1186;
+    rect.bottom = rect.top + 25;
+    rect.right = rect.left + 15;
 
-    Sprite::draw(texture_, Vector2(400, 108 ), &trim);
+    Sprite::draw(texture_, Vector2(562, 320 + (24 * menucnt)), &rect); //難易度
 
 
 }

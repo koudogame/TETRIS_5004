@@ -31,11 +31,12 @@ public:
     Game();                             // コンストラクタ
     ~Game();                            // デストラクタ
     bool init();                // 初期化
-    bool update();              // 更新
+    int update();              // 更新
     void draw();                // 描画
     void drawmulti();                // 描画
     void destroy();                     // 破棄
 
     int minotype = 0; //ミノの種類
-    int menu_type = 1;
+    int menu_type = 1; //メニューの種類   
+    int pausecnt = 0; //ポーズメニューのカウント
 };

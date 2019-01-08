@@ -187,6 +187,7 @@ int WINAPI WinMain( HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLin
     bool oba = false;
     bool exit = false;
     bool bikerand = false;
+    int gup = 0;
 
     ui.init();
 
@@ -322,13 +323,18 @@ int WINAPI WinMain( HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLin
                     break;
 
                 case kGameUpdate:
+                     gup = game.update();
 
-                    if (!game.update())
+                    if (gup == 3) //リセット
                     {
-                        // 次の処理へ
-                        work_no = kHitSceneInit;
+                        game.destroy();
+                        work_no = kGameInit;
                     }
-                    break;
+                    else if (gup == 4) //タイトルへ
+                    {
+                        work_no = kTitleUpdate;
+                    }
+                     break;
 
                 case kResultInit:
                     // 次の処理

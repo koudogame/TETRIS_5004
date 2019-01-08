@@ -12,7 +12,6 @@ bool UI::init()
 {
     //リトライ時の初期化に使用
 
-
     texture_ = Texture::load(L"Tetris11_SingleT.png");
     texture2_ = Texture::load(L"Tetris14_Versus.png");
 
