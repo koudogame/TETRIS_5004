@@ -190,8 +190,6 @@ int WINAPI WinMain( HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLin
 
     ui.init();
 
-    srand((unsigned)time(NULL));
-
     while (msg.message != WM_QUIT)
     {
 
@@ -463,6 +461,7 @@ int WINAPI WinMain( HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLin
     credit.destroy();
     game.destroy();
     ui.destroy();
+    
     option.destroy();
     ranking.destroy();
     Common::destroy();

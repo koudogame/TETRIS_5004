@@ -12,6 +12,7 @@ private :
     ID3D11ShaderResourceView* texture_;
 
 public:
+    Pause();
     bool init();
     int update();
     void draw();

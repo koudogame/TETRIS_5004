@@ -1,5 +1,10 @@
 #include "pause.h"
 
+Pause::Pause()
+{
+    texture_ = NULL;
+}
+
 bool Pause::init()
 {
     texture_ = Texture::load(L"Tetris11_SingleT.png");

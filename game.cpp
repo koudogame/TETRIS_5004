@@ -82,10 +82,7 @@ void Game::drawmulti()
 void Game::destroy()
 {
     pause_.destroy();
-    start_.destroy();
-    field_.destroy();
     player_.destroy();
     ui_.destroy();
     mino_.destroy();
-    start_.destroy();
 }

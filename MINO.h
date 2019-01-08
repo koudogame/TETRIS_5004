@@ -1,5 +1,10 @@
 #pragma once
 
+//****************************
+//メモ
+//操作　update終了の上
+//****************************
+
 #define field_width 12
 #define field_height 22
 
@@ -26,6 +31,9 @@ public:
     void srsystem(); //スーパーローテーションシステム
     void draw();
     void maindraw(); //積みあがる配列の描画
+    void collisionleft();
+    void collisionright();
+    void collisiondown();
     void nextdraw(); //ネクストブロックの描画
     void holddraw(); //ホールドしているブロックの描画
     void ghostdraw();
@@ -111,8 +119,7 @@ public:
     int left = 0;
 
     //当たり判定
-    bool collision_left = false;
-    bool collision_right = false;
+    bool collisionf = false;
     bool collision_down = false;
 
     //回転
