@@ -37,5 +37,5 @@ public:
     void destroy();                     // ”jŠü
 
     int minotype = 0; //ƒ~ƒm‚ÌŽí—Þ
-    int menu_type = 0;
+    int menu_type = 1;
 };

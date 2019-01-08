@@ -19,6 +19,7 @@ bool Game::init()
     if (!ui_.init()) { return false;}
     if (!player_.init()) { return false; }
     if (!mino_.init()) { return false; }
+    if (!pause_.init()) { return false; }
 
     return true;
 }
@@ -26,7 +27,11 @@ bool Game::init()
 //更新
 bool Game::update()
 {
-    menu_type = mino_.update();
+    if (menu_type == 1)
+    {
+        menu_type = mino_.update();
+    }
+
     if (menu_type == 2)
     {
         //メニュー
@@ -76,6 +81,7 @@ void Game::drawmulti()
 //破棄
 void Game::destroy()
 {
+    pause_.destroy();
     start_.destroy();
     field_.destroy();
     player_.destroy();

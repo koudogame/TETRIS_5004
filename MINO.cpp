@@ -225,7 +225,7 @@ int Mino::update()
 	for (int y = 0; y < block_height; y++) {
 		for (int x = 0; x < block_width; x++) {
 			if (test[y][x] != 0) {
-				if (main[0][down + y][pos + (x-2)] != 0) {
+				if (main[0][down + y][pos + x-1] != 0) {
 					collision_left = true;
 				}
 				else
@@ -240,7 +240,7 @@ int Mino::update()
 	for (int y = 0; y < block_height; y++) {
 		for (int x = 0; x < block_width; x++) {
 			if (test[y][x] != 0) {
-				if (main[0][down + y][pos + (x + 1)] != 0) {
+				if (main[0][down + y][pos + x + 1] != 0) {
 					collision_right = true;
 				}
 				else
@@ -254,7 +254,7 @@ int Mino::update()
 	//‰º‘¤
 	for (int y = 0; y < block_height; y++) {
 		for (int x = 0; x < block_width; x++) {
-			if (test[y][x] != 0) {
+			if (test[y][x] != 0) { 
 				if (main[0][down + y][pos + x] != 0) {
 					collision_down = true;
 				}
