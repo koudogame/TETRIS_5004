@@ -110,6 +110,7 @@ void Game::draw()
         pause_.cursordraw();
     }
 
+    //ƒQ[ƒ€ƒNƒŠƒA
     if (menu_type == 4)
     {
         mino_.cleardraw();

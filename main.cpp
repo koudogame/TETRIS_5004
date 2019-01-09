@@ -293,7 +293,6 @@ int WINAPI WinMain( HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLin
                         //タイトルへ戻る
                         work_no = kTitleUpdate;
                         credit.destroy();
-
                     }
                     break;
                 case kGameInit:
@@ -318,6 +317,7 @@ int WINAPI WinMain( HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLin
                     }
                     else if (gup == 4) //タイトルへ
                     {
+                        game.destroy();
                         work_no = kTitleUpdate;
                     }
                      break;

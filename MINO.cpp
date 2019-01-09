@@ -23,6 +23,15 @@ bool Mino::init()
     {
         for (int j = 0; j < field_width; j++)
         {
+            main[0][i][j] = 0;
+
+        }
+    }
+
+    for (int i = 0; i < field_height; i++)
+    {
+        for (int j = 0; j < field_width; j++)
+        {
             main[0][i][0] = 9;
             main[0][i][11] = 9; 
             main[0][22][j] = 9;
@@ -37,6 +46,23 @@ bool Mino::init()
         next1[i] = next1[j];
         next1[j] = t;
     }
+
+    //ƒz[ƒ‹ƒh‰Šú‰»
+    holdcheck = false;
+    holdbutton = false;
+
+    for (int i = 0; i < 4; i++)
+    {
+        for (int j = 0; j < 4; j++)
+        {
+            holdtmp[i][j] = 0;
+            hold[i][j] = 0;
+        }
+   }
+
+    nextpattern();
+    down = -3;
+    pos = 3;
 
     oldtime = timeGetTime();
     return true;
