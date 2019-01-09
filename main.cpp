@@ -309,7 +309,7 @@ int WINAPI WinMain( HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLin
                     break;
 
                 case kGameUpdate:
-                     gup = game.update();
+                     gup = game.update(0);
 
                     if (gup == 3) //ƒŠƒZƒbƒg
                     {
@@ -371,14 +371,14 @@ int WINAPI WinMain( HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLin
                     }
                     break;
                 case k4ptetrisInit:
-                    if (!tetrismulti.init()||!game.init())
+                    if (!tetrismulti.init())
                     {
                         PostQuitMessage(0);
                     }
                     work_no = k4ptetrisUpdate;
                     break;
                 case k4ptetrisUpdate:
-                    if (!game.update())
+                    if (!tetrismulti.update())
                     {
                         work_no = kResultInit;
                     }

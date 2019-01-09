@@ -13,6 +13,7 @@
 #include"MINO.h"
 #include"pause.h"
 #include"start.h"
+#include"tetrismulti.h"
 
 //Class
 class Game
@@ -27,12 +28,13 @@ private:
     Pov pov_;                           //povクラス
     Mino mino_;
     Pause pause_;
+    
 
 public:
     Game();                             // コンストラクタ
     ~Game();                            // デストラクタ
     bool init();                // 初期化
-    int update();              // 更新
+    int update(int player_num);              // 更新
     void draw();                // 描画
     void drawmulti();                // 描画
     void destroy();                     // 破棄

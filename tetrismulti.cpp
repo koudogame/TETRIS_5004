@@ -24,6 +24,9 @@ bool Tetrismulti::init()
 
 int Tetrismulti::update()
 {
+    for (int i = 0; i < 4; i++)
+    {
+    }
 
 
 

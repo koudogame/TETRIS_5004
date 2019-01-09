@@ -575,7 +575,7 @@ void Mino::change()
 }
 
 //操作するやつ
-void Mino::draw()
+void Mino::draw(int player_num)
 {
     //水色
     RECT rect;
@@ -650,7 +650,7 @@ void Mino::draw()
 }
 
 //積みあがるやつ
-void Mino::maindraw()
+void Mino::maindraw(int player_num)
 {
 
     //枠
@@ -743,7 +743,7 @@ void Mino::maindraw()
 }
 
 //ネクストブロックの表示
-void Mino::nextdraw()
+void Mino::nextdraw(int player_num)
 {
     //水色
     RECT trim;
@@ -862,7 +862,7 @@ void Mino::nextdraw()
 }
 
 //ホールドしたブロックの描画
-void Mino::holddraw()
+void Mino::holddraw(int player_num)
 {
     //水色
     RECT trim;

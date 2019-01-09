@@ -7,6 +7,7 @@
 #include"MINO.h"
 #include"pause.h"
 #include"start.h"
+#include"game.h"
 
 class Tetrismulti
 {

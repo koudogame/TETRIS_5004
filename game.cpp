@@ -26,7 +26,7 @@ bool Game::init()
 }
 
 //更新
-int Game::update()
+int Game::update(int player_num)
 {
     if (!play)
     {
@@ -85,11 +85,11 @@ void Game::draw()
 {
     ui_.draw(tetoris_s);
     ui_.inputdraw(tetoris_s);
-    mino_.draw();
+    mino_.draw(0);
     ui_.Hiddendraw();
-    mino_.maindraw();
-    mino_.nextdraw();
-    mino_.holddraw();
+    mino_.maindraw(0);
+    mino_.nextdraw(0);
+    mino_.holddraw(0);
 
     if (!play)
     {
@@ -109,6 +109,29 @@ void Game::draw()
 void Game::drawmulti()
 {
     ui_.draw(tetris_multi);
+
+    for (int i = 0; i < 4; i++)
+    {
+        mino_.draw(i);
+        mino_.maindraw(i);
+        mino_.nextdraw(i);
+        mino_.holddraw(i);
+    }
+
+    if (!play)
+    {
+        start_.draw();
+        start_.cntdraw();
+        start_.godraw();
+    }
+
+    //ポーズ
+    if (menu_type == 2)
+    {
+        pause_.draw();
+        pause_.cursordraw();
+    }
+
 
 }
 

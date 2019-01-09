@@ -28,10 +28,10 @@ public:
     void change();
 
     //描画
-    void draw();
-    void maindraw(); //積みあがる配列の描画
-    void nextdraw(); //ネクストブロックの描画
-    void holddraw(); //ホールドしているブロックの描画
+    void draw(int player_num);
+    void maindraw(int player_num); //積みあがる配列の描画
+    void nextdraw(int player_num); //ネクストブロックの描画
+    void holddraw(int player_num); //ホールドしているブロックの描画
     void ghostdraw();
     void scoredraw(); //スコアとレベルの描画
 
