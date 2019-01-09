@@ -44,6 +44,7 @@ bool Mino::init()
 
 int Mino::update()
 {
+    fall_speed = 9;
 
     //現在の時間を取得
     nowtime = timeGetTime();
@@ -57,6 +58,7 @@ int Mino::update()
     const Keyboard::State state = Key::getState();
     const Keyboard::KeyboardStateTracker key_tracker = Key::getTracker();
 
+
     //ゲームオーバー処理
     if (main[0][0][5] != 0 && !gameover)
     {
@@ -67,13 +69,13 @@ int Mino::update()
 
         for (int i = 1; i < 11; i++)
         {
-            if (main[0][21 - overcnt][i] != 0)
+            if (main[0][22 - overcnt][i] != 0)
             {
-                main[0][21 - overcnt][i] = 10;
+                main[0][22 - overcnt][i] = 10;
             }
         }
 
-        if (overcnt >= 21)
+        if (overcnt >= 22)
         {
             overcnt = 0;
         }
@@ -194,10 +196,17 @@ int Mino::update()
         }
     }
 
-    //ライン消去数で落下速度変更
-    if (erase == 10)
+
+    //ゲームクリア
+    if (fall_speed == 9 && erase >= 10)
     {
-        erase = 0;
+        return 4;
+    }
+
+    //ライン消去数で落下速度変更
+    if (erase >= 10)
+    {
+        erase -= 10;
         fall_speed++;
     }
 
@@ -958,6 +967,19 @@ void Mino::scoredraw()
 	score.right = score.left + 26;
 
 	Sprite::draw(texture_, Vector2(500, 10), &score);
+}
+
+void Mino::cleardraw()
+{
+
+    RECT rect;
+
+    rect.top = 0;
+    rect.left = 1280+153;
+    rect.bottom = rect.top + 153;
+    rect.right = rect.left + 153;
+
+    Sprite::draw(texture_, Vector2(558, 274), &rect);
 }
 
 //初期化(デバック用)

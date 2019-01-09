@@ -52,6 +52,10 @@ int Game::update(int player_num)
         {
 
         }
+        else if (menu_type == 4) //ゲームクリア
+        {
+
+        }
 
         if (pausecnt == 2) //ゲームを続ける
         {
@@ -104,6 +108,11 @@ void Game::draw()
     {
         pause_.draw();
         pause_.cursordraw();
+    }
+
+    if (menu_type == 4)
+    {
+        mino_.cleardraw();
     }
 }
 

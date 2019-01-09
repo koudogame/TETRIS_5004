@@ -32,9 +32,10 @@ public:
     void maindraw(int player_num); //積みあがる配列の描画
     void nextdraw(int player_num); //ネクストブロックの描画
     void holddraw(int player_num); //ホールドしているブロックの描画
-    void leveldraw();
+    void leveldraw(); //レベルの表示
     void ghostdraw();
     void scoredraw(); //スコアとレベルの描画
+    void cleardraw();
 
 	void destroy();  //破棄
     void reset();    //積み上げ配列の範囲内の全情報を初期化
