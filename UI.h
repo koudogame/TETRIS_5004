@@ -26,7 +26,6 @@ class UI
 {
 private:
     ID3D11ShaderResourceView* texture_;  // UIテクスチャ
-    ID3D11ShaderResourceView* texture2_;  // UIテクスチャ
 
 public:
     UI();                     //コンストラクタ
@@ -34,6 +33,7 @@ public:
     void update();            //更新
     void draw(int type);              //描画
     void inputdraw(int type);
+    void Hiddendraw();
     void destroy();           //破棄
 
     //入力状態

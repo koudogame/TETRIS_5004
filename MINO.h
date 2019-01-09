@@ -1,12 +1,7 @@
 #pragma once
 
-//****************************
-//メモ
-//操作　update終了の上
-//****************************
-
 #define field_width 12
-#define field_height 22
+#define field_height 23
 
 #define block_width 4
 #define block_height 4
@@ -52,7 +47,7 @@ public:
     void nextpattern();
 
     //ミノ
-    int main[4][22][12]={ 0 };  //積みあがる本体(人数分
+    int main[4][26][12]={ 0 };  //積みあがる本体(人数分
     int sub[22][12] = { 9 }; //サブ
     const int next0[7]{ 0,1,2,3,4,5,6 }; //ネクストパターン 見本
     int next1[7]{ 0,1,2,3,4,5,6 }; //ネクストパターン
@@ -84,9 +79,9 @@ public:
         },
         { //Lミノ
         {0,0,0,0},
+        {0,5,5,0},
         {0,0,5,0},
-        {0,0,5,0},
-        {0,0,5,5}
+        {0,0,5,0}
         },
         { //Sミノ
         {0,0,0,0},
@@ -116,7 +111,7 @@ public:
     //方向キー
     int up = 0;   //上
     int down = 0; //下
-    int pos = 3;  //横
+    int pos = 4;  //横
 
     //カウント
     int cnt = 0;

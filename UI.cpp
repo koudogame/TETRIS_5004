@@ -5,7 +5,6 @@ Pov pov2_;
 UI::UI()
 {
     texture_ = NULL;
-    texture2_ = NULL;
 }
 
 bool UI::init()
@@ -13,7 +12,6 @@ bool UI::init()
     //リトライ時の初期化に使用
 
     texture_ = Texture::load(L"Tetris11_SingleT.png");
-    texture2_ = Texture::load(L"Tetris14_Versus.png");
 
     if (texture_ == NULL)
     {
@@ -82,11 +80,6 @@ void UI::draw(int type)
     {
         Sprite::draw(texture_, Vector2::Zero,&rect);
     }
-    else if (type == tetris_multi)
-    {
-        Sprite::draw(texture2_, Vector2::Zero,&rect);
-    }
-
 }
 
 void UI::inputdraw(int type)
@@ -164,8 +157,19 @@ void UI::inputdraw(int type)
 
 }
 
+void UI::Hiddendraw()
+{
+    RECT rect;
+    rect.top = 40;
+    rect.left = 510;
+    rect.bottom = rect.top + 133;
+    rect.right = rect.left + 253;
+
+    Sprite::draw(texture_,Vector2(510,40),&rect);
+
+}
+
 void UI::destroy()
 {
     SAFE_RELEASE(texture_);
-    SAFE_RELEASE(texture2_);
 }

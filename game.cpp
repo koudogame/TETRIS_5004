@@ -85,10 +85,11 @@ void Game::draw()
 {
     ui_.draw(tetoris_s);
     ui_.inputdraw(tetoris_s);
+    mino_.draw();
+    ui_.Hiddendraw();
     mino_.maindraw();
     mino_.nextdraw();
     mino_.holddraw();
-    mino_.draw();
 
     if (!play)
     {
