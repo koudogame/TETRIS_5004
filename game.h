@@ -14,6 +14,7 @@
 #include"pause.h"
 #include"start.h"
 #include"tetrismulti.h"
+#include"clear.h"
 
 //Class
 class Game
@@ -28,6 +29,7 @@ private:
     Pov pov_;                           //povƒNƒ‰ƒX
     Mino mino_;
     Pause pause_;
+    Clear clear_;
     
 
 public:

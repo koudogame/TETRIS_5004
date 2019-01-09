@@ -21,6 +21,7 @@ bool Game::init()
     if (!mino_.init()) { return false; }
     if (!pause_.init()) { return false; }
     if (!start_.init()) { return false; }
+    if (!clear_.init()) { return false; }
 
     return true;
 }
@@ -154,4 +155,5 @@ void Game::destroy()
     player_.destroy();
     ui_.destroy();
     mino_.destroy();
+    clear_.destroy();
 }
