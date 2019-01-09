@@ -173,7 +173,6 @@ int WINAPI WinMain( HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLin
 
     //シーンクラス変数
     Title title;
-    Start start;
     Game game;
     Result result;
     Scene scene;
@@ -181,6 +180,8 @@ int WINAPI WinMain( HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLin
     Option option;
     UI ui;
     Ranking ranking;
+    Start start;            
+
 
     int no = 0;
     int num = 0;
@@ -291,23 +292,6 @@ int WINAPI WinMain( HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLin
                         work_no = kTitleUpdate;
                         credit.destroy();
 
-                    }
-                    break;
-                case kStartInit:
-					if (!start.init())
-					{
-						//エラー
-						PostQuitMessage(0);
-					}
-
-                    // つぎの処理へ
-                    work_no = kStartUpdate;
-                    break;
-                case kStartUpdate:
-                    if (!start.update())
-                    {
-						start.destroy(); //スタート破棄
-                        work_no = kGameInit;
                     }
                     break;
                 case kGameInit:

@@ -14,6 +14,7 @@ class Scene
 {
 private:
     ID3D11ShaderResourceView* texture_;         //テクスチャ
+    ID3D11ShaderResourceView* texture2_;         //テクスチャ
 public:
     bool init();
     bool update();
@@ -21,4 +22,9 @@ public:
     void destroy();
 
     int cnt = 0;
+    int cnt2 = 0;
+
+    bool cri = false;
+    bool koudo = false;
+
 };

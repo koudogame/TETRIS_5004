@@ -57,6 +57,7 @@ int Pause::update()
     //リセット
     else if (menucnt == 1 && (pad_tracker.a == GamePad::ButtonStateTracker::PRESSED))
     {
+        
         return 3;
     }
     //メインメニューに戻る

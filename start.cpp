@@ -1,21 +1,11 @@
-#include"title.h"
-#include"texture.h"
-#include"sprite.h"
-#include"pad.h"
-#include"adx.h"
-#include"key.h"
+
 #include"start.h"
 
 // コンストラクタ
 Start::Start()
 {
 
-    texture1_ = NULL;
-    texture2_ = NULL;
-    texture3_ = NULL;
-    texture4_ = NULL;
-    p1 = false;
-    p2 = false;
+    texture_ = NULL;
 
 }
 
@@ -28,33 +18,14 @@ Start::~Start()
 bool Start::init()
 {
     //テクスチャの読み込み
-    if( !(texture3_ = Texture::load( L"説明準備.png" ) )) //何も押されていない
+    if( !(texture_ = Texture::load( L"Tetris11_SingleT.png" ) )) //何も押されていない
     {
         //エラー
         return false;
     }
 
-    if (!(texture1_ = Texture::load(L"説明1p.png"))) //1pのみ準備完了
-    {
-        //エラー
-        return false;
-    }
-
-    if (!(texture2_ = Texture::load(L"説明2p.png"))) //2pのみ準備完了
-    {
-        //エラー
-        return false;
-    }
-
-    if (!(texture4_ = Texture::load(L"説明準備完了.png"))) //全員準備完了
-    {
-        //エラー
-        return false;
-    }
-
-    p1 = false;
-	p2 = false;
-    cnt = 0;
+    //時間を取得
+    oldtime = timeGetTime();
 
     return true;
 }
@@ -62,8 +33,7 @@ bool Start::init()
 //更新
 bool Start::update()
 {
-	
-	
+
 		//ゲームパットの入力を取得
 		const GamePad::State pad = Pad::getState();
 		const GamePad::State pad2 = Pad::getState2();
@@ -75,29 +45,27 @@ bool Start::update()
 		const Keyboard::State state = Key::getState();
 		const Keyboard::KeyboardStateTracker key_tracker = Key::getTracker();
 
-		if (!p1 && (pad_tracker.a == GamePad::ButtonStateTracker::PRESSED || key_tracker.pressed.Enter)) //1pの準備完了
-		{
-			Adx::play(9);
-			p1 = true;
+        nowtime = timeGetTime();
 
-		}
+        if (nowtime - oldtime >= 1000)
+        {
+            if (goflag)
+            {
+                return false;
+            }
 
-		if (!p2 && (pad_tracker2.a == GamePad::ButtonStateTracker::PRESSED || key_tracker.pressed.Space)) //2pの準備完了
-		{
-			Adx::play(9);
-			p2 = true;
-		}
-	
+            oldtime = nowtime;
 
-	if (p1&&p2) //両プレイヤーが準備完了していたらカウントスタート
-	{
-		cnt++;
-	}
+            if (starttimer >= 1&&!goflag)
+            {
+                starttimer--;
+            }
 
-	if (cnt > 50&& p1&&p2) //カウントが50を超えたらゲームスタート
-	{
-		return false;
-	}
+            if (starttimer == 0)
+            {
+                goflag = true;
+            }
+        }
 
 	return true;
 }
@@ -106,22 +74,42 @@ bool Start::update()
 //描画
 void Start::draw()
 {
-    if (p1&&p2)
-    {
-        Sprite::draw(texture4_, Vector2::Zero);
-    }
-    else if (p1 && !p2)
-    {
-        Sprite::draw(texture1_, Vector2::Zero);
-    }
-    else if (!p1&&p2)
-    {
-        Sprite::draw(texture2_, Vector2::Zero);
-    }
-    else
-    {
-        Sprite::draw(texture3_, Vector2::Zero);
-    }
+    RECT rect;
+
+    rect.top = 0;
+    rect.left = 1280;
+    rect.bottom = rect.top + 153;
+    rect.right = rect.left + 153;
+
+    Sprite::draw(texture_, Vector2(558,274),&rect);
+
+}
+
+void Start::cntdraw()
+{
+
+    RECT trim;
+
+    trim.top = 982;
+    trim.left = 32*starttimer;
+    trim.bottom = trim.top + 42;
+    trim.right = trim.left + 32;
+
+    Sprite::draw(texture_, Vector2(620, 325), &trim);
+
+}
+
+void Start::godraw()
+{
+    RECT rect;
+
+    rect.top = 982;
+    rect.left = 1375;
+    rect.bottom = rect.top + 42;
+    rect.right = rect.left + 91;
+
+    if (goflag)
+    Sprite::draw(texture_, Vector2(592, 375), &rect);
 
 }
 
@@ -130,9 +118,6 @@ void Start::destroy()
 {
 
     //テクスチャの解放
-    SAFE_RELEASE( texture1_ );
-    SAFE_RELEASE( texture2_ );
-    SAFE_RELEASE( texture3_ );
-    SAFE_RELEASE( texture4_ );
+    SAFE_RELEASE( texture_ );
 
 }

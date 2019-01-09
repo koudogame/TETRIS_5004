@@ -144,7 +144,7 @@ int Mino::update()
     if (!collision_down && !Accumulate)
     {
         //実時間で落とす
-        if (nowtime - oldtime >= 500 / (time + fall_speed))
+        if (nowtime - oldtime >= 2000 / (time + fall_speed))
         {
             down++;
             oldtime = nowtime;
@@ -289,10 +289,10 @@ int Mino::update()
             pos++;
         }
     }
-
+    //回転270
     if (key_tracker.pressed.Enter || pad_tracker.a == GamePad::ButtonStateTracker::PRESSED)
     {
-        //回転270
+       
 
         for (int i = 0; i < 4; i++)
         {
@@ -325,12 +325,10 @@ int Mino::update()
         }
     }
 
+    //回転90
     if (key_tracker.pressed.RightShift || pad_tracker.b == GamePad::ButtonStateTracker::PRESSED)
     {
-       
-
-        //回転90
-
+ 
         for (int i = 0; i < 4; i++)
         {
             for (int j = 0; j < 4; j++)
@@ -361,9 +359,10 @@ int Mino::update()
             }
         }
     }
+    //積み上げ
     if (Accumulate)
     {
-        //積み上げ
+    
         for (int i = 0; i < 4; i++)
         {
             for (int j = 0; j < 4; j++)
@@ -386,9 +385,6 @@ int Mino::update()
             next = 0;
         }
     }
-
-
-
 
     return 1;
 }
@@ -962,47 +958,64 @@ void Mino::reset()
             main[0][i][j] = 0;
         }
     }
+      test[4][4] = { 0 };
+      clearlinepos[21] = { 0 }; //横一列そろっている場所の確認用
 
-    //nextpattern();
+    //回転時のtmp
+      tmp[4][4] = { 0 };
 
-    ////変数
-    //down = 0;
-    //next = 0;
-    //a = 0;
-    //nowtime = 0;
-    //oldtime = 0;
-    //time = 1;
-    //pos = 3;
-    //cnt = 0;
-    //right = 0;
-    //left = 0;
-    //overcnt = 0;
-    //overcnt2 = 0;
-    //erase = 0;
-    //fall_speed = 1;
-    //transparent = 50;
-    //gdown = 0;
+    //時間関係
+      nowtime = 0; //現在の時間
+      oldtime = 0; //前回の時間
+      time = 1;    //落下にかかる時間
 
-    ////配列
-    //main[4][22][12] = { 0 };
-    //sub[22][12] = { 0 };
-    //test[4][4] = { 0 };
-    //clearlinepos[21] = { 0 };
-    //tmp[4][4] = { 0 };
-    //ghost[4][4] = { 0 };
+    //方向キー
+      up = 0;   //上
+      down = 0; //下
+      pos = 3;  //横
 
-    ////フラグの初期化
-    //nextblock = false;
-    //Accumulate = false;
-    //collisionf = false;
-    //collision_down = false;
-    //holdf = false;
-    //holdbutton = false;
-    //holdcheck = false;
-    //downf = false;
-    //srs = false;
+    //カウント
+      cnt = 0;
+      right = 0;
+      left = 0;
 
+    //当たり判定
+      collisionf = false;
+      collision_down = false;
 
+    //ネクスト
+      nextblock = true; //次のブロックを出す
+      shuffle = false;  //ネクストブロックの配列要素をシャッフル
+      shift = false;    //ネクストブロックの描画時のシフト用
+      next = 0;          //次のブロック
+      a = 0;             //配列の添え字
+
+    //積み上げ
+      Accumulate = false;
+      downf = false;
+
+    //ホールド関係
+      holdf = false;        //ホールド
+      holdcheck = false;    //すでにホールド中かの判定(ホールド中ならtrue)
+      holdbutton = false;   //すでにホールドを使用したかの判定
+      holdtmp[4][4] = { 0 }; //ホールドtmp
+      hold[4][4] = { 0 };    //ホールド用
+
+      srs = false; //スーパーローテーション
+
+    //ゲームオーバー処理関係
+      gameover = false; //ゲームオーバーになったときｔｒｕｅ
+      overcnt = 0; //ゲームオーバーになった時の中身の入れ替え変数
+      overcnt2 = 0; //ゲームオーバーになってからメニューが表示されるまでの時間
+
+    // 消去数
+      erase = 0;
+      fall_speed = 1;
+
+    //ゴースト
+      transparent = 50;
+      ghost[4][4] = { 0 };
+      gdown = 0;
 }
 
 //ゴーストの描画

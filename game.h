@@ -12,6 +12,7 @@
 #include"field.h"
 #include"MINO.h"
 #include"pause.h"
+#include"start.h"
 
 //Class
 class Game
@@ -39,4 +40,5 @@ public:
     int minotype = 0; //ミノの種類
     int menu_type = 1; //メニューの種類   
     int pausecnt = 0; //ポーズメニューのカウント
+    bool play = false;
 };

@@ -3,14 +3,19 @@
 #include<d3d11.h>
 #include"release.h"
 #include"player.h"
+#include"title.h"
+#include"texture.h"
+#include"sprite.h"
+#include"pad.h"
+#include"adx.h"
+#include"key.h"
+#include<ctime>
 
 class Start
 {
 private:
-    ID3D11ShaderResourceView* texture1_;         //1p€”õŠ®—¹
-    ID3D11ShaderResourceView* texture2_;         //2p€”õŠ®—¹
-    ID3D11ShaderResourceView* texture3_;         //—¼•û€”õ’†
-    ID3D11ShaderResourceView* texture4_;         //—¼•û€”õŠ®—¹
+    ID3D11ShaderResourceView* texture_;         //1p€”õŠ®—¹
+
 
 public:
 
@@ -21,12 +26,18 @@ public:
     bool init();                                //‰Šú‰»
     bool update();                              //XV
     void draw();                                //•`‰æ
+    void cntdraw();                             //•b”•`‰æ
+    void godraw();                              //GO!!•`‰æ
     void destroy();                             //”jŠü
 
+    //•Ï”
+    int nowtime = 0;
+    int oldtime = 0;
+
+    int starttimer = 3;
+
     //ƒtƒ‰ƒO
-    bool p1 = false;
-    bool p2 = false;
-	bool complete = false;
+    bool goflag = false;
 
     //ƒJƒEƒ“ƒg
     int cnt = 0;

@@ -20,6 +20,7 @@ bool Game::init()
     if (!player_.init()) { return false; }
     if (!mino_.init()) { return false; }
     if (!pause_.init()) { return false; }
+    if (!start_.init()) { return false; }
 
     return true;
 }
@@ -27,42 +28,54 @@ bool Game::init()
 //更新
 int Game::update()
 {
-    if (menu_type == 1)
+    if (!play)
     {
-        menu_type = mino_.update();
+        if (!start_.update())
+        {
+            play = true;
+        }
     }
-    else if (menu_type == 2) //ポーズ
-    {
-        //メニュー
-        pausecnt=pause_.update();
-        
-    }
-    else if (menu_type == 3) //ゲームオーバー
+    else
     {
 
+        if (menu_type == 1)
+        {
+            menu_type = mino_.update();
+        }
+        else if (menu_type == 2) //ポーズ
+        {
+            //メニュー
+            pausecnt = pause_.update();
+
+        }
+        else if (menu_type == 3) //ゲームオーバー
+        {
+
+        }
+
+        if (pausecnt == 2) //ゲームを続ける
+        {
+            pausecnt = 0;
+            menu_type = 1;
+        }
+        else if (pausecnt == 3) //リセット
+        {
+            pausecnt = 0;
+            menu_type = 1;
+            return 3;
+        }
+        else if (pausecnt == 4) //メインメニュー
+        {
+            pausecnt = 0;
+            menu_type = 1;
+            return 4;
+        }
+
+        player_.update();
+        ui_.update();
+        pov_.update();
     }
 
-    if (pausecnt == 2) //ゲームを続ける
-    {
-        pausecnt = 0;
-        menu_type = 1;
-    }
-    else if (pausecnt == 3) //リセット
-    {
-        pausecnt = 0;
-        menu_type = 1;
-        return 3;
-    }
-    else if (pausecnt == 4) //メインメニュー
-    {
-        pausecnt = 0;
-        menu_type = 1;
-        return 4;
-    }
-
-    player_.update();
-    ui_.update();
-    pov_.update();
 
     return 1;
 }
@@ -76,6 +89,13 @@ void Game::draw()
     mino_.nextdraw();
     mino_.holddraw();
     mino_.draw();
+
+    if (!play)
+    {
+        start_.draw();
+        start_.cntdraw();
+        start_.godraw();
+    }
 
     //ポーズ
     if (menu_type == 2)
@@ -97,7 +117,8 @@ void Game::drawmulti()
 //破棄
 void Game::destroy()
 {
-   pause_.destroy();
+    start_.destroy();
+    pause_.destroy();
     player_.destroy();
     ui_.destroy();
     mino_.destroy();
