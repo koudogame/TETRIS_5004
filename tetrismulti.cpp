@@ -24,7 +24,10 @@ bool Tetrismulti::init()
 
 int Tetrismulti::update()
 {
-    return 0;
+
+
+
+    return 1;
 }
 
 //”wŒi

@@ -152,7 +152,7 @@ int Mino::update()
     }
 
     //ƒuƒƒbƒN‚ğÁ‚·ˆ—
-    for (int i = 0; i < 21; i++)
+    for (int i = 0; i < 22; i++)
     {
         for (int j = 1; j < 11; j++)
         {
@@ -169,7 +169,7 @@ int Mino::update()
     }
 
     //Á‚³‚ê‚½Œã‚Ì—‚Æ‚·ˆ—
-    for (int i = 0; i < 21; i++)
+    for (int i = 0; i < 22; i++)
     {
         if (clearlinepos[i] == 0)
         {

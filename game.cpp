@@ -109,10 +109,7 @@ void Game::draw()
 void Game::drawmulti()
 {
     ui_.draw(tetris_multi);
-    mino_.draw();
-    mino_.maindraw();
-    mino_.nextdraw();
-    mino_.holddraw();
+
 }
 
 //”jŠü

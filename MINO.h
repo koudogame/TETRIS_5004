@@ -98,7 +98,7 @@ public:
     };
 
     int test [4][4] = { 0 };
-    int clearlinepos[21] = { 0 }; //横一列そろっている場所の確認用
+    int clearlinepos[22] = { 0 }; //横一列そろっている場所の確認用
    
     //回転時のtmp
     int tmp[4][4] = { 0 };
