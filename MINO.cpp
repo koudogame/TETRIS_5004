@@ -250,7 +250,7 @@ int Mino::update()
         }
     }
 
-    //左
+    //左移動
     if (state.Left || pad.dpad.left)
     {
         left++;
@@ -270,7 +270,7 @@ int Mino::update()
         }
     }
 
-    //右
+    //右移動
     if (state.Right || pad.dpad.right)
     {
         right++;
@@ -933,6 +933,19 @@ void Mino::holddraw(int player_num)
                 Sprite::draw(texture_, Vector2(530 + (14 * j), 99 + (15 * i)), &Ztrim);
         }
     }
+}
+
+void Mino::leveldraw()
+{
+    RECT trim;
+
+    trim.top = 961;
+    trim.left = 16 * fall_speed;
+    trim.bottom = trim.top + 21;
+    trim.right = trim.left + 16;
+
+    Sprite::draw(texture_, Vector2(730, 42), &trim);
+
 }
 
 //スコアの描画
