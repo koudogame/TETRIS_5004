@@ -110,7 +110,7 @@ public:
 
     //方向キー
     int up = 0;   //上
-    int down = 0; //下
+    int down = -5; //下
     int pos = 4;  //横
 
     //カウント
