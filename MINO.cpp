@@ -169,9 +169,9 @@ int Mino::update()
         Accumulate = false;
     }
 
+    //実時間で落とす
     if (!collision_down && !Accumulate)
     {
-        //実時間で落とす
         if (nowtime - oldtime >= 1500 / (time + fall_speed))
         {
             down++;
@@ -421,6 +421,7 @@ int Mino::update()
         }
     }
 
+    //スコアの計算
     if (!erase_line == 0)
     {
         //レベル得点掛ける消えたライン数
