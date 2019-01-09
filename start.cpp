@@ -34,40 +34,40 @@ bool Start::init()
 bool Start::update()
 {
 
-		//ゲームパットの入力を取得
-		const GamePad::State pad = Pad::getState();
-		const GamePad::State pad2 = Pad::getState2();
+    //ゲームパットの入力を取得
+    const GamePad::State pad = Pad::getState();
+    const GamePad::State pad2 = Pad::getState2();
 
-		const GamePad::ButtonStateTracker pad_tracker = Pad::getTracker();
-		const GamePad::ButtonStateTracker pad_tracker2 = Pad::getTracker2();
+    const GamePad::ButtonStateTracker pad_tracker = Pad::getTracker();
+    const GamePad::ButtonStateTracker pad_tracker2 = Pad::getTracker2();
 
-		// キーボードの入力を取得
-		const Keyboard::State state = Key::getState();
-		const Keyboard::KeyboardStateTracker key_tracker = Key::getTracker();
+    // キーボードの入力を取得
+    const Keyboard::State state = Key::getState();
+    const Keyboard::KeyboardStateTracker key_tracker = Key::getTracker();
 
-        nowtime = timeGetTime();
+    nowtime = timeGetTime();
 
-        if (nowtime - oldtime >= 1000)
+    if (nowtime - oldtime >= 1000)
+    {
+        if (goflag)
         {
-            if (goflag)
-            {
-                return false;
-            }
-
-            oldtime = nowtime;
-
-            if (starttimer >= 1&&!goflag)
-            {
-                starttimer--;
-            }
-
-            if (starttimer == 0)
-            {
-                goflag = true;
-            }
+            return false;
         }
 
-	return true;
+        oldtime = nowtime;
+
+        if (starttimer >= 1 && !goflag)
+        {
+            starttimer--;
+        }
+
+        if (starttimer == 0)
+        {
+            goflag = true;
+        }
+    }
+
+    return true;
 }
 
 
@@ -82,21 +82,20 @@ void Start::draw()
     rect.right = rect.left + 153;
 
     Sprite::draw(texture_, Vector2(558,274),&rect);
-
 }
 
 void Start::cntdraw()
 {
-
     RECT trim;
 
     trim.top = 982;
     trim.left = 32*starttimer;
     trim.bottom = trim.top + 42;
     trim.right = trim.left + 32;
-
-    Sprite::draw(texture_, Vector2(620, 325), &trim);
-
+    if (!starttimer == 0)
+    {
+        Sprite::draw(texture_, Vector2(620, 325), &trim);
+    }
 }
 
 void Start::godraw()
@@ -116,8 +115,6 @@ void Start::godraw()
 //破棄
 void Start::destroy()
 {
-
     //テクスチャの解放
     SAFE_RELEASE( texture_ );
-
 }
