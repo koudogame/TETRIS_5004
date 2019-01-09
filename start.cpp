@@ -4,9 +4,7 @@
 // コンストラクタ
 Start::Start()
 {
-
     texture_ = NULL;
-
 }
 
 //デストラクタ

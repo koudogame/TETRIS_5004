@@ -219,9 +219,9 @@ int Mino::update()
                 }
             }
             erase++;
+            erase_line++;
         }
     }
-
 
     //ゲームクリア
     if (fall_speed == 9 && erase >= 10)
@@ -421,6 +421,13 @@ int Mino::update()
         }
     }
 
+    if (!erase_line == 0)
+    {
+        //レベル得点掛ける消えたライン数
+        score = (fall_speed+1) * linescore[erase_line-1];
+        erase_line = 0;
+    }
+
     return 1;
 }
 
@@ -491,6 +498,7 @@ void Mino::collisiondown()
     }
 }
 
+//ネクスト呼び出し
 void Mino::nextpattern()
 {
     //ネクストブロックのパターンをシャッフル
@@ -970,6 +978,7 @@ void Mino::holddraw(int player_num)
     }
 }
 
+//レベルの描画
 void Mino::leveldraw()
 {
     RECT trim;
@@ -986,13 +995,13 @@ void Mino::leveldraw()
 //スコアの描画
 void Mino::scoredraw()
 {
-	RECT score;
-	score.top = 780;
-	score.left = 0;
-	score.bottom = score.top + 26;
-	score.right = score.left + 26;
+	RECT rect;
+	rect.top = 780;
+	rect.left = 0;
+	rect.bottom = rect.top + 26;
+	rect.right = rect.left + 26;
 
-	Sprite::draw(texture_, Vector2(500, 10), &score);
+	Sprite::draw(texture_, Vector2(500, 10), &rect);
 }
 
 void Mino::cleardraw()

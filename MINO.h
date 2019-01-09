@@ -153,6 +153,11 @@ public:
     int erase = 0;
     int fall_speed = 1;
 
+    //スコア
+    int score = 0;
+    int erase_line = 0;
+    const int linescore[4] = { 40,100,300,1200 }; //同時消しの点数表
+
     //ゴースト
     int transparent = 50;
     int ghost[4][4] = { 0 };
