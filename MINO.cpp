@@ -429,14 +429,25 @@ int Mino::update()
     //スコアの計算
     if (!erase_line == 0)
     {
+
+        //B2Bの計算
+        if (olderasenum==4&&olderasenum == erase_line)
+        {
+            back_to_back = 1.5;
+        }
+        else
+        {
+            back_to_back = 1;
+        }
         //レベル得点掛ける消えたライン数
-        score += (fall_speed+1) * linescore[erase_line-1];
+        score += ((fall_speed+1) * linescore[erase_line-1])*back_to_back;
 
         //スコア上限
         if (score >= 999999)
         {
             score = 999999;
         }
+        olderasenum = erase_line;
         erase_line = 0;
     }
 
