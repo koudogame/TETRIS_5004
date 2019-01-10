@@ -458,16 +458,30 @@ int Mino::update()
 void Mino::ghostupdate()
 {
 
-    while (!collision_down)
+    const GamePad::State pad = Pad::getState();
+    const GamePad::ButtonStateTracker pad_tracker = Pad::getTracker();
+
+    const Keyboard::State state = Key::getState();
+    const Keyboard::KeyboardStateTracker key_tracker = Key::getTracker();
+   
+    if (pad_tracker.dpadLeft == GamePad::ButtonStateTracker::PRESSED || pad_tracker.dpadRight == GamePad::ButtonStateTracker::PRESSED || key_tracker.pressed.Left || key_tracker.pressed.Right || pad_tracker.a == GamePad::ButtonStateTracker::PRESSED || pad_tracker.b == GamePad::ButtonStateTracker::PRESSED || key_tracker.pressed.Enter || key_tracker.pressed.RightShift)
     {
+        gdown = 0;
+        gcollsion = false;
+
+    }
+    while (!gcollsion)
+    {
+
+
         gdown++;
 
         //‰º‘¤
         for (int y = 0; y < block_height; y++) {
             for (int x = 0; x < block_width; x++) {
-                if (ghost[y][x] != 0) {
+                if (test[y][x] != 0) {
                     if (main[0][gdown + y][pos + x] != 0) {
-                        collision_down = true;
+                        gcollsion = true;
                     }
                 }
             }
@@ -1199,19 +1213,19 @@ void Mino::ghostdraw()
         for (int j = 0; j < 4; j++)
         {
             if (test[i][j] == 1)
-                Sprite::draw(texture_, Vector2(510 + (25 * pos) + (25 * j) - 25, 246 + (25 * gdown) - (25 * up) - 100 + (25 * i)), &rect, transparent);
+                Sprite::draw(texture_, Vector2(510 + (25 * pos) + (25 * j) - 25, 246 + (25 * gdown) - (25 * up) - 125 + (25 * i)), &rect);
             else if (test[i][j] == 2)
-                Sprite::draw(texture_, Vector2(510 + (25 * pos) + (25 * j) - 25, 246 + (25 * gdown) - (25 * up) - 100 + (25 * i)), &Otrim, transparent);
+                Sprite::draw(texture_, Vector2(510 + (25 * pos) + (25 * j) - 25, 246 + (25 * gdown) - (25 * up) - 125 + (25 * i)), &Otrim);
             else if (test[i][j] == 3)
-                Sprite::draw(texture_, Vector2(510 + (25 * pos) + (25 * j) - 25, 246 + (25 * gdown) - (25 * up) - 100 + (25 * i)), &Ttrim, transparent);
+                Sprite::draw(texture_, Vector2(510 + (25 * pos) + (25 * j) - 25, 246 + (25 * gdown) - (25 * up) - 125 + (25 * i)), &Ttrim);
             else if (test[i][j] == 4)
-                Sprite::draw(texture_, Vector2(510 + (25 * pos) + (25 * j) - 25, 246 + (25 * gdown) - (25 * up) - 100 + (25 * i)), &Jtrim, transparent);
+                Sprite::draw(texture_, Vector2(510 + (25 * pos) + (25 * j) - 25, 246 + (25 * gdown) - (25 * up) - 125 + (25 * i)), &Jtrim);
             else if (test[i][j] == 5)
-                Sprite::draw(texture_, Vector2(510 + (25 * pos) + (25 * j) - 25, 246 + (25 * gdown) - (25 * up) - 100 + (25 * i)), &Ltrim, transparent);
+                Sprite::draw(texture_, Vector2(510 + (25 * pos) + (25 * j) - 25, 246 + (25 * gdown) - (25 * up) - 125 + (25 * i)), &Ltrim);
             else if (test[i][j] == 6)
-                Sprite::draw(texture_, Vector2(510 + (25 * pos) + (25 * j) - 25, 246 + (25 * gdown) - (25 * up) - 100 + (25 * i)), &Strim, transparent);
+                Sprite::draw(texture_, Vector2(510 + (25 * pos) + (25 * j) - 25, 246 + (25 * gdown) - (25 * up) - 125 + (25 * i)), &Strim);
             else if (test[i][j] == 7)
-                Sprite::draw(texture_, Vector2(510 + (25 * pos) + (25 * j) - 25, 246 + (25 * gdown) - (25 * up) - 100 + (25 * i)), &Ztrim, transparent);
+                Sprite::draw(texture_, Vector2(510 + (25 * pos) + (25 * j) - 25, 246 + (25 * gdown) - (25 * up) - 125 + (25 * i)), &Ztrim);
         }
     }
 }

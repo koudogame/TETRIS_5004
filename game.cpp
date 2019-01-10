@@ -44,6 +44,7 @@ int Game::update(int player_num)
         if (menu_type == 1)
         {
             menu_type = mino_.update();
+            mino_.ghostupdate();
         }
         else if (menu_type == 2) //ポーズ
         {
@@ -99,12 +100,17 @@ void Game::draw()
     mino_.holddraw(0);
     mino_.leveldraw();
     mino_.scoredraw();
+    
 
     if (!play)
     {
         start_.draw();
         start_.cntdraw();
         start_.godraw();
+    }
+    else {
+        mino_.ghostdraw();
+
     }
 
     //ポーズ

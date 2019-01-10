@@ -166,4 +166,5 @@ public:
     int transparent = 50;
     int ghost[4][4] = { 0 };
     int gdown = 0;
+    bool gcollsion = false;
 };
