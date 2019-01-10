@@ -601,7 +601,7 @@ void Mino::change()
             {
                 for (int j = 0; j < 4; j++)
                 {
-                    holdtmp[i][j] = test[i][j];
+                    holdtmp[i][j] = mino[a][i][j];
                     test[i][j] = hold[i][j];
                     hold[i][j] = holdtmp[i][j];
                 }
@@ -617,7 +617,7 @@ void Mino::change()
             {
                 for (int j = 0; j < 4; j++)
                 {
-                    hold[i][j] = test[i][j];
+                    hold[i][j] = mino[a][i][j];
                 }
             }
 
