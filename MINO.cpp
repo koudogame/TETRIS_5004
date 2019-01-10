@@ -33,7 +33,7 @@ bool Mino::init()
         for (int j = 0; j < field_width; j++)
         {
             main[0][i][0] = 9;
-            main[0][i][11] = 9; 
+            main[0][i][11] = 9;
             main[0][22][j] = 9;
         }
     }
@@ -58,7 +58,7 @@ bool Mino::init()
             holdtmp[i][j] = 0;
             hold[i][j] = 0;
         }
-   }
+    }
 
     nextpattern();
     down = -3;
@@ -115,9 +115,9 @@ int Mino::update()
     }
 
     //ポーズメニュー
-    if (key_tracker.pressed.F1 || pad_tracker.start ==GamePad::ButtonStateTracker::PRESSED)
+    if (key_tracker.pressed.F1 || pad_tracker.start == GamePad::ButtonStateTracker::PRESSED)
     {
-         return 2;
+        return 2;
     }
 
     //初期化(テスト用)
@@ -332,7 +332,7 @@ int Mino::update()
     //回転270
     if (key_tracker.pressed.Enter || pad_tracker.a == GamePad::ButtonStateTracker::PRESSED)
     {
-       
+
 
         for (int i = 0; i < 4; i++)
         {
@@ -368,7 +368,7 @@ int Mino::update()
     //回転90
     if (key_tracker.pressed.RightShift || pad_tracker.b == GamePad::ButtonStateTracker::PRESSED)
     {
- 
+
         for (int i = 0; i < 4; i++)
         {
             for (int j = 0; j < 4; j++)
@@ -402,7 +402,7 @@ int Mino::update()
     //積み上げ
     if (Accumulate)
     {
-    
+
         for (int i = 0; i < 4; i++)
         {
             for (int j = 0; j < 4; j++)
@@ -431,7 +431,7 @@ int Mino::update()
     {
 
         //B2Bの計算
-        if (olderasenum==4&&olderasenum == erase_line)
+        if (olderasenum == 4 && olderasenum == erase_line)
         {
             back_to_back = 1.5;
         }
@@ -440,7 +440,7 @@ int Mino::update()
             back_to_back = 1;
         }
         //レベル得点掛ける消えたライン数
-        score += ((fall_speed+1) * linescore[erase_line-1])*back_to_back;
+        score += ((fall_speed + 1) * linescore[erase_line - 1])*back_to_back;
 
         //スコア上限
         if (score >= 999999)
@@ -476,6 +476,7 @@ void Mino::ghostupdate()
 }
 
 //当たり判定
+//左
 void Mino::collisionleft()
 {
     collisionf = false;
@@ -490,7 +491,7 @@ void Mino::collisionleft()
         }
     }
 }
-
+//右
 void Mino::collisionright()
 {
     collisionf = false;
@@ -505,7 +506,7 @@ void Mino::collisionright()
         }
     }
 }
-
+//下
 void Mino::collisiondown()
 {
     collision_down = false;
@@ -580,6 +581,7 @@ void Mino::nextpattern()
     }
 }
 
+//スーパーローテーション(未実装)
 void Mino::srsystem()
 {
 	//どこかにぶつかっている状態での回転に補正をかける
@@ -1050,6 +1052,7 @@ void Mino::scoredraw()
 
 }
 
+//クリアウィンドウの描画
 void Mino::cleardraw()
 {
 
