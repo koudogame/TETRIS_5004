@@ -65,6 +65,7 @@ bool Mino::init()
     pos = 3;
     score = 0;
     fall_speed = 0;
+    gdown = down;
 
     oldtime = timeGetTime();
     return true;
@@ -282,6 +283,7 @@ int Mino::update()
         holdbutton = false;
         holdf = false;
         next++;
+        gdown = down;
 
         if (next > 6)
         {
@@ -304,8 +306,10 @@ int Mino::update()
     {
         left = 0;
         collisionleft();
+
         if (!collisionf)
         {
+            ghostupdate();
             pos--;
         }
     }
@@ -322,10 +326,12 @@ int Mino::update()
     }
     if (right % 50 == 7 || pad_tracker.dpadRight == GamePad::ButtonStateTracker::PRESSED || key_tracker.pressed.Right)
     {
+
         right = 0;
         collisionright();
         if (!collisionf)
         {
+            ghostupdate();
             pos++;
         }
     }
@@ -463,17 +469,12 @@ void Mino::ghostupdate()
 
     const Keyboard::State state = Key::getState();
     const Keyboard::KeyboardStateTracker key_tracker = Key::getTracker();
-   
-    if (pad_tracker.dpadLeft == GamePad::ButtonStateTracker::PRESSED || pad_tracker.dpadRight == GamePad::ButtonStateTracker::PRESSED || key_tracker.pressed.Left || key_tracker.pressed.Right || pad_tracker.a == GamePad::ButtonStateTracker::PRESSED || pad_tracker.b == GamePad::ButtonStateTracker::PRESSED || key_tracker.pressed.Enter || key_tracker.pressed.RightShift)
-    {
-        gdown = 0;
-        gcollsion = false;
 
-    }
+    gdown = down;
+    gcollsion = false;
+
     while (!gcollsion)
     {
-
-
         gdown++;
 
         //下側
@@ -592,7 +593,11 @@ void Mino::nextpattern()
         pos = 3;
         down = 0;
         nextblock = false;
+        gcollsion = false;
+        gdown = down;
+
     }
+
 }
 
 //スーパーローテーション(未実装)

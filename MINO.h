@@ -51,7 +51,7 @@ public:
     void nextpattern();
 
     //ミノ
-    int main[4][26][12]={ 0 };  //積みあがる本体(人数分
+    int main[4][23][12]={ 0 };  //積みあがる本体(人数分
     int sub[22][12] = { 9 }; //サブ
     const int next0[7]{ 0,1,2,3,4,5,6 }; //ネクストパターン 見本
     int next1[7]{ 0,1,2,3,4,5,6 }; //ネクストパターン
@@ -157,14 +157,14 @@ public:
 
     //スコア
     int score = 0;
-    int erase_line = 0;
+    int erase_line = 0; //消されたライン数
     int olderasenum = 0; //前回消した行数を取っておく(B2B用)
-    double back_to_back = 1;
+    double back_to_back = 1; //back_to_backをした時のスコア倍率
     const int linescore[4] = { 40,100,300,1200 }; //同時消しの点数表
 
     //ゴースト
-    int transparent = 50;
-    int ghost[4][4] = { 0 };
-    int gdown = 0;
+    int transparent = 50; //透明度
+    int ghost[4][4] = { 0 }; 
+    int gdown;
     bool gcollsion = false;
 };
