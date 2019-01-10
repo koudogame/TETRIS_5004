@@ -63,6 +63,8 @@ bool Mino::init()
     nextpattern();
     down = -3;
     pos = 3;
+    score = 0;
+    fall_speed = 0;
 
     oldtime = timeGetTime();
     return true;
@@ -70,7 +72,6 @@ bool Mino::init()
 
 int Mino::update()
 {
-    fall_speed = 9;
 
     //現在の時間を取得
     nowtime = timeGetTime();
@@ -160,7 +161,7 @@ int Mino::update()
     }
 
     //下が当たっていたら積む
-    if (nowtime - oldtime >= 500 && collision_down)
+    if (nowtime - oldtime >= 2000 && collision_down)
     {
         Accumulate = true;
     }
@@ -172,8 +173,12 @@ int Mino::update()
     //実時間で落とす
     if (!collision_down && !Accumulate)
     {
-        if (nowtime - oldtime >= 1500 / (time + fall_speed))
+        if (nowtime - oldtime >= 2000 / (time + fall_speed))
         {
+            if (state.Down || pad.dpad.down)
+            {
+                score++;
+            }
             down++;
             oldtime = nowtime;
         }
@@ -248,7 +253,7 @@ int Mino::update()
         while (!collision_down)
         {
             down++;
-
+            score++;
             //下側
             for (int y = 0; y < block_height; y++) {
                 for (int x = 0; x < block_width; x++) {
@@ -425,7 +430,13 @@ int Mino::update()
     if (!erase_line == 0)
     {
         //レベル得点掛ける消えたライン数
-        score = (fall_speed+1) * linescore[erase_line-1];
+        score += (fall_speed+1) * linescore[erase_line-1];
+
+        //スコア上限
+        if (score >= 999999)
+        {
+            score = 999999;
+        }
         erase_line = 0;
     }
 
@@ -997,12 +1008,33 @@ void Mino::leveldraw()
 void Mino::scoredraw()
 {
 	RECT rect;
-	rect.top = 780;
+	rect.top = 961;
 	rect.left = 0;
-	rect.bottom = rect.top + 26;
-	rect.right = rect.left + 26;
+	rect.bottom = rect.top + 21;
+	rect.right = rect.left + 16;
 
-	Sprite::draw(texture_, Vector2(500, 10), &rect);
+    unsigned digit=0; //桁数
+
+    int tmp = score; //スコアをtmpにコピー
+
+    //桁数の算出
+    while (tmp != 0)
+    {
+        tmp /= 10;
+        digit++;
+    }
+
+    tmp = score; //スコアをコピーしなおす
+
+    for (int i = 6; i >0; i--)
+    {
+        rect.left = labs(tmp) % 10 * 16;
+        rect.right = rect.left + 16;
+
+        Sprite::draw(texture_, Vector2(542+i*16+i, 42), &rect);
+        tmp /= 10;
+    }
+
 }
 
 void Mino::cleardraw()

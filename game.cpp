@@ -96,6 +96,7 @@ void Game::draw()
     mino_.nextdraw(0);
     mino_.holddraw(0);
     mino_.leveldraw();
+    mino_.scoredraw();
 
     if (!play)
     {

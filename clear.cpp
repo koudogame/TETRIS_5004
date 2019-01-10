@@ -2,6 +2,7 @@
 
 Clear::Clear()
 {
+    texture_ = NULL;
 }
 
 bool Clear::init()
