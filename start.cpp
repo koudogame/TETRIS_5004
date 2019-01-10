@@ -21,6 +21,8 @@ bool Start::init()
         //ƒGƒ‰[
         return false;
     }
+    goflag = false;
+    starttimer = 3;
 
     //ŠÔ‚ğæ“¾
     oldtime = timeGetTime();

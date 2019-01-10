@@ -161,7 +161,7 @@ int Mino::update()
     }
 
     //‰º‚ª“–‚½‚Á‚Ä‚¢‚½‚çÏ‚Þ
-    if (nowtime - oldtime >= 2000 && collision_down)
+    if (nowtime - oldtime >= fall_time && collision_down)
     {
         Accumulate = true;
     }
@@ -173,7 +173,7 @@ int Mino::update()
     //ŽÀŽžŠÔ‚Å—Ž‚Æ‚·
     if (!collision_down && !Accumulate)
     {
-        if (nowtime - oldtime >= 2000 / (time + fall_speed))
+        if (nowtime - oldtime >= fall_time / (time + fall_speed))
         {
             if (state.Down || pad.dpad.down)
             {
@@ -786,9 +786,11 @@ void Mino::maindraw(int player_num)
     {
         for (int j = 0; j < field_width; j++)
         {
-			if (main[0][i][j] ==9 ) //˜g
-				Sprite::draw(texture_, Vector2(510 + (25 * j) - 25, 221 + (25 * i) - 75), &rect);
-			else if (main[0][i][j] == 1) //…F
+            if (main[0][i][j] == 9) //˜g
+            {
+                //Sprite::draw(texture_, Vector2(510 + (25 * j) - 25, 221 + (25 * i) - 75), &rect);
+            }
+            else if (main[0][i][j] == 1) //…F
 				Sprite::draw(texture_, Vector2(510 + (25 * j) - 25, 221 + (25 * i) - 75), &trim);
 			else if (main[0][i][j] == 2) //‰©F
 				Sprite::draw(texture_, Vector2(510 + (25 * j) - 25, 221 + (25 * i) - 75), &Otrim);

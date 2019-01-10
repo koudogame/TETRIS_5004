@@ -23,6 +23,8 @@ bool Game::init()
     if (!start_.init()) { return false; }
     if (!clear_.init()) { return false; }
 
+    play = false;
+
     return true;
 }
 
