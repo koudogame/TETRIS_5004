@@ -143,7 +143,6 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="adx.cpp" />
-    <ClCompile Include="cero.cpp" />
     <ClCompile Include="clear.cpp" />
     <ClCompile Include="collision.cpp" />
     <ClCompile Include="common.cpp" />
@@ -151,7 +150,6 @@
     <ClCompile Include="direct3d.cpp" />
     <ClCompile Include="field.cpp" />
     <ClCompile Include="game.cpp" />
-    <ClCompile Include="hit_scene.cpp" />
     <ClCompile Include="key.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="MINO.cpp" />
@@ -172,7 +170,6 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="adx.h" />
-    <ClInclude Include="cero.h" />
     <ClInclude Include="clear.h" />
     <ClInclude Include="collision.h" />
     <ClInclude Include="common.h" />
@@ -181,7 +178,6 @@
     <ClInclude Include="Error.h" />
     <ClInclude Include="field.h" />
     <ClInclude Include="game.h" />
-    <ClInclude Include="hit_scene.h" />
     <ClInclude Include="key.h" />
     <ClInclude Include="MINO.h" />
     <ClInclude Include="option.h" />

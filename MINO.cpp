@@ -1135,6 +1135,9 @@ void Mino::reset()
       transparent = 50;
       ghost[4][4] = { 0 };
       gdown = 0;
+
+      score = 0;
+      fall_speed = 0;
 }
 
 //ƒS[ƒXƒg‚Ì•`‰æ
