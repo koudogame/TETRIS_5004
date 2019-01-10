@@ -165,6 +165,6 @@ public:
     //ゴースト
     int transparent = 50; //透明度
     int ghost[4][4] = { 0 }; 
-    int gdown;
-    bool gcollsion = false;
+    int gdown; //ゴーストのy軸
+    bool gcollsion = false; //ゴーストの当たり判定
 };

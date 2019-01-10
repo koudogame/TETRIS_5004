@@ -18,7 +18,7 @@ bool Mino::init()
         return false;
     }
 
-    //枠の生成
+    //配列の初期化
     for (int i = 0; i < field_height; i++)
     {
         for (int j = 0; j < field_width; j++)
@@ -28,6 +28,7 @@ bool Mino::init()
         }
     }
 
+    //枠の生成
     for (int i = 0; i < field_height; i++)
     {
         for (int j = 0; j < field_width; j++)
@@ -51,6 +52,7 @@ bool Mino::init()
     holdcheck = false;
     holdbutton = false;
 
+    //ホールドの配列を初期化
     for (int i = 0; i < 4; i++)
     {
         for (int j = 0; j < 4; j++)
@@ -85,7 +87,6 @@ int Mino::update()
 
     const Keyboard::State state = Key::getState();
     const Keyboard::KeyboardStateTracker key_tracker = Key::getTracker();
-
 
     //ゲームオーバー処理
     if (main[0][0][5] != 0 && !gameover)
@@ -159,16 +160,6 @@ int Mino::update()
     if (srs)
     {
         srsystem();
-    }
-
-    //下が当たっていたら積む
-    if (nowtime - oldtime >= fall_time && collision_down)
-    {
-        Accumulate = true;
-    }
-    else
-    {
-        Accumulate = false;
     }
 
     //実時間で落とす
@@ -296,11 +287,6 @@ int Mino::update()
     if (state.Left || pad.dpad.left)
     {
         left++;
-        if (Accumulate)
-        {
-            oldtime = timeGetTime();
-            Accumulate = false;
-        }
     }
     if (left % 50 == 7 || pad_tracker.dpadLeft == GamePad::ButtonStateTracker::PRESSED || key_tracker.pressed.Left)
     {
@@ -318,11 +304,6 @@ int Mino::update()
     if (state.Right || pad.dpad.right)
     {
         right++;
-        if (Accumulate)
-        {
-            oldtime = timeGetTime();
-            Accumulate = false;
-        }
     }
     if (right % 50 == 7 || pad_tracker.dpadRight == GamePad::ButtonStateTracker::PRESSED || key_tracker.pressed.Right)
     {
@@ -331,6 +312,7 @@ int Mino::update()
         collisionright();
         if (!collisionf)
         {
+            collisionf = false;
             ghostupdate();
             pos++;
         }
@@ -338,7 +320,8 @@ int Mino::update()
     //回転270
     if (key_tracker.pressed.Enter || pad_tracker.a == GamePad::ButtonStateTracker::PRESSED)
     {
-
+        oldtime = nowtime;
+        nowtime = timeGetTime();
 
         for (int i = 0; i < 4; i++)
         {
@@ -374,6 +357,8 @@ int Mino::update()
     //回転90
     if (key_tracker.pressed.RightShift || pad_tracker.b == GamePad::ButtonStateTracker::PRESSED)
     {
+        oldtime = nowtime;
+        nowtime = timeGetTime();
 
         for (int i = 0; i < 4; i++)
         {
@@ -405,6 +390,17 @@ int Mino::update()
             }
         }
     }
+   
+    //下が当たっていたら積む
+    if (nowtime - oldtime >= fall_time && collision_down)
+    {
+        Accumulate = true;
+    }
+    else
+    {
+        Accumulate = false;
+    }
+    
     //積み上げ
     if (Accumulate)
     {
@@ -475,8 +471,6 @@ void Mino::ghostupdate()
 
     while (!gcollsion)
     {
-        gdown++;
-
         //下側
         for (int y = 0; y < block_height; y++) {
             for (int x = 0; x < block_width; x++) {
@@ -486,6 +480,10 @@ void Mino::ghostupdate()
                     }
                 }
             }
+        }
+        if (!gcollsion)
+        {
+            gdown++;
         }
     }
 }
@@ -499,7 +497,7 @@ void Mino::collisionleft()
     for (int y = 0; y < block_height; y++) {
         for (int x = 0; x < block_width; x++) {
             if (test[y][x] != 0) {
-                if (main[0][down + y][pos + x - 1] != 0) {
+                if (main[0][down + y-1][pos + x - 1] != 0) {
                     collisionf = true;
                 }
             }
@@ -514,7 +512,7 @@ void Mino::collisionright()
     for (int y = 0; y < block_height; y++) {
         for (int x = 0; x < block_width; x++) {
             if (test[y][x] != 0) {
-                if (main[0][down + y][pos + x + 1] != 0) {
+                if (main[0][down + y-1][pos + x + 1] != 0) {
                     collisionf = true;
                 }
             }
