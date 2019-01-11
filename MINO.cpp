@@ -359,7 +359,7 @@ int Mino::update()
     if (key_tracker.pressed.RightShift || pad_tracker.b == GamePad::ButtonStateTracker::PRESSED)
     {
         turnover_rate++;
-        if (turnover_rate >=3 )
+        if (turnover_rate >3 )
         {
             turnover_rate = 0;
         }
@@ -543,11 +543,13 @@ void Mino::collisiondown()
 
 bool Mino::collisionsrs()
 {
+    srs = false;
     //スーパーローテーション用当たり判定
     for (int y = 0; y < block_height; y++) {
         for (int x = 0; x < block_width; x++) {
             if (test[y][x] != 0) {
                 if (main[0][down + y - 1][pos + x] != 0) {
+                    srs = true;
                     return true;
                 }
             }
@@ -654,7 +656,7 @@ void Mino::nextpattern()
 //スーパーローテーション(未実装)
 void Mino::srsystem(int rotation_type)
 {
-    int step = rotation_type*5;
+    int step = rotation_type;
     int postmp = pos; //posを保存
     int downtmp = down; //downを保存
     //*****************
@@ -663,6 +665,10 @@ void Mino::srsystem(int rotation_type)
     //C 180度
     //D 270度
     //*****************
+    /*if (step < 0 || step>39)
+    {
+        step = rotation_type;
+    }*/
 
     switch (step)
     {
@@ -670,56 +676,105 @@ void Mino::srsystem(int rotation_type)
     case 0:
         if (collisionsrs())
         {
+            collisionright();
+            if (collisionf)
+            {
+                pos--;
+            }
+            collisionleft();
+            if (collisionf)
+            {
+                pos++;
+            }
             step = 1;
 
         }
         else
         {
             step = 40;
+
         }
+
         break;
     case 1:
         if (collisionsrs())
         {
-            pos++;
+            while (collisionf)
+            {
+                collisionright();
+                pos--;
+
+            }
+            while (collisionf)
+            {
+                collisionright();
+                pos++;
+
+            }
 
             step = 2;
         }
-        else
-        {
-            step = 40;
-        }
+
         break;
     case 2:
         if (collisionsrs())
         {
-            down--;
+            down = downtmp;
+            pos = postmp;
+            
+            while (srs)
+            {
+                collisionsrs();
+                collisionright();
+                    if (!collisionf)
+                    {
+                        pos++;
+
+                    }
+                    else
+                    {
+                        break;
+                    }
+
+            }
+                while (srs)
+                {
+                    collisionsrs();
+                    pos--;
+
+                }
 
             step = 3;
         }
-        else
-        {
-            step = 40;
-        }
+
         break;
     case 3:
 
 
         if (collisionsrs())
         {
-            down++;
 
+            while (collisionf)
+            {
+                collisionright();
+                pos--;
+
+            }
+            while (collisionf)
+            {
+                collisionright();
+                pos++;
+
+            }
             step = 4;
         }
-        else
-        {
-            step = 40;
-        }
+
         break;
     case 4:
         if (collisionsrs())
         {
             pos++;
+            step = 40;
         }
         break;
         //A→B
@@ -731,10 +786,7 @@ void Mino::srsystem(int rotation_type)
             down = downtmp;
             step = 6;
         }
-        else
-        {
-            step = 40;
-        }
+
         break;
     case 6:
 
@@ -744,10 +796,7 @@ void Mino::srsystem(int rotation_type)
 
             step = 7;
         }
-        else
-        {
-            step = 40;
-        }
+
         break;
     case 7:
 
@@ -758,10 +807,7 @@ void Mino::srsystem(int rotation_type)
 
             step = 8;
         }
-        else
-        {
-            step = 40;
-        }
+
         break;
     case 8:
 
@@ -772,31 +818,26 @@ void Mino::srsystem(int rotation_type)
             down++;
             step = 9;
         }
-        else
-        {
-            step = 40;
-        }
+
         break;
     case 9:
         if (collisionsrs())
         {
             pos--;
+            step = 40;
 
         }
         break;
-        //B→A
+        //B→A(これはできてる)
     case 10:
-
+        pos = postmp; //元の値の戻す
+        down = downtmp;
         if (collisionsrs())
         {
-            pos = postmp; //元の値の戻す
-            down = downtmp;
+
             step = 10;
         }
-        else
-        {
-            step = 40;
-        }
+
         break;
     case 11:
         if (collisionsrs())
@@ -805,10 +846,7 @@ void Mino::srsystem(int rotation_type)
 
             step = 12;
         }
-        else
-        {
-            step = 40;
-        }
+
         break;
     case 12:
         if (collisionsrs())
@@ -817,10 +855,7 @@ void Mino::srsystem(int rotation_type)
 
             step = 13;
         }
-        else
-        {
-            step = 40;
-        }
+
         break;
     case 13:
 
@@ -831,31 +866,26 @@ void Mino::srsystem(int rotation_type)
             down--;
             step = 14;
         }
-        else
-        {
-            step = 40;
-        }
+  
         break;
     case 14:
         if (collisionsrs())
         {
             pos++;
+            step = 40;
 
         }
         break;
         //B→C
     case 15:
-
+        pos = postmp; //元の値の戻す
+        down = downtmp;
         if (collisionsrs())
         {
-            pos = postmp; //元の値の戻す
-            down = downtmp;
+
             step = 16;
         }
-        else
-        {
-            step = 40;
-        }
+  
         break;
     case 16:
         if (collisionsrs())
@@ -864,10 +894,7 @@ void Mino::srsystem(int rotation_type)
 
             step = 17;
         }
-        else
-        {
-            step = 40;
-        }
+
         break;
     case 17:
         if (collisionsrs())
@@ -876,10 +903,7 @@ void Mino::srsystem(int rotation_type)
 
             step = 18;
         }
-        else
-        {
-            step = 40;
-        }
+  
 
         break;
     case 18:
@@ -897,26 +921,21 @@ void Mino::srsystem(int rotation_type)
         {
             pos++;
 
-            step = 20;
-        }
-        else
-        {
             step = 40;
+
         }
+
         break;
         //C→B
     case 20:
-
+        pos = postmp; //元の値の戻す
+        down = downtmp;
         if (collisionsrs())
         {
-            pos = postmp; //元の値の戻す
-            down = downtmp;
+
             step = 21;
         }
-        else
-        {
-            step = 40;
-        }
+
         break;
     case 21:
         if (collisionsrs())
@@ -925,10 +944,7 @@ void Mino::srsystem(int rotation_type)
 
             step = 21;
         }
-        else
-        {
-            step = 40;
-        }
+
         break;
     case 22:
         if (collisionsrs())
@@ -937,10 +953,7 @@ void Mino::srsystem(int rotation_type)
 
             step = 23;
         }
-        else
-        {
-            step = 40;
-        }
+
     case 23:
 
         if (collisionsrs())
@@ -950,31 +963,26 @@ void Mino::srsystem(int rotation_type)
             down++;
             step = 24;
         }
-        else
-        {
-            step = 40;
-        }
+
         break;
     case 24:
         if (collisionsrs())
         {
             pos--;
+            step = 40;
 
         }
         break;
         //C→D
     case 25:
-
+        pos = postmp; //元の値の戻す
+        down = downtmp;
         if (collisionsrs())
         {
-            pos = postmp; //元の値の戻す
-            down = downtmp;
+
             step = 26;
         }
-        else
-        {
-            step = 40;
-        }
+
         break;
     case 26:
 
@@ -984,10 +992,7 @@ void Mino::srsystem(int rotation_type)
 
             step = 27;
         }
-        else
-        {
-            step = 40;
-        }
+ 
         break;
     case 27:
         if (collisionsrs())
@@ -996,10 +1001,7 @@ void Mino::srsystem(int rotation_type)
 
             step = 28;
         }
-        else
-        {
-            step = 40;
-        }
+
         break;
     case 28:
 
@@ -1010,28 +1012,27 @@ void Mino::srsystem(int rotation_type)
             down++;
             step = 29;
         }
-        else
-        {
-            step = 40;
-        }
+
         break;
     case 29:
-        pos++;
+        if (collisionsrs())
+        {
+            pos++;
+            step = 40;
+        }
+
 
         break;
         //D→C
     case 30:
-
+        pos = postmp; //元の値の戻す
+        down = downtmp;
         if (collisionsrs())
         {
-            pos = postmp; //元の値の戻す
-            down = downtmp;
+
             step = 31;
         }
-        else
-        {
-            step = 40;
-        }
+
         break;
     case 31:
         if (collisionsrs())
@@ -1040,10 +1041,7 @@ void Mino::srsystem(int rotation_type)
 
             step = 32;
         }
-        else
-        {
-            step = 40;
-        }
+
         break;
     case 32:
         if (collisionsrs())
@@ -1052,10 +1050,7 @@ void Mino::srsystem(int rotation_type)
 
             step = 33;
         }
-        else
-        {
-            step = 40;
-        }
+
         break;
     case 33:
 
@@ -1066,32 +1061,27 @@ void Mino::srsystem(int rotation_type)
             down--;
             step = 34;
         }
-        else
-        {
-            step = 40;
-        }
+
         break;
     case 34:
         if (collisionsrs())
         {
             pos--;
+            step = 40;
 
         }
 
         break;
         //D→A
     case 35:
-
+        pos = postmp; //元の値の戻す
+        down = downtmp;
         if (collisionsrs())
         {
-            pos = postmp; //元の値の戻す
-            down = downtmp;
+
             step = 36;
         }
-        else
-        {
-            step = 40;
-        }
+
         break;
     case 36:
         if (collisionsrs())
@@ -1100,10 +1090,7 @@ void Mino::srsystem(int rotation_type)
 
             step = 37;
         }
-        else
-        {
-            step = 40;
-        }
+
         break;
     case 37:
         if (collisionsrs())
@@ -1112,10 +1099,7 @@ void Mino::srsystem(int rotation_type)
 
             step = 38;
         }
-        else
-        {
-            step = 40;
-        }
+  
         break;
     case 38:
 
@@ -1126,19 +1110,19 @@ void Mino::srsystem(int rotation_type)
             down--;
             step = 39;
         }
-        else
-        {
-            step = 40;
-        }
+
         break;
     case 39:
         if (collisionsrs())
         {
             pos--;
+            step = 40;
 
         }
         break;
     default:
+        step = rotation_type;
+
         break;
 
     }
