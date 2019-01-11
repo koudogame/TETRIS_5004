@@ -63,7 +63,7 @@ bool Mino::init()
     }
 
     nextpattern();
-    down = -3;
+    down = -1;
     pos = 3;
     score = 0;
     fall_speed = 0;
@@ -699,16 +699,25 @@ void Mino::srsystem(int rotation_type)
     case 1:
         if (collisionsrs())
         {
-            while (collisionf)
+            while (srs)
             {
+                collisionsrs();
                 collisionright();
-                pos--;
+                if (!collisionf)
+                {
+                    pos++;
+
+                }
+                else
+                {
+                    break;
+                }
 
             }
-            while (collisionf)
+            while (srs)
             {
-                collisionright();
-                pos++;
+                collisionsrs();
+                pos--;
 
             }
 
@@ -754,16 +763,25 @@ void Mino::srsystem(int rotation_type)
         if (collisionsrs())
         {
 
-            while (collisionf)
+            while (srs)
             {
+                collisionsrs();
                 collisionright();
-                pos--;
+                if (!collisionf)
+                {
+                    pos++;
+
+                }
+                else
+                {
+                    break;
+                }
 
             }
-            while (collisionf)
+            while (srs)
             {
-                collisionright();
-                pos++;
+                collisionsrs();
+                pos--;
 
             }
             step = 4;
