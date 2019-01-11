@@ -144,22 +144,12 @@ int Mino::update()
 
     //当たり判定
     collisiondown();
-
-    //スーパーローテーション用当たり判定
-    for (int y = 0; y < block_height; y++) {
-        for (int x = 0; x < block_width; x++) {
-            if (test[y][x] != 0) {
-                if (main[0][down][pos] != 0) {
-                    srs = true;
-                }
-            }
-        }
-    }
+    
 
     //回転先が埋まっていた場合スーパーローテーション関数で補正をかける
     if (srs)
     {
-        srsystem();
+        srsystem(turnover_rate);
     }
 
     //実時間で落とす
@@ -292,6 +282,7 @@ int Mino::update()
     {
         left = 0;
         collisionleft();
+        collisionsrs();
 
         if (!collisionf)
         {
@@ -310,6 +301,8 @@ int Mino::update()
 
         right = 0;
         collisionright();
+        collisionsrs();
+
         if (!collisionf)
         {
             collisionf = false;
@@ -322,41 +315,54 @@ int Mino::update()
     {
         oldtime = nowtime;
         nowtime = timeGetTime();
-
-        for (int i = 0; i < 4; i++)
+        turnover_rate--;
+        if (turnover_rate < 0)
         {
-            for (int j = 0; j < 4; j++)
-            {
-                tmp[i][j] = test[j][i];
-            }
+            turnover_rate = 3;
         }
 
-        //Tミノは例外判定で回転軸ずらす
-        if (a != 0 && a != 1)
-        {
             for (int i = 0; i < 4; i++)
             {
                 for (int j = 0; j < 4; j++)
                 {
-                    test[4 - i][j] = tmp[i][j];
+                    tmp[i][j] = test[j][i];
                 }
             }
-        }
-        else
-        {
-            for (int i = 0; i < 4; i++)
+
+            //Tミノは例外判定で回転軸ずらす
+            if (a != 0 && a != 1)
             {
-                for (int j = 0; j < 4; j++)
+                for (int i = 0; i < 4; i++)
                 {
-                    test[3 - i][j] = tmp[i][j];
+                    for (int j = 0; j < 4; j++)
+                    {
+                        test[4 - i][j] = tmp[i][j];
+                    }
                 }
             }
-        }
+            else
+            {
+                for (int i = 0; i < 4; i++)
+                {
+                    for (int j = 0; j < 4; j++)
+                    {
+                        test[3 - i][j] = tmp[i][j];
+                    }
+                }
+            }
+
+            collisionsrs();
+
     }
 
     //回転90
     if (key_tracker.pressed.RightShift || pad_tracker.b == GamePad::ButtonStateTracker::PRESSED)
     {
+        turnover_rate++;
+        if (turnover_rate >=3 )
+        {
+            turnover_rate = 0;
+        }
         oldtime = nowtime;
         nowtime = timeGetTime();
 
@@ -535,6 +541,22 @@ void Mino::collisiondown()
     }
 }
 
+bool Mino::collisionsrs()
+{
+    //スーパーローテーション用当たり判定
+    for (int y = 0; y < block_height; y++) {
+        for (int x = 0; x < block_width; x++) {
+            if (test[y][x] != 0) {
+                if (main[0][down + y - 1][pos + x] != 0) {
+                    return true;
+                }
+            }
+        }
+    }
+    return false;
+}
+
+
 //ネクスト呼び出し
 void Mino::nextpattern()
 {
@@ -588,6 +610,37 @@ void Mino::nextpattern()
                 ghost[i][j] = mino[a][i][j];
             }
         }
+
+
+        for (int i = 0; i < 4; i++)
+        {
+            for (int j = 0; j < 4; j++)
+            {
+                tmp[i][j] = test[j][i];
+            }
+        }
+        //Tミノは例外判定で回転軸ずらす
+        if (a != 0 && a != 1)
+        {
+            for (int i = 0; i < 4; i++)
+            {
+                for (int j = 0; j < 4; j++)
+                {
+                    test[i][4 - j] = tmp[i][j];
+                }
+            }
+        }
+        else
+        {
+            for (int i = 0; i < 4; i++)
+            {
+                for (int j = 0; j < 4; j++)
+                {
+                    test[i][3 - j] = tmp[i][j];
+                }
+            }
+        }
+
         pos = 3;
         down = 0;
         nextblock = false;
@@ -599,10 +652,496 @@ void Mino::nextpattern()
 }
 
 //スーパーローテーション(未実装)
-void Mino::srsystem()
+void Mino::srsystem(int rotation_type)
 {
-	//どこかにぶつかっている状態での回転に補正をかける
+    int step = rotation_type*5;
+    int postmp = pos; //posを保存
+    int downtmp = down; //downを保存
+    //*****************
+    //A 0度
+    //B 90度
+    //C 180度
+    //D 270度
+    //*****************
 
+    switch (step)
+    {
+        //A→D
+    case 0:
+        if (collisionsrs())
+        {
+            step = 1;
+
+        }
+        else
+        {
+            step = 40;
+        }
+        break;
+    case 1:
+        if (collisionsrs())
+        {
+            pos++;
+
+            step = 2;
+        }
+        else
+        {
+            step = 40;
+        }
+        break;
+    case 2:
+        if (collisionsrs())
+        {
+            down--;
+
+            step = 3;
+        }
+        else
+        {
+            step = 40;
+        }
+        break;
+    case 3:
+
+
+        if (collisionsrs())
+        {
+            down++;
+
+            step = 4;
+        }
+        else
+        {
+            step = 40;
+        }
+        break;
+    case 4:
+        if (collisionsrs())
+        {
+            pos++;
+        }
+        break;
+        //A→B
+    case 5:
+
+        if (collisionsrs())
+        {
+            pos = postmp; //元の値の戻す
+            down = downtmp;
+            step = 6;
+        }
+        else
+        {
+            step = 40;
+        }
+        break;
+    case 6:
+
+        if (collisionsrs())
+        {
+            pos--;
+
+            step = 7;
+        }
+        else
+        {
+            step = 40;
+        }
+        break;
+    case 7:
+
+
+        if (collisionsrs())
+        {
+            down--;
+
+            step = 8;
+        }
+        else
+        {
+            step = 40;
+        }
+        break;
+    case 8:
+
+        if (collisionsrs())
+        {
+            pos = postmp; //元の値の戻す
+            down = downtmp;
+            down++;
+            step = 9;
+        }
+        else
+        {
+            step = 40;
+        }
+        break;
+    case 9:
+        if (collisionsrs())
+        {
+            pos--;
+
+        }
+        break;
+        //B→A
+    case 10:
+
+        if (collisionsrs())
+        {
+            pos = postmp; //元の値の戻す
+            down = downtmp;
+            step = 10;
+        }
+        else
+        {
+            step = 40;
+        }
+        break;
+    case 11:
+        if (collisionsrs())
+        {
+            pos++;
+
+            step = 12;
+        }
+        else
+        {
+            step = 40;
+        }
+        break;
+    case 12:
+        if (collisionsrs())
+        {
+            down++;
+
+            step = 13;
+        }
+        else
+        {
+            step = 40;
+        }
+        break;
+    case 13:
+
+        if (collisionsrs())
+        {
+            pos = postmp; //元の値の戻す
+            down = downtmp;
+            down--;
+            step = 14;
+        }
+        else
+        {
+            step = 40;
+        }
+        break;
+    case 14:
+        if (collisionsrs())
+        {
+            pos++;
+
+        }
+        break;
+        //B→C
+    case 15:
+
+        if (collisionsrs())
+        {
+            pos = postmp; //元の値の戻す
+            down = downtmp;
+            step = 16;
+        }
+        else
+        {
+            step = 40;
+        }
+        break;
+    case 16:
+        if (collisionsrs())
+        {
+            pos++;
+
+            step = 17;
+        }
+        else
+        {
+            step = 40;
+        }
+        break;
+    case 17:
+        if (collisionsrs())
+        {
+            down++;
+
+            step = 18;
+        }
+        else
+        {
+            step = 40;
+        }
+
+        break;
+    case 18:
+        if (collisionsrs())
+        {
+            pos = postmp; //元の値の戻す
+            down = downtmp;
+            down--;
+        }
+
+
+        break;
+    case 19:
+        if (collisionsrs())
+        {
+            pos++;
+
+            step = 20;
+        }
+        else
+        {
+            step = 40;
+        }
+        break;
+        //C→B
+    case 20:
+
+        if (collisionsrs())
+        {
+            pos = postmp; //元の値の戻す
+            down = downtmp;
+            step = 21;
+        }
+        else
+        {
+            step = 40;
+        }
+        break;
+    case 21:
+        if (collisionsrs())
+        {
+            pos--;
+
+            step = 21;
+        }
+        else
+        {
+            step = 40;
+        }
+        break;
+    case 22:
+        if (collisionsrs())
+        {
+            down--;
+
+            step = 23;
+        }
+        else
+        {
+            step = 40;
+        }
+    case 23:
+
+        if (collisionsrs())
+        {
+            pos = postmp; //元の値の戻す
+            down = downtmp;
+            down++;
+            step = 24;
+        }
+        else
+        {
+            step = 40;
+        }
+        break;
+    case 24:
+        if (collisionsrs())
+        {
+            pos--;
+
+        }
+        break;
+        //C→D
+    case 25:
+
+        if (collisionsrs())
+        {
+            pos = postmp; //元の値の戻す
+            down = downtmp;
+            step = 26;
+        }
+        else
+        {
+            step = 40;
+        }
+        break;
+    case 26:
+
+        if (collisionsrs())
+        {
+            pos++;
+
+            step = 27;
+        }
+        else
+        {
+            step = 40;
+        }
+        break;
+    case 27:
+        if (collisionsrs())
+        {
+            down--;
+
+            step = 28;
+        }
+        else
+        {
+            step = 40;
+        }
+        break;
+    case 28:
+
+        if (collisionsrs())
+        {
+            pos = postmp; //元の値の戻す
+            down = downtmp;
+            down++;
+            step = 29;
+        }
+        else
+        {
+            step = 40;
+        }
+        break;
+    case 29:
+        pos++;
+
+        break;
+        //D→C
+    case 30:
+
+        if (collisionsrs())
+        {
+            pos = postmp; //元の値の戻す
+            down = downtmp;
+            step = 31;
+        }
+        else
+        {
+            step = 40;
+        }
+        break;
+    case 31:
+        if (collisionsrs())
+        {
+            pos--;
+
+            step = 32;
+        }
+        else
+        {
+            step = 40;
+        }
+        break;
+    case 32:
+        if (collisionsrs())
+        {
+            down++;
+
+            step = 33;
+        }
+        else
+        {
+            step = 40;
+        }
+        break;
+    case 33:
+
+        if (collisionsrs())
+        {
+            pos = postmp; //元の値の戻す
+            down = downtmp;
+            down--;
+            step = 34;
+        }
+        else
+        {
+            step = 40;
+        }
+        break;
+    case 34:
+        if (collisionsrs())
+        {
+            pos--;
+
+        }
+
+        break;
+        //D→A
+    case 35:
+
+        if (collisionsrs())
+        {
+            pos = postmp; //元の値の戻す
+            down = downtmp;
+            step = 36;
+        }
+        else
+        {
+            step = 40;
+        }
+        break;
+    case 36:
+        if (collisionsrs())
+        {
+            pos--;
+
+            step = 37;
+        }
+        else
+        {
+            step = 40;
+        }
+        break;
+    case 37:
+        if (collisionsrs())
+        {
+            down++;
+
+            step = 38;
+        }
+        else
+        {
+            step = 40;
+        }
+        break;
+    case 38:
+
+        if (collisionsrs())
+        {
+            pos = postmp; //元の値の戻す
+            down = downtmp;
+            down--;
+            step = 39;
+        }
+        else
+        {
+            step = 40;
+        }
+        break;
+    case 39:
+        if (collisionsrs())
+        {
+            pos--;
+
+        }
+        break;
+    default:
+        break;
+
+    }
 }
 
 //ホールド

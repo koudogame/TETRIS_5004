@@ -26,7 +26,7 @@ public:
     int update();
     void ghostupdate();
 
-    void srsystem(); //スーパーローテーション
+    void srsystem(int rotation_type); //スーパーローテーション
     void change();
 
     //描画
@@ -46,6 +46,12 @@ public:
     void collisionleft();
     void collisionright();
     void collisiondown();
+    bool collisionsrs();
+
+    //スーパーローテーション
+    int turnover_rate = 0; //ミノの回転率
+    int type = 40; //0 = a→d 2 = 
+    bool srstest = false;
 
     //ネクスト
     void nextpattern();
