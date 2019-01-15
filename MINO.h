@@ -48,13 +48,15 @@ public:
     void collisiondown();
     bool collisionsrs();
 
+
+    //ネクスト
+    void nextpattern();
+
     //スーパーローテーション
     int turnover_rate = 0; //ミノの回転率
     int type = 40; //0 = a→d 2 = 
     bool srstest = false;
 
-    //ネクスト
-    void nextpattern();
 
     //ミノ
     int main[4][23][12]={ 0 };  //積みあがる本体(人数分
@@ -62,6 +64,7 @@ public:
     const int next0[7]{ 0,1,2,3,4,5,6 }; //ネクストパターン 見本
     int next1[7]{ 0,1,2,3,4,5,6 }; //ネクストパターン
     int next2[7]{ 0,1,2,3,4,5,6 }; //ネクストパターン補充用
+    float transparency = 1.0F; //透明度
     const int mino[7][4][4] = {
         { //Iミノ
         {0,0,1,0},
@@ -107,7 +110,7 @@ public:
         }
     };
 
-    int test [4][4] = { 0 };
+    int test [4][4] = { 0 }; //流す用の配列
     int clearlinepos[22] = { 0 }; //横一列そろっている場所の確認用
    
     //回転時のtmp

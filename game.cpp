@@ -91,26 +91,25 @@ int Game::update(int player_num)
 //描画
 void Game::draw()
 {
-    ui_.draw(tetoris_s);
-    ui_.inputdraw(tetoris_s);
-    mino_.draw(0);
-    ui_.Hiddendraw();
-    mino_.maindraw(0);
-    mino_.nextdraw(0);
-    mino_.holddraw(0);
-    mino_.leveldraw();
-    mino_.scoredraw();
-    
+    ui_.draw(tetoris_s); //背景
+    ui_.inputdraw(tetoris_s); //入力情報
+    mino_.draw(0); //動かすやつ
+    ui_.Hiddendraw(); //隠し
+    mino_.maindraw(0); //積み上げ
+    mino_.nextdraw(0); //ネクスト
+    mino_.holddraw(0); //ホールド
+    mino_.leveldraw(); //レベル
+    mino_.scoredraw(); //スコア
 
     if (!play)
     {
-        start_.draw();
-        start_.cntdraw();
-        start_.godraw();
+        start_.draw(); //スタートメニュー
+        start_.cntdraw(); //カウントダウン
+        start_.godraw(); //GO!!
     }
-    else {
-        mino_.ghostdraw();
-
+    else
+    {
+        mino_.ghostdraw(); //ゴースト
     }
 
     //ポーズ
@@ -152,8 +151,6 @@ void Game::drawmulti()
         pause_.draw();
         pause_.cursordraw();
     }
-
-
 }
 
 //破棄

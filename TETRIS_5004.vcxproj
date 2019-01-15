@@ -178,6 +178,7 @@
     <ClInclude Include="Error.h" />
     <ClInclude Include="field.h" />
     <ClInclude Include="game.h" />
+    <ClInclude Include="gameover.h" />
     <ClInclude Include="key.h" />
     <ClInclude Include="MINO.h" />
     <ClInclude Include="option.h" />

@@ -188,6 +188,7 @@ int Mino::update()
     {
         if (clearlinepos[i] == 0)
         {
+
             for (int j = 1; j < 11; j++)
             {
                 //配列の初期化
@@ -291,12 +292,16 @@ int Mino::update()
         }
     }
 
+    if (key_tracker.released.Left || pad_tracker.dpadLeft == GamePad::ButtonStateTracker::RELEASED)
+    {
+        left = 0;
+    }
     //右移動
     if (state.Right || pad.dpad.right)
     {
         right++;
     }
-    if (right % 50 == 7 || pad_tracker.dpadRight == GamePad::ButtonStateTracker::PRESSED || key_tracker.pressed.Right)
+    if (right % 50 == 10 || pad_tracker.dpadRight == GamePad::ButtonStateTracker::PRESSED || key_tracker.pressed.Right)
     {
 
         right = 0;
@@ -309,6 +314,11 @@ int Mino::update()
             ghostupdate();
             pos++;
         }
+    }
+
+    if (key_tracker.released.Right || pad_tracker.dpadRight == GamePad::ButtonStateTracker::RELEASED)
+    {
+        right = 0;
     }
     //回転270
     if (key_tracker.pressed.Enter || pad_tracker.a == GamePad::ButtonStateTracker::PRESSED)
@@ -1437,69 +1447,37 @@ void Mino::nextdraw(int player_num)
     Ttrim.bottom = Ttrim.top + 14;
     Ttrim.right = Ttrim.left + 14;
 
-    //1個目
-    for (int i = 0; i < 4; i++)
+    //描画
+    for (int l = 1; l < 4; l++)
     {
-        for (int j = 0; j < 4; j++)
+        for (int i = 0; i < 4; i++)
         {
-            if (mino[next1[1]][i][j]== 0+1) //水色
-                Sprite::draw(texture_, Vector2(610 + (14 * j), 99 + (15 * i)), &trim);
-            else if (mino[next1[1]][i][j] == 1+1) //黄色
-                Sprite::draw(texture_, Vector2(610 + (14 * j), 99 + (15 * i)), &Otrim);
-            else if (mino[next1[1]][i][j] == 2+1) //紫
-                Sprite::draw(texture_, Vector2(610 + (14 * j), 99 + (15 * i)), &Ttrim);
-            else if (mino[next1[1]][i][j] == 3+1) //青
-                Sprite::draw(texture_, Vector2(610 + (14 * j), 99 + (15 * i)), &Jtrim);
-            else if (mino[next1[1]][i][j] == 4+1) //オレンジ
-                Sprite::draw(texture_, Vector2(610 + (14 * j), 99 + (15 * i)), &Ltrim);
-            else if (mino[next1[1]][i][j] == 5+1) //緑
-                Sprite::draw(texture_, Vector2(610 + (14 * j), 99 + (15 * i)), &Strim);
-            else if (mino[next1[1]][i][j] == 6+1) //赤
-                Sprite::draw(texture_, Vector2(610 + (14 * j), 99 + (15 * i)), &Ztrim);
-        }
-    }
+            for (int j = 0; j < 4; j++)
+            {
 
-    //2個目
-    for (int i = 0; i < 4; i++)
-    {
-        for (int j = 0; j < 4; j++)
-        {
-            if (mino[next1[2]][i][j] == 0 + 1) //水色
-                Sprite::draw(texture_, Vector2(654 + (14 * j), 99 + (15 * i)), &trim);
-            else if (mino[next1[2]][i][j] == 1 + 1) //黄色
-                Sprite::draw(texture_, Vector2(654 + (14 * j), 99 + (15 * i)), &Otrim);
-            else if (mino[next1[2]][i][j] == 2 + 1) //紫
-                Sprite::draw(texture_, Vector2(654 + (14 * j), 99 + (15 * i)), &Ttrim);
-            else if (mino[next1[2]][i][j] == 3 + 1) //青
-                Sprite::draw(texture_, Vector2(654 + (14 * j), 99 + (15 * i)), &Jtrim);
-            else if (mino[next1[2]][i][j] == 4 + 1) //オレンジ
-                Sprite::draw(texture_, Vector2(654 + (14 * j), 99 + (15 * i)), &Ltrim);
-            else if (mino[next1[2]][i][j] == 5 + 1) //緑
-                Sprite::draw(texture_, Vector2(654 + (14 * j), 99 + (15 * i)), &Strim);
-            else if (mino[next1[2]][i][j] == 6 + 1) //赤
-                Sprite::draw(texture_, Vector2(654 + (14 * j), 99 + (15 * i)), &Ztrim);
-        }
-    }
+                ////水色
+                //RECT trim;
+                //trim.top = 967;
+                //trim.left = 899+(14*(mino[next1[l]][i][j]+1));
+                //trim.bottom = trim.top + 14;
+                //trim.right = trim.left + 14;
+                //Sprite::draw(texture_, Vector2(565 + (14 * j) + (l * 45), 99 + (15 * i)), &trim);
 
-    //3個目
-    for (int i = 0; i < 4; i++)
-    {
-        for (int j = 0; j < 4; j++)
-        {
-            if (mino[next1[3]][i][j] == 0 + 1) //水色
-                Sprite::draw(texture_, Vector2(699 + (14 * j), 99 + (15 * i)), &trim);
-            else if (mino[next1[3]][i][j] == 1 + 1) //黄色
-                Sprite::draw(texture_, Vector2(699 + (14 * j), 99 + (15 * i)), &Otrim);
-            else if (mino[next1[3]][i][j] == 2 + 1) //紫
-                Sprite::draw(texture_, Vector2(699 + (14 * j), 99 + (15 * i)), &Ttrim);
-            else if (mino[next1[3]][i][j] == 3 + 1) //青
-                Sprite::draw(texture_, Vector2(699 + (14 * j), 99 + (15 * i)), &Jtrim);
-            else if (mino[next1[3]][i][j] == 4 + 1) //オレンジ
-                Sprite::draw(texture_, Vector2(699 + (14 * j), 99 + (15 * i)), &Ltrim);
-            else if (mino[next1[3]][i][j] == 5 + 1) //緑
-                Sprite::draw(texture_, Vector2(699 + (14 * j), 99 + (15 * i)), &Strim);
-            else if (mino[next1[3]][i][j] == 6 + 1) //赤
-                Sprite::draw(texture_, Vector2(699 + (14 * j), 99 + (15 * i)), &Ztrim);
+                if (mino[next1[l]][i][j] == 0 + 1) //水色
+                    Sprite::draw(texture_, Vector2(565 + (14 * j) + (l * 45), 99 + (15 * i)), &trim);
+                else if (mino[next1[l]][i][j] == 1 + 1) //黄色
+                    Sprite::draw(texture_, Vector2(565 + (14 * j) + (l * 45), 99 + (15 * i)), &Otrim);
+                else if (mino[next1[l]][i][j] == 2 + 1) //紫
+                    Sprite::draw(texture_, Vector2(565 + (14 * j) + (l * 45), 99 + (15 * i)), &Ttrim);
+                else if (mino[next1[l]][i][j] == 3 + 1) //青
+                    Sprite::draw(texture_, Vector2(565 + (14 * j) + (l * 45), 99 + (15 * i)), &Jtrim);
+                else if (mino[next1[l]][i][j] == 4 + 1) //オレンジ
+                    Sprite::draw(texture_, Vector2(565 + (14 * j) + (l * 45), 99 + (15 * i)), &Ltrim);
+                else if (mino[next1[l]][i][j] == 5 + 1) //緑
+                    Sprite::draw(texture_, Vector2(565 + (14 * j) + (l * 45), 99 + (15 * i)), &Strim);
+                else if (mino[next1[l]][i][j] == 6 + 1) //赤
+                    Sprite::draw(texture_, Vector2(565 + (14 * j) + (l * 45), 99 + (15 * i)), &Ztrim);
+            }
         }
     }
 }
@@ -1711,6 +1689,22 @@ void Mino::reset()
 
       score = 0;
       fall_speed = 0;
+
+
+      //見本からコピー
+      for (int i = 0; i < 7; i++)
+      {
+          next2[i] = next0[i];
+      }
+
+      //シャッフル
+      for (int i = 0; i < 7; i++)
+      {
+          int j = rand() % 7;
+          int t = next2[i];
+          next2[i] = next2[j];
+          next2[j] = t;
+      }
 }
 
 //ゴーストの描画
