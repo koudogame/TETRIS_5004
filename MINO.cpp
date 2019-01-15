@@ -166,7 +166,7 @@ int Mino::update()
         }
     }
 
-    //ブロックを消す処理
+    //ブロックを消す場所の確認
     for (int i = 0; i < 22; i++)
     {
         for (int j = 1; j < 11; j++)
@@ -183,7 +183,7 @@ int Mino::update()
         }
     }
 
-    //消された後の落とす処理
+    //消す処理と消された後の落とす処理
     for (int i = 0; i < 22; i++)
     {
         if (clearlinepos[i] == 0)
@@ -313,9 +313,14 @@ int Mino::update()
     //回転270
     if (key_tracker.pressed.Enter || pad_tracker.a == GamePad::ButtonStateTracker::PRESSED)
     {
-        oldtime = nowtime;
-        nowtime = timeGetTime();
+        if (Accumulate)
+        {
+            oldtime = nowtime;
+            nowtime = timeGetTime();
+        }
+
         turnover_rate--;
+
         if (turnover_rate < 0)
         {
             turnover_rate = 3;
@@ -362,6 +367,12 @@ int Mino::update()
         if (turnover_rate >3 )
         {
             turnover_rate = 0;
+        }
+
+        if (Accumulate)
+        {
+            oldtime = nowtime;
+            nowtime = timeGetTime();
         }
         oldtime = nowtime;
         nowtime = timeGetTime();
@@ -1253,26 +1264,30 @@ void Mino::draw(int player_num)
     Ttrim.right = Ttrim.left + 26;
 
     //描画
-    for (int i = 0; i < 4; i++)
+    if (!gameover)
     {
-        for (int j = 0; j < 4; j++)
+        for (int i = 0; i < 4; i++)
         {
-            if (test[i][j] == 1)
-                Sprite::draw(texture_, Vector2(510 + (25 * pos) + (25 * j) - 25, 221 + (25 * down) - (25 * up) - 100 + (25 * i)), &rect);
-            else if (test[i][j] == 2)
-                Sprite::draw(texture_, Vector2(510 + (25 * pos) + (25 * j) - 25, 221 + (25 * down) - (25 * up) - 100 + (25 * i)), &Otrim);
-            else if (test[i][j] == 3)
-                Sprite::draw(texture_, Vector2(510 + (25 * pos) + (25 * j) - 25, 221 + (25 * down) - (25 * up) - 100 + (25 * i)), &Ttrim);
-            else if (test[i][j] == 4)
-                Sprite::draw(texture_, Vector2(510 + (25 * pos) + (25 * j) - 25, 221 + (25 * down) - (25 * up) - 100 + (25 * i)), &Jtrim);
-            else if (test[i][j] == 5)
-                Sprite::draw(texture_, Vector2(510 + (25 * pos) + (25 * j) - 25, 221 + (25 * down) - (25 * up) - 100 + (25 * i)), &Ltrim);
-            else if (test[i][j] == 6)
-                Sprite::draw(texture_, Vector2(510 + (25 * pos) + (25 * j) - 25, 221 + (25 * down) - (25 * up) - 100 + (25 * i)), &Strim);
-            else if (test[i][j] == 7)
-                Sprite::draw(texture_, Vector2(510 + (25 * pos) + (25 * j) - 25, 221 + (25 * down) - (25 * up) - 100 + (25 * i)), &Ztrim);
+            for (int j = 0; j < 4; j++)
+            {
+                if (test[i][j] == 1)
+                    Sprite::draw(texture_, Vector2(510 + (25 * pos) + (25 * j) - 25, 221 + (25 * down) - (25 * up) - 100 + (25 * i)), &rect);
+                else if (test[i][j] == 2)
+                    Sprite::draw(texture_, Vector2(510 + (25 * pos) + (25 * j) - 25, 221 + (25 * down) - (25 * up) - 100 + (25 * i)), &Otrim);
+                else if (test[i][j] == 3)
+                    Sprite::draw(texture_, Vector2(510 + (25 * pos) + (25 * j) - 25, 221 + (25 * down) - (25 * up) - 100 + (25 * i)), &Ttrim);
+                else if (test[i][j] == 4)
+                    Sprite::draw(texture_, Vector2(510 + (25 * pos) + (25 * j) - 25, 221 + (25 * down) - (25 * up) - 100 + (25 * i)), &Jtrim);
+                else if (test[i][j] == 5)
+                    Sprite::draw(texture_, Vector2(510 + (25 * pos) + (25 * j) - 25, 221 + (25 * down) - (25 * up) - 100 + (25 * i)), &Ltrim);
+                else if (test[i][j] == 6)
+                    Sprite::draw(texture_, Vector2(510 + (25 * pos) + (25 * j) - 25, 221 + (25 * down) - (25 * up) - 100 + (25 * i)), &Strim);
+                else if (test[i][j] == 7)
+                    Sprite::draw(texture_, Vector2(510 + (25 * pos) + (25 * j) - 25, 221 + (25 * down) - (25 * up) - 100 + (25 * i)), &Ztrim);
+            }
         }
     }
+
 }
 
 //積みあがるやつ
@@ -1701,6 +1716,7 @@ void Mino::reset()
 //ゴーストの描画
 void Mino::ghostdraw()
 {
+    Color color = Color(1.0F, 1.0F, 1.0F, 0.6F);
 
     //水色
     RECT rect;
@@ -1757,19 +1773,19 @@ void Mino::ghostdraw()
         for (int j = 0; j < 4; j++)
         {
             if (test[i][j] == 1)
-                Sprite::draw(texture_, Vector2(510 + (25 * pos) + (25 * j) - 25, 246 + (25 * gdown) - (25 * up) - 125 + (25 * i)), &rect);
+                Sprite::draw(texture_,Vector2(510 + (25 * pos) + (25 * j) - 25, 246 + (25 * gdown) - (25 * up) - 125 + (25 * i)), &rect,color);
             else if (test[i][j] == 2)
-                Sprite::draw(texture_, Vector2(510 + (25 * pos) + (25 * j) - 25, 246 + (25 * gdown) - (25 * up) - 125 + (25 * i)), &Otrim);
+                Sprite::draw(texture_, Vector2(510 + (25 * pos) + (25 * j) - 25, 246 + (25 * gdown) - (25 * up) - 125 + (25 * i)), &Otrim, color);
             else if (test[i][j] == 3)
-                Sprite::draw(texture_, Vector2(510 + (25 * pos) + (25 * j) - 25, 246 + (25 * gdown) - (25 * up) - 125 + (25 * i)), &Ttrim);
+                Sprite::draw(texture_, Vector2(510 + (25 * pos) + (25 * j) - 25, 246 + (25 * gdown) - (25 * up) - 125 + (25 * i)), &Ttrim, color);
             else if (test[i][j] == 4)
-                Sprite::draw(texture_, Vector2(510 + (25 * pos) + (25 * j) - 25, 246 + (25 * gdown) - (25 * up) - 125 + (25 * i)), &Jtrim);
+                Sprite::draw(texture_, Vector2(510 + (25 * pos) + (25 * j) - 25, 246 + (25 * gdown) - (25 * up) - 125 + (25 * i)), &Jtrim, color);
             else if (test[i][j] == 5)
-                Sprite::draw(texture_, Vector2(510 + (25 * pos) + (25 * j) - 25, 246 + (25 * gdown) - (25 * up) - 125 + (25 * i)), &Ltrim);
+                Sprite::draw(texture_, Vector2(510 + (25 * pos) + (25 * j) - 25, 246 + (25 * gdown) - (25 * up) - 125 + (25 * i)), &Ltrim, color);
             else if (test[i][j] == 6)
-                Sprite::draw(texture_, Vector2(510 + (25 * pos) + (25 * j) - 25, 246 + (25 * gdown) - (25 * up) - 125 + (25 * i)), &Strim);
+                Sprite::draw(texture_, Vector2(510 + (25 * pos) + (25 * j) - 25, 246 + (25 * gdown) - (25 * up) - 125 + (25 * i)), &Strim, color);
             else if (test[i][j] == 7)
-                Sprite::draw(texture_, Vector2(510 + (25 * pos) + (25 * j) - 25, 246 + (25 * gdown) - (25 * up) - 125 + (25 * i)), &Ztrim);
+                Sprite::draw(texture_, Vector2(510 + (25 * pos) + (25 * j) - 25, 246 + (25 * gdown) - (25 * up) - 125 + (25 * i)), &Ztrim, color);
         }
     }
 }

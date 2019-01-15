@@ -41,11 +41,11 @@ void Sprite::begin()
 {
     sprite_->Begin( SpriteSortMode_Deferred, Common::getState()->NonPremultiplied() );
 }
-
 void Sprite::draw(
     ID3D11ShaderResourceView* Texture,
     const Vector2& Position,
     const RECT* Rect,
+    const XMVECTOR Color,
     const float Rotation,
     const Vector2& Scale,
     const Vector2& Origin,
@@ -56,7 +56,7 @@ void Sprite::draw(
         Texture,       // テクスチャ
         Position,      // 座標
         Rect,          // 描画範囲
-        Colors::White, // カラー
+        Color,         // カラー
         Rotation,      // 回転値
         Origin,        //アンカーポイント
         Scale,         //拡縮

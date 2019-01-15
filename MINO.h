@@ -6,7 +6,7 @@
 #define block_width 4
 #define block_height 4
 
-#define fall_time 1500
+#define fall_time 1000
 
 #include"texture.h"
 #include"player.h"
@@ -156,7 +156,7 @@ public:
 	bool gameover = false; //ゲームオーバーになったときｔｒｕｅ
 	int overcnt = 0; //ゲームオーバーになった時の中身の入れ替え変数
     int overcnt2 = 0; //ゲームオーバーになってからメニューが表示されるまでの時間
-
+    int testcnt = 0;
     // 消去数
     int erase = 0;
     int fall_speed = 1;
