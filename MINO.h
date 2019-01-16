@@ -48,7 +48,6 @@ public:
     void collisiondown();
     bool collisionsrs();
 
-
     //ネクスト
     void nextpattern();
 
@@ -56,7 +55,6 @@ public:
     int turnover_rate = 0; //ミノの回転率
     int type = 40; //0 = a→d 2 = 
     bool srstest = false;
-
 
     //ミノ
     int main[4][23][12]={ 0 };  //積みあがる本体(人数分
@@ -152,7 +150,8 @@ public:
     bool holdbutton = false;   //すでにホールドを使用したかの判定
     int holdtmp[4][4] = { 0 }; //ホールドtmp
     int hold[4][4] = { 0 };    //ホールド用
-
+    int hold_a;
+    int holdtmp_a;
     bool srs = false; //スーパーローテーション
 
 	//ゲームオーバー処理関係

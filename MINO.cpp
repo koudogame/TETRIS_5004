@@ -577,7 +577,6 @@ bool Mino::collisionsrs()
     return false;
 }
 
-
 //ネクスト呼び出し
 void Mino::nextpattern()
 {
@@ -672,7 +671,7 @@ void Mino::nextpattern()
 
 }
 
-//スーパーローテーション(未実装)
+//スーパーローテーション(未完成)
 void Mino::srsystem(int rotation_type)
 {
     int step = rotation_type;
@@ -1183,6 +1182,10 @@ void Mino::change()
                     hold[i][j] = holdtmp[i][j];
                 }
             }
+
+            holdtmp_a = hold_a;
+            hold_a = a;
+            a = holdtmp_a;
             holdbutton = true;
             pos = 3;
             down = 0;
@@ -1197,7 +1200,7 @@ void Mino::change()
                     hold[i][j] = mino[a][i][j];
                 }
             }
-
+            hold_a = a;
             shift = true;
             holdcheck = true;
             next++;
@@ -1255,7 +1258,7 @@ void Mino::maindraw(int player_num)
         {
 
             trim.top = 955;
-            trim.left = 688 + (25 * (main[0][i][j] - 1));
+            trim.left = 688 + (25 * (main[player_num][i][j] - 1));
             trim.bottom = trim.top + 25;
             trim.right = trim.left + 25;
             if (main[0][i][j] != 0 && main[0][i][j] != 9)
