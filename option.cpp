@@ -117,7 +117,7 @@ bool Option::update()
     }
 
     //EXIT
-    if (opmenu == 7 && (key_tracker.pressed.Enter || pad_tracker.a == GamePad::ButtonStateTracker::PRESSED)||pad_tracker.start)
+    if (opmenu == 7 && (key_tracker.pressed.Enter || pad_tracker.a == GamePad::ButtonStateTracker::PRESSED)||pad_tracker.start||state.C)
     {
         pstart = 1;
         return false;

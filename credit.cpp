@@ -50,7 +50,7 @@ void Credit::buttondraw()
 {
 
     RECT btrim;
-    btrim.top = 463;
+    btrim.top = 463-129;
     btrim.left = 1536;
     btrim.bottom = btrim.top + 129;
     btrim.right = btrim.left + 128;

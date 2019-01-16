@@ -288,6 +288,7 @@ int WINAPI WinMain( HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLin
                     work_no = kCreditUpdate;
                     break;
                 case kCreditUpdate:
+                    ui.update();
                     if (!credit.update())
                     {
                         //タイトルへ戻る
@@ -364,6 +365,7 @@ int WINAPI WinMain( HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLin
                     work_no = kRankingUpdate;
                     break;
                 case kRankingUpdate:
+                    ui.update();
                     if (!ranking.update())
                     {
                         ranking.destroy();
@@ -432,6 +434,7 @@ int WINAPI WinMain( HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLin
                     game.drawmulti();
                     ui.inputdraw(tetris_multi);
                     break;
+
                 }
 
                 //スプライト描画終了
