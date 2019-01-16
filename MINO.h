@@ -6,7 +6,7 @@
 #define block_width 4
 #define block_height 4
 
-#define fall_time 1000
+#define fall_time 1500
 
 #define SPEED 1
 
