@@ -9,6 +9,7 @@
 #include"player.h"
 #include"adx.h"
 #include"Error.h"
+#include<ctime>
 
 class Scene
 {
@@ -23,8 +24,18 @@ public:
 
     int cnt = 0;
     int cnt2 = 0;
+    bool max = false;
 
     bool cri = false;
-    bool koudo = false;
+    bool koudo = true;
+    bool flip = false;
+    bool end = false;
+    float critrans = 0.0F;
+    float koudotrans = 0.0F;
+
+    int nowtime;
+    int oldtime;
+
+
 
 };

@@ -69,7 +69,36 @@ bool Mino::init()
     fall_speed = 0;
     gdown = down;
 
-    oldtime = timeGetTime();
+    //ミノの設定
+    for (int i = 0; i < 7; i++)
+    {
+        next1[i] = next0[i];
+    }
+
+    //シャッフル
+    for (int i = 0; i < 7; i++)
+    {
+        int j = rand() % 7;
+        int t = next1[i];
+        next1[i] = next1[j];
+        next1[j] = t;
+    }
+
+    for (int i = 0; i < 7; i++)
+    {
+        next2[i] = next0[i];
+    }
+
+    //シャッフル
+    for (int i = 0; i < 7; i++)
+    {
+        int j = rand() % 7;
+        int t = next2[i];
+        next2[i] = next2[j];
+        next2[j] = t;
+    }
+
+    nowtime = timeGetTime();
     return true;
 }
 
@@ -336,38 +365,36 @@ int Mino::update()
             turnover_rate = 3;
         }
 
+        for (int i = 0; i < 4; i++)
+        {
+            for (int j = 0; j < 4; j++)
+            {
+                tmp[i][j] = test[j][i];
+            }
+        }
+
+        //IとOミノは例外判定で回転軸ずらす
+        if (a != 0 && a != 5)
+        {
             for (int i = 0; i < 4; i++)
             {
                 for (int j = 0; j < 4; j++)
                 {
-                    tmp[i][j] = test[j][i];
+                    test[4 - i][j] = tmp[i][j];
                 }
             }
-
-            //IとOミノは例外判定で回転軸ずらす
-            if (a != 0 && a != 5)
+        }
+        else
+        {
+            for (int i = 0; i < 4; i++)
             {
-                for (int i = 0; i < 4; i++)
+                for (int j = 0; j < 4; j++)
                 {
-                    for (int j = 0; j < 4; j++)
-                    {
-                        test[4 - i][j] = tmp[i][j];
-                    }
+                    test[3 - i][j] = tmp[i][j];
                 }
             }
-            else
-            {
-                for (int i = 0; i < 4; i++)
-                {
-                    for (int j = 0; j < 4; j++)
-                    {
-                        test[3 - i][j] = tmp[i][j];
-                    }
-                }
-            }
-
-            collisionsrs();
-
+        }
+        collisionsrs();
     }
 
     //回転90
