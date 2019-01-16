@@ -384,8 +384,7 @@ int Mino::update()
             oldtime = nowtime;
             nowtime = timeGetTime();
         }
-        oldtime = nowtime;
-        nowtime = timeGetTime();
+
 
         for (int i = 0; i < 4; i++)
         {
@@ -643,7 +642,7 @@ void Mino::nextpattern()
             }
         }
         //Tƒ~ƒm‚Í—áŠO”»’è‚Å‰ñ“]Ž²‚¸‚ç‚·
-        if (a != 0 && a != 1)
+        if (a != 0 && a != 5)
         {
             for (int i = 0; i < 4; i++)
             {
