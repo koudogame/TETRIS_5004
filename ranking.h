@@ -18,4 +18,6 @@ public:
     bool update();
     void draw();
     void destroy();
+
+    int num = 0;
 };

@@ -66,7 +66,7 @@ bool Mino::init()
     down = -1;
     pos = 3;
     score = 0;
-    fall_speed = 0;
+    fall_speed = SPEED;
     gdown = down;
 
 
@@ -145,7 +145,7 @@ int Mino::update()
 
     //当たり判定
     collisiondown();
-    
+
 
     //回転先が埋まっていた場合スーパーローテーション関数で補正をかける
     if (srs)
@@ -373,7 +373,7 @@ int Mino::update()
     if (key_tracker.pressed.RightShift || pad_tracker.b == GamePad::ButtonStateTracker::PRESSED)
     {
         turnover_rate++;
-        if (turnover_rate >3 )
+        if (turnover_rate > 3)
         {
             turnover_rate = 0;
         }
@@ -415,7 +415,7 @@ int Mino::update()
             }
         }
     }
-   
+
     //下が当たっていたら積む
     if (nowtime - oldtime >= fall_time && collision_down)
     {
@@ -425,7 +425,7 @@ int Mino::update()
     {
         Accumulate = false;
     }
-    
+
     //積み上げ
     if (Accumulate)
     {

@@ -16,6 +16,17 @@ bool Ranking::init()
         //ƒGƒ‰[
         return false;
     }
+
+    FILE* fp = fopen("ranking.txt", "r");
+    
+    if (fp == NULL)
+    {
+        Error::showDialog("ranking.txt‚Ì“Ç‚İ‚İ‚É¸”s‚µ‚Ü‚µ‚½");
+        return false;
+    }
+
+
+
     return true;
 }
 

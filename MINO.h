@@ -8,6 +8,8 @@
 
 #define fall_time 1000
 
+#define SPEED 1
+
 #include"texture.h"
 #include"player.h"
 #include"sprite.h"
@@ -161,7 +163,7 @@ public:
     int testcnt = 0;
     // Á‹”
     int erase = 0;
-    int fall_speed = 1;
+    int fall_speed = SPEED;
 
     //ƒXƒRƒA
     int score = 0;
