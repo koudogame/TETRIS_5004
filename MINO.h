@@ -8,7 +8,7 @@
 
 #define fall_time 1500
 
-#define SPEED 1
+#define SPEED 1 //‰ŠúƒŒƒxƒ‹i‘¬“x)
 
 #include"texture.h"
 #include"player.h"
