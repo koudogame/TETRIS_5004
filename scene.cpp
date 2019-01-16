@@ -36,21 +36,18 @@ bool Scene::update()
 
         if (!flip)
         {
-            if (cnt >= 5)
-            {
-                koudotrans += 0.03F;
-                cnt = 0;
-            }
+            koudotrans += 0.01F; //不透明度をインクリメント
 
-            if (koudotrans >= 1.0F)
+            if (koudotrans >= 1.5F)
             {
-                flip = true;
+                flip = true; //不透明度をデクリメント
             }
 
         }
         else
         {
-            koudotrans -= 0.03F;
+
+            koudotrans -= 0.01F;
 
             if (koudotrans <= 0.0F)
             {
@@ -69,13 +66,10 @@ bool Scene::update()
 
         if (!flip)
         {
-            if (cnt2 >= 5)
-            {
-                critrans += 0.03F;
-                cnt2 = 0;
-            }
+            critrans += 0.01F; //不透明度操作
 
-            if (critrans >= 1.0F)
+
+            if (critrans >= 1.5F)
             {
                 flip = true;
             }
@@ -83,11 +77,7 @@ bool Scene::update()
         }
         else
         {
-            if (cnt2 >= 5)
-            {
-                critrans -= 0.03F;
-                cnt2 = 0;
-            }
+            critrans -= 0.01F;
 
             if (critrans < 0.0F)
             {
@@ -98,14 +88,15 @@ bool Scene::update()
     }
 
 
-    if (cri && (key_tracker.pressed.Enter || pad_tracker.a == GamePad::ButtonStateTracker::PRESSED || end))
+    if ((cri && (key_tracker.pressed.Enter || pad_tracker.a == GamePad::ButtonStateTracker::PRESSED || end))||end)
     {
-        return false;
+        return false; //フェードアウト終了でタイトルへ
     }
 
     if (!cri&&(key_tracker.pressed.Enter||pad_tracker.a ==GamePad::ButtonStateTracker::PRESSED))
     {
-        cri = true;
+        koudo = false;
+        cri = true; //ボタンが押されたらフェードをスキップ
         critrans = 1.0F;
     }
 
