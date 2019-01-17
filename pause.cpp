@@ -18,6 +18,8 @@ bool Pause::init()
 
     }
 
+    menucnt = 0;
+
     return true;
 }
 

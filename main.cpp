@@ -305,7 +305,7 @@ int WINAPI WinMain( HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLin
                 case kGameInit:
                     //ゲームクラス初期化
                      singbgm = rand() % 3;
-
+                     Adx::stop();
                      //ランダムでBGMを決定
                     if (singbgm == 0)
                     {
@@ -339,6 +339,8 @@ int WINAPI WinMain( HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLin
                     }
                     else if (gup == 4) //タイトルへ
                     {
+                        Adx::stop();
+                        Adx::play(19);
                         game.destroy();
                         work_no = kTitleUpdate;
                     }

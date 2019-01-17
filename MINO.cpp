@@ -63,12 +63,11 @@ bool Mino::init()
     }
 
     nextpattern();
-    down = -1;
     pos = 3;
     score = 0;
     fall_speed = SPEED;
     gdown = down;
-
+    down = -1;
 
     nowtime = timeGetTime();
     return true;
@@ -1301,6 +1300,7 @@ void Mino::nextdraw(int player_num)
 {
     RECT trim;
 
+
     //•`‰æ
     for (int l = 1; l < 4; l++)
     {
@@ -1314,7 +1314,17 @@ void Mino::nextdraw(int player_num)
                 trim.right = trim.left + 14;
                 if (mino[next1[l]][i][j] != 0)
                 {
-                    Sprite::draw(texture_, Vector2(565 + (14 * j) + (l * 45), 99 + (15 * i)), &trim);
+                    //ŽlŠp‚Íˆê’i‰º‚°‚é
+                    if (mino[next1[l]][i][j] == 6)
+                    {
+                        Sprite::draw(texture_, Vector2(565 + (14 * j) + (l * 45), 114 + (15 * i)), &trim);
+
+                    }
+                    else
+                    {
+                        Sprite::draw(texture_, Vector2(565 + (14 * j) + (l * 45), 99 + (15 * i)), &trim);
+
+                    }
                 }
             }
         }
@@ -1337,7 +1347,19 @@ void Mino::holddraw(int player_num)
             trim.right = trim.left + 14;
 
             if (hold[i][j] != 0)
-                Sprite::draw(texture_, Vector2(530 + (14 * j), 99 + (15 * i)), &trim);
+            {
+                //ŽlŠp‚Íˆê’i‰º‚°‚é
+                if (hold[i][j]== 6)
+                {
+                    Sprite::draw(texture_, Vector2(530 + (14 * j), 114 + (15 * i)), &trim);
+
+                }
+                else
+                {
+                    Sprite::draw(texture_, Vector2(530 + (14 * j), 99 + (15 * i)), &trim);
+                }
+            }
+               
         }
     }
 }
