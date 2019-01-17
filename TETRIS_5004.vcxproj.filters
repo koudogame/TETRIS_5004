@@ -176,7 +176,7 @@
     <ClInclude Include="CueSheet_0.h">
       <Filter>ヘッダー ファイル</Filter>
     </ClInclude>
-    <ClInclude Include="Tetris_acf.h">
+    <ClInclude Include="tetris_acf.h">
       <Filter>ヘッダー ファイル</Filter>
     </ClInclude>
   </ItemGroup>

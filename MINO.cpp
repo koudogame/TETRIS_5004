@@ -157,10 +157,7 @@ int Mino::update()
     //実時間で落とす
     if (!collision_down && !Accumulate)
     {
-        if (time == 50) //降下音（消えるから放置）
-        {
-            //Adx::play(14);
-        }
+
         if (nowtime - oldtime >= fall_time / (time + fall_speed))
         {
             if (state.Down || pad.dpad.down)
@@ -168,6 +165,10 @@ int Mino::update()
                 score++;
             }
 
+            if (time == 50) //降下音（消えるから放置）
+            {
+                Adx::play(14);
+            }
             down++;
             oldtime = nowtime;
         }
@@ -215,7 +216,7 @@ int Mino::update()
                     main[0][k - 1][l] = sub[k][l];
                 }
             }
-            Adx::play(23);
+            Adx::play(2);
             erase++;
             erase_line++;
         }
@@ -226,14 +227,14 @@ int Mino::update()
     {
         Adx::stop();
 
-        Adx::play(2);
+        Adx::play(23);
         return 4;
     }
 
     //ライン消去数で落下速度変更
     if (erase >= 10)
     {
-        Adx::play(21);
+        Adx::play(6);
         erase -= 10;
         fall_speed++;
     }
@@ -247,7 +248,7 @@ int Mino::update()
     //上(ハードドロップ)
     if (pad_tracker.dpadUp == GamePad::ButtonStateTracker::PRESSED || key_tracker.pressed.Up)
     {
-        Adx::play(19);
+        Adx::play(4);
 
         while (!collision_down)
         {
@@ -341,7 +342,7 @@ int Mino::update()
     //回転270
     if (key_tracker.pressed.Enter || pad_tracker.a == GamePad::ButtonStateTracker::PRESSED)
     {
-        Adx::play(15);
+        Adx::play(0);
         if (Accumulate)
         {
             oldtime = nowtime;
@@ -390,7 +391,7 @@ int Mino::update()
     //回転90
     if (key_tracker.pressed.RightShift || pad_tracker.b == GamePad::ButtonStateTracker::PRESSED)
     {
-        Adx::play(15);
+        Adx::play(0);
 
         turnover_rate++;
         if (turnover_rate > 3)
@@ -437,7 +438,7 @@ int Mino::update()
     }
 
     //下が当たっていたら積む
-    if (nowtime - oldtime >= fall_time && collision_down)
+    if (nowtime - oldtime >= fall_time-300 && collision_down)
     {
         Accumulate = true;
     }
@@ -450,7 +451,7 @@ int Mino::update()
     if (Accumulate)
     {
 
-        Adx::play(16);
+        Adx::play(1);
 
         for (int i = 0; i < 4; i++)
         {
@@ -1194,7 +1195,7 @@ void Mino::change()
     {
         if (holdcheck)
         {
-            Adx::play(18);
+            Adx::play(3);
 
             //ホールド(2回目以降)
             for (int i = 0; i < 4; i++)
@@ -1216,7 +1217,7 @@ void Mino::change()
         }
         else if (!holdcheck)
         {
-            Adx::play(18);
+            Adx::play(3);
 
             //ホールド(初回)
             for (int i = 0; i < 4; i++)

@@ -245,7 +245,7 @@ int WINAPI WinMain( HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLin
                     break;
                 case kTitleInit:
 
-                    Adx::play(7);
+                    Adx::play(19);
 
                     //タイトルクラス初期化
                     if (!title.init())
@@ -309,15 +309,15 @@ int WINAPI WinMain( HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLin
                      //ランダムでBGMを決定
                     if (singbgm == 0)
                     {
-                        Adx::play(8);
+                        Adx::play(20);
                     }
                     else if (singbgm == 1)
                     {
-                        Adx::play(0);
+                        Adx::play(21);
                     }
                     else if (singbgm == 2)
                     {
-                        Adx::play(1);
+                        Adx::play(22);
                     }
                     if (!game.init())
                     {

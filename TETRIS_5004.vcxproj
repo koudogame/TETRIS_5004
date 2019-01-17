@@ -193,8 +193,8 @@
     <ClInclude Include="scene.h" />
     <ClInclude Include="sprite.h" />
     <ClInclude Include="start.h" />
+    <ClInclude Include="tetris_acf.h" />
     <ClInclude Include="tetrismulti.h" />
-    <ClInclude Include="Tetris_acf.h" />
     <ClInclude Include="texture.h" />
     <ClInclude Include="title.h" />
     <ClInclude Include="UI.h" />
