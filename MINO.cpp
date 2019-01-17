@@ -48,6 +48,14 @@ bool Mino::init()
         next1[j] = t;
     }
 
+    for (int i = 0; i < 7; i++)
+    {
+        int j = rand() % 7;
+        int t = next2[i];
+        next2[i] = next2[j];
+        next2[j] = t;
+    }
+
     //ホールド初期化
     holdcheck = false;
     holdbutton = false;
@@ -61,8 +69,6 @@ bool Mino::init()
             hold[i][j] = 0;
         }
     }
-
-    nextpattern();
     pos = 3;
     score = 0;
     fall_speed = SPEED;
@@ -468,7 +474,7 @@ int Mino::update()
         holdf = false;
         next++;
 
-        if (next > 6)
+        if (next > 7)
         {
             shuffle = true;
             next = 0;
@@ -581,7 +587,7 @@ void Mino::collisiondown()
         }
     }
 }
-
+//srs用
 bool Mino::collisionsrs()
 {
     srs = false;
@@ -625,13 +631,13 @@ void Mino::nextpattern()
     //ネクストブロックの押出し
     if (shift)
     {
-        for (int i = 0; i < 7; i++)
+        for (int i = 0; i < 6; i++)
         {
             next1[i] = next1[i + 1];
 
         }
         next1[6] = next2[0];
-        for (int i = 0; i < 7; i++)
+        for (int i = 0; i < 6; i++)
         {
             next2[i] = next2[i + 1];
 
@@ -1248,6 +1254,96 @@ void Mino::change()
     }
 }
 
+//初期化(デバック用)
+void Mino::reset()
+{
+    //初期化
+    for (int i = 0; i < field_height - 1; i++)
+    {
+        for (int j = 1; j < field_width - 1; j++)
+        {
+            main[0][i][j] = 0;
+        }
+    }
+    test[4][4] = { 0 };
+    clearlinepos[21] = { 0 }; //横一列そろっている場所の確認用
+
+  //回転時のtmp
+    tmp[4][4] = { 0 };
+
+    //時間関係
+    nowtime = 0; //現在の時間
+    oldtime = 0; //前回の時間
+    time = 1;    //落下にかかる時間
+
+  //方向キー
+    up = 0;   //上
+    down = 0; //下
+    pos = 3;  //横
+
+  //カウント
+    cnt = 0;
+    right = 0;
+    left = 0;
+
+    //当たり判定
+    collisionf = false;
+    collision_down = false;
+
+    //ネクスト
+    nextblock = true; //次のブロックを出す
+    shuffle = false;  //ネクストブロックの配列要素をシャッフル
+    shift = false;    //ネクストブロックの描画時のシフト用
+    next = 0;          //次のブロック
+    a = 0;             //配列の添え字
+
+  //積み上げ
+    Accumulate = false;
+    downf = false;
+
+    //ホールド関係
+    holdf = false;        //ホールド
+    holdcheck = false;    //すでにホールド中かの判定(ホールド中ならtrue)
+    holdbutton = false;   //すでにホールドを使用したかの判定
+    holdtmp[4][4] = { 0 }; //ホールドtmp
+    hold[4][4] = { 0 };    //ホールド用
+
+    srs = false; //スーパーローテーション
+
+  //ゲームオーバー処理関係
+    gameover = false; //ゲームオーバーになったときｔｒｕｅ
+    overcnt = 0; //ゲームオーバーになった時の中身の入れ替え変数
+    overcnt2 = 0; //ゲームオーバーになってからメニューが表示されるまでの時間
+
+  // 消去数
+    erase = 0;
+    fall_speed = 1;
+
+    //ゴースト
+    transparent = 50;
+    ghost[4][4] = { 0 };
+    gdown = 0;
+
+    score = 0;
+    fall_speed = 0;
+
+
+    //見本からコピー
+    for (int i = 0; i < 7; i++)
+    {
+        next2[i] = next0[i];
+    }
+
+    //シャッフル
+    for (int i = 0; i < 7; i++)
+    {
+        int j = rand() % 7;
+        int t = next2[i];
+        next2[i] = next2[j];
+        next2[j] = t;
+    }
+}
+
 //操作するやつ
 void Mino::draw(int player_num)
 {
@@ -1423,96 +1519,6 @@ void Mino::cleardraw()
     rect.right = rect.left + 153;
 
     Sprite::draw(texture_, Vector2(558, 274), &rect);
-}
-
-//初期化(デバック用)
-void Mino::reset()
-{
-    //初期化
-    for (int i = 0; i < field_height - 1; i++)
-    {
-        for (int j = 1; j < field_width - 1; j++)
-        {
-            main[0][i][j] = 0;
-        }
-    }
-      test[4][4] = { 0 };
-      clearlinepos[21] = { 0 }; //横一列そろっている場所の確認用
-
-    //回転時のtmp
-      tmp[4][4] = { 0 };
-
-    //時間関係
-      nowtime = 0; //現在の時間
-      oldtime = 0; //前回の時間
-      time = 1;    //落下にかかる時間
-
-    //方向キー
-      up = 0;   //上
-      down = 0; //下
-      pos = 3;  //横
-
-    //カウント
-      cnt = 0;
-      right = 0;
-      left = 0;
-
-    //当たり判定
-      collisionf = false;
-      collision_down = false;
-
-    //ネクスト
-      nextblock = true; //次のブロックを出す
-      shuffle = false;  //ネクストブロックの配列要素をシャッフル
-      shift = false;    //ネクストブロックの描画時のシフト用
-      next = 0;          //次のブロック
-      a = 0;             //配列の添え字
-
-    //積み上げ
-      Accumulate = false;
-      downf = false;
-
-    //ホールド関係
-      holdf = false;        //ホールド
-      holdcheck = false;    //すでにホールド中かの判定(ホールド中ならtrue)
-      holdbutton = false;   //すでにホールドを使用したかの判定
-      holdtmp[4][4] = { 0 }; //ホールドtmp
-      hold[4][4] = { 0 };    //ホールド用
-
-      srs = false; //スーパーローテーション
-
-    //ゲームオーバー処理関係
-      gameover = false; //ゲームオーバーになったときｔｒｕｅ
-      overcnt = 0; //ゲームオーバーになった時の中身の入れ替え変数
-      overcnt2 = 0; //ゲームオーバーになってからメニューが表示されるまでの時間
-
-    // 消去数
-      erase = 0;
-      fall_speed = 1;
-
-    //ゴースト
-      transparent = 50;
-      ghost[4][4] = { 0 };
-      gdown = 0;
-
-      score = 0;
-      fall_speed = 0;
-
-
-      //見本からコピー
-      for (int i = 0; i < 7; i++)
-      {
-          next2[i] = next0[i];
-      }
-
-      //シャッフル
-      for (int i = 0; i < 7; i++)
-      {
-          int j = rand() % 7;
-          int t = next2[i];
-          next2[i] = next2[j];
-          next2[j] = t;
-      }
 }
 
 //ゴーストの描画
