@@ -5,6 +5,7 @@
 #include"sprite.h"
 #include"key.h"
 #include"pad.h"
+#include"adx.h"
 
 class Pause
 {

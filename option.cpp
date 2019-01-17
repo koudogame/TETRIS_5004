@@ -27,11 +27,15 @@ bool Option::update()
     //メニューカーソル上下
     if (key_tracker.pressed.Up || pad_tracker.dpadUp == GamePad::ButtonStateTracker::PRESSED)
     {
+        Adx::play(9);
+
         //メニューカーソルを上に上げる
         opmenu--;
     }
     if (key_tracker.pressed.Down || pad_tracker.dpadDown == GamePad::ButtonStateTracker::PRESSED)
     {
+        Adx::play(9);
+
         //メニューカーソルを下に下げる
         opmenu++;
     }
@@ -39,30 +43,42 @@ bool Option::update()
     //難易度選択
     if (opmenu == 0 && (state.Left|| pad_tracker.dpadLeft == GamePad::ButtonStateTracker::PRESSED))
     {
+        Adx::play(9);
+
         difficulty = 0;
     }
     else if (opmenu == 0 && (state.Right || pad_tracker.dpadRight == GamePad::ButtonStateTracker::PRESSED))
     {
+        Adx::play(9);
+
         difficulty = 1;
     }
 
     //ホールド
     if (opmenu == 1 && (state.Left || pad_tracker.dpadLeft == GamePad::ButtonStateTracker::PRESSED))
     {
+        Adx::play(9);
+
         hold = 0;
     }
     else if (opmenu == 1 && (state.Right || pad_tracker.dpadRight == GamePad::ButtonStateTracker::PRESSED))
     {
+        Adx::play(9);
+
         hold = 1;
     }
 
     //ネクスト
     if (opmenu == 2 && (key_tracker.pressed.Left || pad_tracker.dpadLeft == GamePad::ButtonStateTracker::PRESSED))
     {
+        Adx::play(9);
+
         next--;
     }
     else if (opmenu == 2 && (key_tracker.pressed.Right || pad_tracker.dpadRight == GamePad::ButtonStateTracker::PRESSED))
     {
+        Adx::play(9);
+
         next++;
     }
 
@@ -79,46 +95,64 @@ bool Option::update()
     //Hidden
     if (opmenu == 3 && (state.Left || pad_tracker.dpadLeft == GamePad::ButtonStateTracker::PRESSED))
     {
+        Adx::play(9);
+
         hidden = 0;
     }
     else if (opmenu == 3 && (state.Right || pad_tracker.dpadRight == GamePad::ButtonStateTracker::PRESSED))
     {
+        Adx::play(9);
+
         hidden = 1;
     }
 
     //VS
     if (opmenu == 4 && (state.Left || pad_tracker.dpadLeft == GamePad::ButtonStateTracker::PRESSED))
     {
+        Adx::play(9);
+
         vs = 0;
     }
     else if (opmenu == 4 && (state.Right || pad_tracker.dpadRight == GamePad::ButtonStateTracker::PRESSED))
     {
+        Adx::play(9);
+
         vs = 1;
     }
 
     //Reverse
     if (opmenu == 5 && (state.Left || pad_tracker.dpadLeft == GamePad::ButtonStateTracker::PRESSED))
     {
+        Adx::play(9);
+
         reverse = 0;
     }
     else if (opmenu == 5 &&( state.Right || pad_tracker.dpadRight == GamePad::ButtonStateTracker::PRESSED))
     {
+        Adx::play(9);
+
         reverse = 1;
     }
 
     //score
     if (opmenu == 6 && (state.Left || pad_tracker.dpadLeft == GamePad::ButtonStateTracker::PRESSED))
     {
+        Adx::play(9);
+
         score = 0;
     }
     else if (opmenu == 6 && (state.Right || pad_tracker.dpadRight == GamePad::ButtonStateTracker::PRESSED))
     {
+        Adx::play(9);
+
         score = 1;
     }
 
     //EXIT
     if (opmenu == 7 && (key_tracker.pressed.Enter || pad_tracker.a == GamePad::ButtonStateTracker::PRESSED)||pad_tracker.start||state.C)
     {
+        Adx::play(10);
+
         pstart = 1;
         return false;
     }

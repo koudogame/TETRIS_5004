@@ -23,7 +23,7 @@ bool Start::init()
     }
     goflag = false;
     starttimer = 3;
-
+    Adx::play(12);
     //ŽžŠÔ‚ðŽæ“¾
     oldtime = timeGetTime();
 
@@ -63,6 +63,7 @@ bool Start::update()
 
         if (starttimer == 0)
         {
+            Adx::play(13);
             goflag = true;
         }
     }

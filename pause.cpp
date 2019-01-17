@@ -33,10 +33,13 @@ int Pause::update()
 
     if (pad_tracker.dpadDown == GamePad::ButtonStateTracker::PRESSED)
     {
+        Adx::play(9);
         menucnt++;
     }
     if (pad_tracker.dpadUp == GamePad::ButtonStateTracker::PRESSED)
     {
+        Adx::play(9);
+
         menucnt--;
     }
 
@@ -52,17 +55,22 @@ int Pause::update()
     //ゲームを続ける
     if (menucnt == 0 && (pad_tracker.a == GamePad::ButtonStateTracker::PRESSED))
     {
+        Adx::play(10);
+
         return 2;
     }
     //リセット
     else if (menucnt == 1 && (pad_tracker.a == GamePad::ButtonStateTracker::PRESSED))
     {
-        
+        Adx::play(10);
+
         return 3;
     }
     //メインメニューに戻る
     else if (menucnt == 2 && (pad_tracker.a == GamePad::ButtonStateTracker::PRESSED))
     {
+        Adx::play(10);
+
         return 4;
     }
 

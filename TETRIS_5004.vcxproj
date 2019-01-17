@@ -174,6 +174,7 @@
     <ClInclude Include="collision.h" />
     <ClInclude Include="common.h" />
     <ClInclude Include="credit.h" />
+    <ClInclude Include="CueSheet_0.h" />
     <ClInclude Include="direct3d.h" />
     <ClInclude Include="Error.h" />
     <ClInclude Include="field.h" />
@@ -193,6 +194,7 @@
     <ClInclude Include="sprite.h" />
     <ClInclude Include="start.h" />
     <ClInclude Include="tetrismulti.h" />
+    <ClInclude Include="Tetris_acf.h" />
     <ClInclude Include="texture.h" />
     <ClInclude Include="title.h" />
     <ClInclude Include="UI.h" />

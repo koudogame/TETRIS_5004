@@ -43,6 +43,8 @@ bool Ranking::update()
     //ƒ^ƒCƒgƒ‹‚É–ß‚é
     if (key_tracker.pressed.Enter || pad_tracker.a == GamePad::ButtonStateTracker::PRESSED)
     {
+        Adx::play(10);
+
         return false;
     }
 

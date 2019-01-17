@@ -42,6 +42,7 @@ int Title::update()
     const Keyboard::State state = Key::getState();
     const Keyboard::KeyboardStateTracker key_tracker = Key::getTracker();
     
+
     pov = pov_.update();
 
     if (state.Enter||pad.buttons.a)
@@ -56,33 +57,46 @@ int Title::update()
     // 上が押されたら
     if (key_tracker.pressed.Up || pad_tracker.dpadUp == GamePad::ButtonStateTracker::PRESSED)
     {
+        Adx::play(9);
         menu--;
 
     }
     // 上が押されたら
     if (key_tracker.pressed.Down || pad_tracker.dpadDown == GamePad::ButtonStateTracker::PRESSED)
     {
+        Adx::play(9);
+
         menu++;
     }
 
     if (menu == 0 && (key_tracker.pressed.Enter|| pad_tracker.a == GamePad::ButtonStateTracker::PRESSED))
     {
+        Adx::play(10);
+
         return 2; //テトリスシングル
     }
     else if (menu == 1 && (key_tracker.pressed.Enter || pad_tracker.a == GamePad::ButtonStateTracker::PRESSED))
     {
+        Adx::play(10);
+
         return 3; //ランキング
     }
     else if (menu == 2 && (key_tracker.pressed.Enter || pad_tracker.a == GamePad::ButtonStateTracker::PRESSED))
     {
+        Adx::play(10);
+
         return 6; //ランキング
     }
     else if (menu == 3 && (key_tracker.pressed.Enter|| pad_tracker.a == GamePad::ButtonStateTracker::PRESSED))
     {
+        Adx::play(10);
+
         return 4; //オプション
     }
     else if (menu == 4 && (key_tracker.pressed.Enter|| pad_tracker.a == GamePad::ButtonStateTracker::PRESSED))
     {
+        Adx::play(10);
+
         return 5; //クレジット
     }
 

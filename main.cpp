@@ -171,6 +171,7 @@ int WINAPI WinMain( HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLin
 
     //現在の作業番号
     int work_no = kSceneInit;
+    srand(time(NULL));
 
     //シーンクラス変数
     Title title;
@@ -191,6 +192,7 @@ int WINAPI WinMain( HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLin
     bool exit = false;
     bool bikerand = false;
     int gup = 0;
+    int singbgm = 0;
 
     ui.init();
 
@@ -243,6 +245,8 @@ int WINAPI WinMain( HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLin
                     break;
                 case kTitleInit:
 
+                    Adx::play(7);
+
                     //タイトルクラス初期化
                     if (!title.init())
                     {
@@ -260,6 +264,7 @@ int WINAPI WinMain( HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLin
                     ui.update();
                     if (no == 2)
                     {
+                        Adx::stop();
                         work_no = kGameInit;
                     }
                     else if (no == 3)
@@ -276,6 +281,7 @@ int WINAPI WinMain( HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLin
                     }
                     else if (no == 6)
                     {
+                        Adx::stop();
                         work_no = k4ptetrisInit;
                     }
                     break;
@@ -298,6 +304,21 @@ int WINAPI WinMain( HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLin
                     break;
                 case kGameInit:
                     //ゲームクラス初期化
+                     singbgm = rand() % 3;
+
+                     //ランダムでBGMを決定
+                    if (singbgm == 0)
+                    {
+                        Adx::play(8);
+                    }
+                    else if (singbgm == 1)
+                    {
+                        Adx::play(0);
+                    }
+                    else if (singbgm == 2)
+                    {
+                        Adx::play(1);
+                    }
                     if (!game.init())
                     {
                         //エラー

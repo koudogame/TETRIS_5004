@@ -15,6 +15,9 @@
 #include"sprite.h"
 #include"key.h"
 #include"pad.h"
+#include"Tetris_acf.h"
+#include"CueSheet_0.h"
+#include"adx.h"
 #include<ctime>
 
 class Mino

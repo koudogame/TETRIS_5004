@@ -34,6 +34,8 @@ bool Credit::update()
 
     if( pad_tracker.a == GamePad::ButtonStateTracker::PRESSED || key_tracker.pressed.Enter )
     {
+        Adx::play(10);
+
         return false;
     }
 
