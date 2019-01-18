@@ -148,6 +148,7 @@
     <ClCompile Include="common.cpp" />
     <ClCompile Include="credit.cpp" />
     <ClCompile Include="direct3d.cpp" />
+    <ClCompile Include="directshow.cpp" />
     <ClCompile Include="field.cpp" />
     <ClCompile Include="game.cpp" />
     <ClCompile Include="key.cpp" />
@@ -176,6 +177,7 @@
     <ClInclude Include="credit.h" />
     <ClInclude Include="CueSheet_0.h" />
     <ClInclude Include="direct3d.h" />
+    <ClInclude Include="directshow.h" />
     <ClInclude Include="Error.h" />
     <ClInclude Include="field.h" />
     <ClInclude Include="game.h" />

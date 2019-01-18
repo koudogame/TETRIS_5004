@@ -608,6 +608,28 @@ bool Mino::collisionsrs()
 //ネクスト呼び出し
 void Mino::nextpattern()
 {
+
+
+    //ネクストブロックの押出し
+    if (shift)
+    {
+        if (!shuffle)
+        {
+            for (int i = 0; i < 6; i++)
+            {
+                next1[i] = next1[i + 1];
+
+            }
+            next1[6] = next2[0];
+            for (int i = 0; i < 6; i++)
+            {
+                next2[i] = next2[i + 1];
+
+            }
+        }
+
+        shift = false;
+    }
     //ネクストブロックのパターンをシャッフル
     if (shuffle)
     {
@@ -627,24 +649,6 @@ void Mino::nextpattern()
         }
         shuffle = false;
     }
-
-    //ネクストブロックの押出し
-    if (shift)
-    {
-        for (int i = 0; i < 6; i++)
-        {
-            next1[i] = next1[i + 1];
-
-        }
-        next1[6] = next2[0];
-        for (int i = 0; i < 6; i++)
-        {
-            next2[i] = next2[i + 1];
-
-        }
-        shift = false;
-    }
-
 
     if (nextblock)
     {
