@@ -63,6 +63,7 @@ bool Start::update()
 
         if (starttimer == 0)
         {
+            //Adx::play(24);
             Adx::play(13);
             goflag = true;
         }

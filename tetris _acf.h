@@ -2,10 +2,10 @@
  *  Header file for Atom Config File
  *  Project            : tetris 
  *  Tool Ver.          : CRI Atom Craft LE Ver.2.30.07
- *  File Path          : C:/Users/KOUDOG1/Documents/CriAtomCraft/tetris/Public/tetris .acf
+ *  File Path          : C:/Users/KOUDOG1/Documents/CriAtomCraft/Tetris/Public/tetris .acf
  *  File Name          : tetris .acf
  *  File Size          : 4,352 bytes
- *  Date Time          : 2019/01/17 14:04
+ *  Date Time          : 2019/01/21 18:05
  *  Target             : Public
  *  Categories         : 1
  *  AISAC Controls     : 16
