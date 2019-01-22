@@ -27,11 +27,11 @@ private:
 public:
     Mino();
 
-    bool init();
-    int update();
-    void ghostupdate();
+    bool init(int player_num);
+    int update(int player_num);
+    void ghostupdate(int player_num);
 
-    void srsystem(int rotation_type); //スーパーローテーション
+    void srsystem(int rotation_type, int player_num); //スーパーローテーション
     void change();
 
     //描画
@@ -39,19 +39,19 @@ public:
     void maindraw(int player_num); //積みあがる配列の描画
     void nextdraw(int player_num); //ネクストブロックの描画
     void holddraw(int player_num); //ホールドしているブロックの描画
-    void leveldraw(); //レベルの表示
-    void ghostdraw();
-    void scoredraw(); //スコアとレベルの描画
+    void leveldraw(int player_num); //レベルの表示
+    void ghostdraw(int player_num);
+    void scoredraw(int player_num); //スコアとレベルの描画
     void cleardraw();
 
 	void destroy();  //破棄
-    void reset();    //積み上げ配列の範囲内の全情報を初期化
+    void reset(int player_num);    //積み上げ配列の範囲内の全情報を初期化
 
     //当たり判定
-    void collisionleft();
-    void collisionright();
-    void collisiondown();
-    bool collisionsrs();
+    void collisionleft(int player_num);
+    void collisionright(int player_num);
+    void collisiondown(int player_num);
+    bool collisionsrs(int player_num);
 
     //ネクスト
     void nextpattern();
@@ -180,4 +180,16 @@ public:
     int ghost[4][4] = { 0 }; 
     int gdown; //ゴーストのy軸
     bool gcollsion = false; //ゴーストの当たり判定
+
+    //multi用
+    int playerx = 0;
+    int mainx = 0;
+    int nextx = 0;
+    int holdx = 0;
+    
+    //全消し
+    int leaveline[22];
+    int clearline = 0;
+    bool first = false; //最初は全消し扱いにしない
+    int all_clear = false; //全消し
 };

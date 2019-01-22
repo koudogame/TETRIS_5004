@@ -454,8 +454,6 @@ int WINAPI WinMain( HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLin
                     break;
                 case k4ptetrisUpdate:
                     tetrismulti.draw();
-                    game.drawmulti();
-                    ui.inputdraw(tetris_multi);
                     break;
 
                 }

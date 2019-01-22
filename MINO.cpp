@@ -5,7 +5,7 @@ Mino::Mino()
     texture_ = NULL;
 }
 
-bool Mino::init()
+bool Mino::init(int player_num)
 {
 
     texture_ = Texture::load(L"Tetris11_SingleT.png");
@@ -23,7 +23,7 @@ bool Mino::init()
     {
         for (int j = 0; j < field_width; j++)
         {
-            main[0][i][j] = 0;
+            main[player_num][i][j] = 0;
 
         }
     }
@@ -33,9 +33,9 @@ bool Mino::init()
     {
         for (int j = 0; j < field_width; j++)
         {
-            main[0][i][0] = 9;
-            main[0][i][11] = 9;
-            main[0][22][j] = 9;
+            main[player_num][i][0] = 9;
+            main[player_num][i][11] = 9;
+            main[player_num][22][j] = 9;
         }
     }
 
@@ -74,12 +74,13 @@ bool Mino::init()
     fall_speed = SPEED;
     gdown = down;
     down = -1;
+    first = true;
 
     nowtime = timeGetTime();
     return true;
 }
 
-int Mino::update()
+int Mino::update(int player_num)
 {
 
     //現在の時間を取得
@@ -93,9 +94,42 @@ int Mino::update()
 
     const Keyboard::State state = Key::getState();
     const Keyboard::KeyboardStateTracker key_tracker = Key::getTracker();
+    
+    clearline = 0;
+
+    //全消しの確認
+    for (int i = 0; i < 22; i++)
+    {
+        for (int j = 1; j < 11; j++)
+        {
+            if (main[player_num][i][j] != 0)
+            {
+                leaveline[i] = 1;  //ブロックを確認 
+                break;  //ブロックがあったら次の行へ
+            }
+            else
+            {
+                leaveline[i] = 0;
+            }
+        }
+    }
+
+    for (int i = 0; i < 22; i++)
+    {
+        if (leaveline[i] == 0)
+        {
+            clearline++;
+        }
+    }
+
+    if (clearline == 22&&!first)
+    {
+        all_clear = true;
+    }
+    
 
     //ゲームオーバー処理
-    if (main[0][0][5] != 0 && !gameover)
+    if (main[player_num][0][5] != 0 && !gameover)
     {
         nextblock = false;
         shift = false;
@@ -104,9 +138,9 @@ int Mino::update()
 
         for (int i = 1; i < 11; i++)
         {
-            if (main[0][22 - overcnt][i] != 0)
+            if (main[player_num][22 - overcnt][i] != 0)
             {
-                main[0][22 - overcnt][i] = 8;
+                main[player_num][22 - overcnt][i] = 8;
             }
         }
 
@@ -132,7 +166,7 @@ int Mino::update()
     //初期化(テスト用)
     if (pad_tracker.rightShoulder == GamePad::ButtonStateTracker::PRESSED || key_tracker.pressed.Space)
     {
-        reset();
+        reset(player_num);
         gameover = false;
     }
 
@@ -150,13 +184,13 @@ int Mino::update()
     }
 
     //当たり判定
-    collisiondown();
+    collisiondown(player_num);
 
 
     //回転先が埋まっていた場合スーパーローテーション関数で補正をかける
     if (srs)
     {
-        srsystem(turnover_rate);
+        srsystem(turnover_rate,player_num);
     }
 
     //実時間で落とす
@@ -186,7 +220,7 @@ int Mino::update()
     {
         for (int j = 1; j < 11; j++)
         {
-            if (main[0][i][j] == 0)
+            if (main[player_num][i][j] == 0)
             {
                 clearlinepos[i] = 1;  //空欄を確認 
                 break;  //空欄があったら次の行へ
@@ -207,7 +241,7 @@ int Mino::update()
             for (int j = 1; j < 11; j++)
             {
                 //配列の初期化
-                main[0][i][j] = 0;
+                main[player_num][i][j] = 0;
             }
             clearlinepos[i] = 0;
 
@@ -216,9 +250,9 @@ int Mino::update()
                 for (int l = 1; l < 11; l++)
                 {
                     //ミノ落とし
-                    sub[k][l] = main[0][k][l];
-                    main[0][k][l] = main[0][k - 1][l];
-                    main[0][k - 1][l] = sub[k][l];
+                    sub[k][l] = main[player_num][k][l];
+                    main[player_num][k][l] = main[player_num][k - 1][l];
+                    main[player_num][k - 1][l] = sub[k][l];
                 }
             }
             Adx::play(2);
@@ -263,7 +297,7 @@ int Mino::update()
             for (int y = 0; y < block_height; y++) {
                 for (int x = 0; x < block_width; x++) {
                     if (test[y][x] != 0) {
-                        if (main[0][down + y][pos + x] != 0) {
+                        if (main[player_num][down + y][pos + x] != 0) {
                             collision_down = true;
                         }
                     }
@@ -276,8 +310,8 @@ int Mino::update()
         {
             for (int j = 0; j < 4; j++)
             {
-                if (test[i][j] != 0 && main[0][down + i - 1][pos + j] == 0)
-                    main[0][down + i - 1][pos + j] = test[i][j];
+                if (test[i][j] != 0 && main[player_num][down + i - 1][pos + j] == 0)
+                    main[player_num][down + i - 1][pos + j] = test[i][j];
             }
         }
 
@@ -288,6 +322,11 @@ int Mino::update()
         holdf = false;
         next++;
         gdown = down;
+
+        if (first)
+        {
+            first = false;
+        }
 
         if (next > 6)
         {
@@ -304,13 +343,13 @@ int Mino::update()
     if (left % 50 == 7 || pad_tracker.dpadLeft == GamePad::ButtonStateTracker::PRESSED || key_tracker.pressed.Left)
     {
         left = 0;
-        collisionleft();
-        collisionsrs();
+        collisionleft(player_num);
+        collisionsrs(player_num);
 
         if (!collisionf)
         {
             Adx::play(14);
-            ghostupdate();
+            ghostupdate(player_num);
             pos--;
         }
     }
@@ -328,14 +367,14 @@ int Mino::update()
     {
 
         right = 0;
-        collisionright();
-        collisionsrs();
+        collisionright(player_num);
+        collisionsrs(player_num);
 
         if (!collisionf)
         {
             Adx::play(14);
 
-            ghostupdate();
+            ghostupdate(player_num);
             pos++;
         }
     }
@@ -390,7 +429,7 @@ int Mino::update()
                 }
             }
         }
-        collisionsrs();
+        collisionsrs(player_num);
     }
 
     //回転90
@@ -462,8 +501,8 @@ int Mino::update()
         {
             for (int j = 0; j < 4; j++)
             {
-                if (test[i][j] != 0 && main[0][down + i - 1][pos + j] == 0)
-                    main[0][down + i - 1][pos + j] = test[i][j];
+                if (test[i][j] != 0 && main[player_num][down + i - 1][pos + j] == 0)
+                    main[player_num][down + i - 1][pos + j] = test[i][j];
             }
         }
 
@@ -473,7 +512,10 @@ int Mino::update()
         holdbutton = false;
         holdf = false;
         next++;
-
+        if (first)
+        {
+            first = false;
+        }
         if (next > 7)
         {
             shuffle = true;
@@ -495,7 +537,14 @@ int Mino::update()
             back_to_back = 1;
         }
         //レベル得点掛ける消えたライン数
-        score += ((fall_speed + 1) * linescore[erase_line - 1])*back_to_back;
+        if (!all_clear)
+        {
+            score += ((fall_speed + 1) * linescore[erase_line - 1])*back_to_back;
+        }
+        else
+        {
+            score += ((fall_speed + 1) * linescore[erase_line - 1])*back_to_back*10;
+        }
 
         //スコア上限
         if (score >= 999999)
@@ -510,7 +559,7 @@ int Mino::update()
 }
 
 //ゴースト更新
-void Mino::ghostupdate()
+void Mino::ghostupdate(int player_num)
 {
 
     const GamePad::State pad = Pad::getState();
@@ -528,7 +577,7 @@ void Mino::ghostupdate()
         for (int y = 0; y < block_height; y++) {
             for (int x = 0; x < block_width; x++) {
                 if (test[y][x] != 0) {
-                    if (main[0][gdown + y][pos + x] != 0) {
+                    if (main[player_num][gdown + y][pos + x] != 0) {
                         gcollsion = true;
                     }
                 }
@@ -543,14 +592,14 @@ void Mino::ghostupdate()
 
 //当たり判定
 //左
-void Mino::collisionleft()
+void Mino::collisionleft(int player_num)
 {
     collisionf = false;
     //左側
     for (int y = 0; y < block_height; y++) {
         for (int x = 0; x < block_width; x++) {
             if (test[y][x] != 0) {
-                if (main[0][down + y-1][pos + x - 1] != 0) {
+                if (main[player_num][down + y-1][pos + x - 1] != 0) {
                     collisionf = true;
                 }
             }
@@ -558,14 +607,14 @@ void Mino::collisionleft()
     }
 }
 //右
-void Mino::collisionright()
+void Mino::collisionright(int player_num)
 {
     collisionf = false;
     //右側
     for (int y = 0; y < block_height; y++) {
         for (int x = 0; x < block_width; x++) {
             if (test[y][x] != 0) {
-                if (main[0][down + y-1][pos + x + 1] != 0) {
+                if (main[player_num][down + y-1][pos + x + 1] != 0) {
                     collisionf = true;
                 }
             }
@@ -573,14 +622,14 @@ void Mino::collisionright()
     }
 }
 //下
-void Mino::collisiondown()
+void Mino::collisiondown(int player_num)
 {
     collision_down = false;
     //下側
     for (int y = 0; y < block_height; y++) {
         for (int x = 0; x < block_width; x++) {
             if (test[y][x] != 0) {
-                if (main[0][down + y][pos + x] != 0 ) {
+                if (main[player_num][down + y][pos + x] != 0 ) {
                     collision_down = true;
                 }
             }
@@ -588,14 +637,14 @@ void Mino::collisiondown()
     }
 }
 //srs用
-bool Mino::collisionsrs()
+bool Mino::collisionsrs(int player_num)
 {
     srs = false;
     //スーパーローテーション用当たり判定
     for (int y = 0; y < block_height; y++) {
         for (int x = 0; x < block_width; x++) {
             if (test[y][x] != 0) {
-                if (main[0][down + y - 1][pos + x] != 0) {
+                if (main[player_num][down + y - 1][pos + x] != 0) {
                     srs = true;
                     return true;
                 }
@@ -704,7 +753,7 @@ void Mino::nextpattern()
 }
 
 //スーパーローテーション(未完成)
-void Mino::srsystem(int rotation_type)
+void Mino::srsystem(int rotation_type, int player_num)
 {
     int step = rotation_type;
     int postmp = pos; //posを保存
@@ -724,14 +773,14 @@ void Mino::srsystem(int rotation_type)
     {
         //A→D
     case 0:
-        if (collisionsrs())
+        if (collisionsrs(player_num))
         {
-            collisionright();
+            collisionright(player_num);
             if (collisionf)
             {
                 pos--;
             }
-            collisionleft();
+            collisionleft(player_num);
             if (collisionf)
             {
                 pos++;
@@ -747,11 +796,11 @@ void Mino::srsystem(int rotation_type)
 
         break;
     case 1:
-        if (collisionsrs())
+        if (collisionsrs(player_num))
         {
 
-            collisionsrs();
-            collisionleft();
+            collisionsrs(player_num);
+            collisionleft(player_num);
             if (!collisionf)
             {
                 pos++;
@@ -764,7 +813,7 @@ void Mino::srsystem(int rotation_type)
 
             if (!collisionf)
             {
-                collisionsrs();
+                collisionsrs(player_num);
                 pos--;
             }
 
@@ -773,7 +822,7 @@ void Mino::srsystem(int rotation_type)
 
         break;
     case 2:
-        if (collisionsrs())
+        if (collisionsrs(player_num))
         {
             down = downtmp;
             pos = postmp;
@@ -791,7 +840,7 @@ void Mino::srsystem(int rotation_type)
     case 3:
 
 
-        if (collisionsrs())
+        if (collisionsrs(player_num))
         {
 
             pos++;
@@ -807,7 +856,7 @@ void Mino::srsystem(int rotation_type)
 
         break;
     case 4:
-        if (collisionsrs())
+        if (collisionsrs(player_num))
         {
             pos++;
             step = 40;
@@ -816,7 +865,7 @@ void Mino::srsystem(int rotation_type)
         //A→B
     case 5:
 
-        if (collisionsrs())
+        if (collisionsrs(player_num))
         {
             pos = postmp; //元の値の戻す
             down = downtmp;
@@ -826,7 +875,7 @@ void Mino::srsystem(int rotation_type)
         break;
     case 6:
 
-        if (collisionsrs())
+        if (collisionsrs(player_num))
         {
             pos--;
 
@@ -837,7 +886,7 @@ void Mino::srsystem(int rotation_type)
     case 7:
 
 
-        if (collisionsrs())
+        if (collisionsrs(player_num))
         {
             down--;
 
@@ -847,7 +896,7 @@ void Mino::srsystem(int rotation_type)
         break;
     case 8:
 
-        if (collisionsrs())
+        if (collisionsrs(player_num))
         {
             pos = postmp; //元の値の戻す
             down = downtmp;
@@ -857,7 +906,7 @@ void Mino::srsystem(int rotation_type)
 
         break;
     case 9:
-        if (collisionsrs())
+        if (collisionsrs(player_num))
         {
             pos--;
             step = 40;
@@ -868,7 +917,7 @@ void Mino::srsystem(int rotation_type)
     case 10:
         pos = postmp; //元の値の戻す
         down = downtmp;
-        if (collisionsrs())
+        if (collisionsrs(player_num))
         {
 
             step = 10;
@@ -876,7 +925,7 @@ void Mino::srsystem(int rotation_type)
 
         break;
     case 11:
-        if (collisionsrs())
+        if (collisionsrs(player_num))
         {
             pos++;
 
@@ -885,7 +934,7 @@ void Mino::srsystem(int rotation_type)
 
         break;
     case 12:
-        if (collisionsrs())
+        if (collisionsrs(player_num))
         {
             down++;
 
@@ -895,7 +944,7 @@ void Mino::srsystem(int rotation_type)
         break;
     case 13:
 
-        if (collisionsrs())
+        if (collisionsrs(player_num))
         {
             pos = postmp; //元の値の戻す
             down = downtmp;
@@ -905,7 +954,7 @@ void Mino::srsystem(int rotation_type)
 
         break;
     case 14:
-        if (collisionsrs())
+        if (collisionsrs(player_num))
         {
             pos++;
             step = 40;
@@ -916,7 +965,7 @@ void Mino::srsystem(int rotation_type)
     case 15:
         pos = postmp; //元の値の戻す
         down = downtmp;
-        if (collisionsrs())
+        if (collisionsrs(player_num))
         {
 
             step = 16;
@@ -924,7 +973,7 @@ void Mino::srsystem(int rotation_type)
 
         break;
     case 16:
-        if (collisionsrs())
+        if (collisionsrs(player_num))
         {
             pos++;
 
@@ -933,7 +982,7 @@ void Mino::srsystem(int rotation_type)
 
         break;
     case 17:
-        if (collisionsrs())
+        if (collisionsrs(player_num))
         {
             down++;
 
@@ -943,7 +992,7 @@ void Mino::srsystem(int rotation_type)
 
         break;
     case 18:
-        if (collisionsrs())
+        if (collisionsrs(player_num))
         {
             pos = postmp; //元の値の戻す
             down = downtmp;
@@ -953,7 +1002,7 @@ void Mino::srsystem(int rotation_type)
 
         break;
     case 19:
-        if (collisionsrs())
+        if (collisionsrs(player_num))
         {
             pos++;
 
@@ -966,7 +1015,7 @@ void Mino::srsystem(int rotation_type)
     case 20:
         pos = postmp; //元の値の戻す
         down = downtmp;
-        if (collisionsrs())
+        if (collisionsrs(player_num))
         {
 
             step = 21;
@@ -974,7 +1023,7 @@ void Mino::srsystem(int rotation_type)
 
         break;
     case 21:
-        if (collisionsrs())
+        if (collisionsrs(player_num))
         {
             pos--;
 
@@ -983,7 +1032,7 @@ void Mino::srsystem(int rotation_type)
 
         break;
     case 22:
-        if (collisionsrs())
+        if (collisionsrs(player_num))
         {
             down--;
 
@@ -992,7 +1041,7 @@ void Mino::srsystem(int rotation_type)
 
     case 23:
 
-        if (collisionsrs())
+        if (collisionsrs(player_num))
         {
             pos = postmp; //元の値の戻す
             down = downtmp;
@@ -1002,7 +1051,7 @@ void Mino::srsystem(int rotation_type)
 
         break;
     case 24:
-        if (collisionsrs())
+        if (collisionsrs(player_num))
         {
             pos--;
             step = 40;
@@ -1013,7 +1062,7 @@ void Mino::srsystem(int rotation_type)
     case 25:
         pos = postmp; //元の値の戻す
         down = downtmp;
-        if (collisionsrs())
+        if (collisionsrs(player_num))
         {
 
             step = 26;
@@ -1022,7 +1071,7 @@ void Mino::srsystem(int rotation_type)
         break;
     case 26:
 
-        if (collisionsrs())
+        if (collisionsrs(player_num))
         {
             pos++;
 
@@ -1031,7 +1080,7 @@ void Mino::srsystem(int rotation_type)
 
         break;
     case 27:
-        if (collisionsrs())
+        if (collisionsrs(player_num))
         {
             down--;
 
@@ -1041,7 +1090,7 @@ void Mino::srsystem(int rotation_type)
         break;
     case 28:
 
-        if (collisionsrs())
+        if (collisionsrs(player_num))
         {
             pos = postmp; //元の値の戻す
             down = downtmp;
@@ -1051,7 +1100,7 @@ void Mino::srsystem(int rotation_type)
 
         break;
     case 29:
-        if (collisionsrs())
+        if (collisionsrs(player_num))
         {
             pos++;
             step = 40;
@@ -1063,7 +1112,7 @@ void Mino::srsystem(int rotation_type)
     case 30:
         pos = postmp; //元の値の戻す
         down = downtmp;
-        if (collisionsrs())
+        if (collisionsrs(player_num))
         {
 
             step = 31;
@@ -1071,7 +1120,7 @@ void Mino::srsystem(int rotation_type)
 
         break;
     case 31:
-        if (collisionsrs())
+        if (collisionsrs(player_num))
         {
             pos--;
 
@@ -1080,7 +1129,7 @@ void Mino::srsystem(int rotation_type)
 
         break;
     case 32:
-        if (collisionsrs())
+        if (collisionsrs(player_num))
         {
             down++;
 
@@ -1090,7 +1139,7 @@ void Mino::srsystem(int rotation_type)
         break;
     case 33:
 
-        if (collisionsrs())
+        if (collisionsrs(player_num))
         {
             pos = postmp; //元の値の戻す
             down = downtmp;
@@ -1100,7 +1149,7 @@ void Mino::srsystem(int rotation_type)
 
         break;
     case 34:
-        if (collisionsrs())
+        if (collisionsrs(player_num))
         {
             pos--;
             step = 40;
@@ -1112,7 +1161,7 @@ void Mino::srsystem(int rotation_type)
     case 35:
         pos = postmp; //元の値の戻す
         down = downtmp;
-        if (collisionsrs())
+        if (collisionsrs(player_num))
         {
 
             step = 36;
@@ -1120,7 +1169,7 @@ void Mino::srsystem(int rotation_type)
 
         break;
     case 36:
-        if (collisionsrs())
+        if (collisionsrs(player_num))
         {
             pos--;
 
@@ -1129,7 +1178,7 @@ void Mino::srsystem(int rotation_type)
 
         break;
     case 37:
-        if (collisionsrs())
+        if (collisionsrs(player_num))
         {
             down++;
 
@@ -1139,7 +1188,7 @@ void Mino::srsystem(int rotation_type)
         break;
     case 38:
 
-        if (collisionsrs())
+        if (collisionsrs(player_num))
         {
             pos = postmp; //元の値の戻す
             down = downtmp;
@@ -1149,7 +1198,7 @@ void Mino::srsystem(int rotation_type)
 
         break;
     case 39:
-        if (collisionsrs())
+        if (collisionsrs(player_num))
         {
             pos--;
             step = 40;
@@ -1227,14 +1276,14 @@ void Mino::change()
 }
 
 //初期化(デバック用)
-void Mino::reset()
+void Mino::reset(int player_num)
 {
     //初期化
     for (int i = 0; i < field_height - 1; i++)
     {
         for (int j = 1; j < field_width - 1; j++)
         {
-            main[0][i][j] = 0;
+            main[player_num][i][j] = 0;
         }
     }
     test[4][4] = { 0 };
@@ -1321,6 +1370,15 @@ void Mino::draw(int player_num)
 {
     RECT trim;
 
+    if (player_num != 0)
+    {
+        playerx = 200;
+    }
+    else
+    {
+        playerx = 485;
+    }
+
     //描画
     if (!gameover)
     {
@@ -1334,7 +1392,7 @@ void Mino::draw(int player_num)
                 trim.right = trim.left + 25;
 
                 if (test[i][j] != 0)
-                    Sprite::draw(texture_, Vector2(510 + (25 * pos) + (25 * j) - 25, 221 + (25 * down) - (25 * up) - 100 + (25 * i)), &trim);
+                    Sprite::draw(texture_, Vector2(playerx + (25 * pos) + (25 * j), 221 + (25 * down) - (25 * up) - 100 + (25 * i)), &trim);
 
             }
         }
@@ -1355,7 +1413,7 @@ void Mino::maindraw(int player_num)
             trim.left = 688 + (25 * (main[player_num][i][j] - 1));
             trim.bottom = trim.top + 25;
             trim.right = trim.left + 25;
-            if (main[0][i][j] != 0 && main[0][i][j] != 9)
+            if (main[player_num][i][j] != 0 && main[player_num][i][j] != 9)
             {
                 Sprite::draw(texture_, Vector2(510 + (25 * j) - 25, 221 + (25 * i) - 75), &trim);
             }
@@ -1433,7 +1491,7 @@ void Mino::holddraw(int player_num)
 }
 
 //レベルの描画
-void Mino::leveldraw()
+void Mino::leveldraw(int player_num)
 {
     RECT trim;
 
@@ -1447,7 +1505,7 @@ void Mino::leveldraw()
 }
 
 //スコアの描画
-void Mino::scoredraw()
+void Mino::scoredraw(int player_num)
 {
 	RECT rect;
 	rect.top = 961;
@@ -1494,7 +1552,7 @@ void Mino::cleardraw()
 }
 
 //ゴーストの描画
-void Mino::ghostdraw()
+void Mino::ghostdraw(int player_num)
 {
     Color color = Color(1.0F, 1.0F, 1.0F, 0.6F);
     RECT trim;

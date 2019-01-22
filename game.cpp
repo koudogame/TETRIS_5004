@@ -18,7 +18,7 @@ bool Game::init()
     //メンバ初期化
     if (!ui_.init()) { return false;}
     if (!player_.init()) { return false; }
-    if (!mino_.init()) { return false; }
+    if (!mino_.init(0)) { return false; }
     if (!pause_.init()) { return false; }
     if (!start_.init()) { return false; }
     if (!clear_.init()) { return false; }
@@ -43,8 +43,8 @@ int Game::update(int player_num)
 
         if (menu_type == 1)
         {
-            menu_type = mino_.update();
-            mino_.ghostupdate();
+            menu_type = mino_.update(0);
+            mino_.ghostupdate(0);
         }
         else if (menu_type == 2) //ポーズ
         {
@@ -98,8 +98,8 @@ void Game::draw()
     mino_.maindraw(0); //積み上げ
     mino_.nextdraw(0); //ネクスト
     mino_.holddraw(0); //ホールド
-    mino_.leveldraw(); //レベル
-    mino_.scoredraw(); //スコア
+    mino_.leveldraw(0); //レベル
+    mino_.scoredraw(0); //スコア
 
     if (!play)
     {
@@ -109,7 +109,7 @@ void Game::draw()
     }
     else
     {
-        mino_.ghostdraw(); //ゴースト
+        mino_.ghostdraw(0); //ゴースト
     }
 
     //ポーズ

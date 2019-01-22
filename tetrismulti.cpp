@@ -26,6 +26,7 @@ int Tetrismulti::update()
 {
     for (int i = 0; i < 4; i++)
     {
+        mino_.update(i);
     }
 
 
@@ -36,6 +37,16 @@ int Tetrismulti::update()
 //背景
 void Tetrismulti::draw()
 {
+    for (int i = 1; i < 5; i++)
+    {
+        mino_.draw(i); //動かすやつ
+        ui_.Hiddendraw(); //隠し
+        mino_.maindraw(i); //積み上げ
+        mino_.nextdraw(i); //ネクスト
+        mino_.holddraw(i); //ホールド
+    }
+
+
     RECT rect;
     rect.top = 0;
     rect.left = 0;

@@ -14,6 +14,9 @@ class Tetrismulti
 private:
     ID3D11ShaderResourceView* texture_;  // UIテクスチャ
 public:
+    Mino mino_;
+    UI ui_;                             //uiクラス
+
     Tetrismulti();
     bool init();
     int update();
