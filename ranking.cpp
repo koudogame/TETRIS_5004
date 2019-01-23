@@ -18,13 +18,35 @@ bool Ranking::init()
     }
 
     FILE* fp = fopen("ranking.txt", "r");
-    
+
+    RECT trim;
+    RECT rank;
+    trim.top = 0;
+    trim.left = 0;
+    trim.bottom = trim.top + 720;
+    trim.right = trim.left + 1280;
+
+    Sprite::draw(texture_, Vector2::Zero, &trim);
     if (fp == NULL)
     {
         Error::showDialog("ranking.txtÇÃì«Ç›çûÇ›Ç…é∏îsÇµÇ‹ÇµÇΩ");
-        return false;
+        PostQuitMessage(0);
+    }
+    int ranking;
+    int left = 0;
+
+    while (fscanf(fp, "%d", &ranking) != EOF)
+    {
+        left = ranking;
+        rank.top = 961;
+        rank.left = 0 + (16 * ranking);
+        rank.bottom = rank.top + 21;
+        rank.right = rank.left + 16;
+
+        Sprite::draw(texture_, Vector2(463, 139), &rank);
     }
 
+    fclose(fp);
 
 
     return true;
@@ -53,13 +75,8 @@ bool Ranking::update()
 
 void Ranking::draw()
 {
-    RECT trim;
-    trim.top = 0;
-    trim.left = 0;
-    trim.bottom = trim.top + 720;
-    trim.right = trim.left + 1280;
 
-    Sprite::draw(texture_, Vector2::Zero, &trim);
+
 }
 
 void Ranking::destroy()

@@ -52,13 +52,18 @@ int Game::update(int player_num)
             pausecnt = pause_.update();
 
         }
-        else if (menu_type == 3) //ゲームオーバー
+        else if (menu_type == 3)
         {
 
         }
-        else if (menu_type == 4) //ゲームクリア
+        else if (menu_type == 4) //ゲームオーバーリトライ
         {
 
+            return 3;
+        }
+        else if (menu_type == 5) //ゲームオーバーメインメニュー
+        {
+            return 4;
         }
 
         if (pausecnt == 2) //ゲームを続ける
@@ -100,7 +105,6 @@ void Game::draw()
     mino_.holddraw(0); //ホールド
     mino_.leveldraw(0); //レベル
     mino_.scoredraw(0); //スコア
-
     if (!play)
     {
         start_.draw(); //スタートメニュー

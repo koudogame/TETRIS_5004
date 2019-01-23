@@ -98,34 +98,7 @@ int Mino::update(int player_num)
     clearline = 0;
 
     //全消しの確認
-    for (int i = 0; i < 22; i++)
-    {
-        for (int j = 1; j < 11; j++)
-        {
-            if (main[player_num][i][j] != 0)
-            {
-                leaveline[i] = 1;  //ブロックを確認 
-                break;  //ブロックがあったら次の行へ
-            }
-            else
-            {
-                leaveline[i] = 0;
-            }
-        }
-    }
-
-    for (int i = 0; i < 22; i++)
-    {
-        if (leaveline[i] == 0)
-        {
-            clearline++;
-        }
-    }
-
-    if (clearline == 22&&!first)
-    {
-        all_clear = true;
-    }
+    allclear(player_num);
     
 
     //ゲームオーバー処理
@@ -544,6 +517,7 @@ int Mino::update(int player_num)
         else
         {
             score += ((fall_speed + 1) * linescore[erase_line - 1])*back_to_back*10;
+            all_clear = false;
         }
 
         //スコア上限
@@ -551,6 +525,7 @@ int Mino::update(int player_num)
         {
             score = 999999;
         }
+
         olderasenum = erase_line;
         erase_line = 0;
     }
@@ -748,6 +723,40 @@ void Mino::nextpattern()
         gcollsion = false;
         gdown = down;
 
+    }
+
+}
+
+void Mino::allclear(int player_num)
+{
+    //全消しの確認
+    for (int i = 0; i < 22; i++)
+    {
+        for (int j = 1; j < 11; j++)
+        {
+            if (main[player_num][i][j] != 0)
+            {
+                leaveline[i] = 1;  //ブロックを確認 
+                break;  //ブロックがあったら次の行へ
+            }
+            else
+            {
+                leaveline[i] = 0;
+            }
+        }
+    }
+
+    for (int i = 0; i < 22; i++)
+    {
+        if (leaveline[i] == 0)
+        {
+            clearline++;
+        }
+    }
+
+    if (clearline == 22 && !first)
+    {
+        all_clear = true;
     }
 
 }

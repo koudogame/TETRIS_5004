@@ -10,7 +10,6 @@
 #include"Error.h"
 #include"pov.h"
 
-#define SPEED 5
 enum
 {
     NOT_FOUND,

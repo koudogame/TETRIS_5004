@@ -37,10 +37,11 @@ int Tetrismulti::update()
 //”wŒi
 void Tetrismulti::draw()
 {
+    ui_.Hiddendraw(); //‰B‚µ
+
     for (int i = 1; i < 5; i++)
     {
         mino_.draw(i); //“®‚©‚·‚â‚Â
-        ui_.Hiddendraw(); //‰B‚µ
         mino_.maindraw(i); //Ï‚İã‚°
         mino_.nextdraw(i); //ƒlƒNƒXƒg
         mino_.holddraw(i); //ƒz[ƒ‹ƒh

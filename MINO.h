@@ -56,6 +56,9 @@ public:
     //ネクスト
     void nextpattern();
 
+    //全消し
+    void allclear(int player_num);
+
     //スーパーローテーション
     int turnover_rate = 0; //ミノの回転率
     int type = 40; //0 = a→d 2 = 
@@ -191,5 +194,5 @@ public:
     int leaveline[22];
     int clearline = 0;
     bool first = false; //最初は全消し扱いにしない
-    int all_clear = false; //全消し
+    bool all_clear = false; //全消し
 };
