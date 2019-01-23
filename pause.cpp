@@ -33,12 +33,12 @@ int Pause::update()
     const Keyboard::KeyboardStateTracker key_tracker = Key::getTracker();
 
 
-    if (pad_tracker.dpadDown == GamePad::ButtonStateTracker::PRESSED)
+    if (pad_tracker.dpadDown == GamePad::ButtonStateTracker::PRESSED|key_tracker.pressed.Down)
     {
         Adx::play(9);
         menucnt++;
     }
-    if (pad_tracker.dpadUp == GamePad::ButtonStateTracker::PRESSED)
+    if (pad_tracker.dpadUp == GamePad::ButtonStateTracker::PRESSED||key_tracker.pressed.Up)
     {
         Adx::play(9);
 
