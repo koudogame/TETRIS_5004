@@ -31,11 +31,13 @@ public:
 
     int opmenu = 0;
 
-    int difficulty = 0;
-    int hold = 0; 
-    int next = 0;
-    int hidden = 0;
-    int vs = 0;
-    int reverse = 0;
-    int score = 0;
+    int difficulty;
+    int hold; 
+    int next;
+    int hidden;
+    int vs;
+    int reverse;
+    int score;
+
+    int option[7];
 };

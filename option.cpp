@@ -11,13 +11,43 @@ bool Option::init()
         //エラー
         return false;
     }
+    FILE* fp = fopen("option.txt", "r");
+    if (fp == NULL)
+    {
+        Error::showDialog("option.txtの読み込みに失敗");
+        return false;
+    }
+    int num=0;
+    int op;
+    while (fscanf(fp, "%d", &op) != NULL)
+    {
+        option[num] = op;
+        if (num == 6)
+        {
+            break;
+        }
+        num++;
+    }
+
+    difficulty=option[0];
+    hold = option[1];
+    next = option[2];
+    hidden = option[3];
+    vs = option[4];
+    reverse = option[5];
+    score = option[6];
+
 
     opmenu = 0;
+    
+    fclose(fp);
     return true;
 }
 
 bool Option::update()
 {
+ 
+
     const GamePad::State pad = Pad::getState();
     const GamePad::ButtonStateTracker pad_tracker = Pad::getTracker();
 
@@ -41,13 +71,13 @@ bool Option::update()
     }
 
     //難易度選択
-    if (opmenu == 0 && (state.Left|| pad_tracker.dpadLeft == GamePad::ButtonStateTracker::PRESSED))
+    if (opmenu == 0 && (key_tracker.pressed.Left|| pad_tracker.dpadLeft == GamePad::ButtonStateTracker::PRESSED))
     {
         Adx::play(9);
 
         difficulty = 0;
     }
-    else if (opmenu == 0 && (state.Right || pad_tracker.dpadRight == GamePad::ButtonStateTracker::PRESSED))
+    else if (opmenu == 0 && (key_tracker.pressed.Right || pad_tracker.dpadRight == GamePad::ButtonStateTracker::PRESSED))
     {
         Adx::play(9);
 
@@ -55,13 +85,13 @@ bool Option::update()
     }
 
     //ホールド
-    if (opmenu == 1 && (state.Left || pad_tracker.dpadLeft == GamePad::ButtonStateTracker::PRESSED))
+    if (opmenu == 1 && (key_tracker.pressed.Left || pad_tracker.dpadLeft == GamePad::ButtonStateTracker::PRESSED))
     {
         Adx::play(9);
 
         hold = 0;
     }
-    else if (opmenu == 1 && (state.Right || pad_tracker.dpadRight == GamePad::ButtonStateTracker::PRESSED))
+    else if (opmenu == 1 && (key_tracker.pressed.Right || pad_tracker.dpadRight == GamePad::ButtonStateTracker::PRESSED))
     {
         Adx::play(9);
 
@@ -93,13 +123,13 @@ bool Option::update()
     }
 
     //Hidden
-    if (opmenu == 3 && (state.Left || pad_tracker.dpadLeft == GamePad::ButtonStateTracker::PRESSED))
+    if (opmenu == 3 && (key_tracker.pressed.Left || pad_tracker.dpadLeft == GamePad::ButtonStateTracker::PRESSED))
     {
         Adx::play(9);
 
         hidden = 0;
     }
-    else if (opmenu == 3 && (state.Right || pad_tracker.dpadRight == GamePad::ButtonStateTracker::PRESSED))
+    else if (opmenu == 3 && (key_tracker.pressed.Right || pad_tracker.dpadRight == GamePad::ButtonStateTracker::PRESSED))
     {
         Adx::play(9);
 
@@ -107,13 +137,13 @@ bool Option::update()
     }
 
     //VS
-    if (opmenu == 4 && (state.Left || pad_tracker.dpadLeft == GamePad::ButtonStateTracker::PRESSED))
+    if (opmenu == 4 && (key_tracker.pressed.Left || pad_tracker.dpadLeft == GamePad::ButtonStateTracker::PRESSED))
     {
         Adx::play(9);
 
         vs = 0;
     }
-    else if (opmenu == 4 && (state.Right || pad_tracker.dpadRight == GamePad::ButtonStateTracker::PRESSED))
+    else if (opmenu == 4 && (key_tracker.pressed.Right || pad_tracker.dpadRight == GamePad::ButtonStateTracker::PRESSED))
     {
         Adx::play(9);
 
@@ -121,13 +151,13 @@ bool Option::update()
     }
 
     //Reverse
-    if (opmenu == 5 && (state.Left || pad_tracker.dpadLeft == GamePad::ButtonStateTracker::PRESSED))
+    if (opmenu == 5 && (key_tracker.pressed.Left || pad_tracker.dpadLeft == GamePad::ButtonStateTracker::PRESSED))
     {
         Adx::play(9);
 
         reverse = 0;
     }
-    else if (opmenu == 5 &&( state.Right || pad_tracker.dpadRight == GamePad::ButtonStateTracker::PRESSED))
+    else if (opmenu == 5 &&(key_tracker.pressed.Right || pad_tracker.dpadRight == GamePad::ButtonStateTracker::PRESSED))
     {
         Adx::play(9);
 
@@ -135,13 +165,13 @@ bool Option::update()
     }
 
     //score
-    if (opmenu == 6 && (state.Left || pad_tracker.dpadLeft == GamePad::ButtonStateTracker::PRESSED))
+    if (opmenu == 6 && (key_tracker.pressed.Left || pad_tracker.dpadLeft == GamePad::ButtonStateTracker::PRESSED))
     {
         Adx::play(9);
 
         score = 0;
     }
-    else if (opmenu == 6 && (state.Right || pad_tracker.dpadRight == GamePad::ButtonStateTracker::PRESSED))
+    else if (opmenu == 6 && (key_tracker.pressed.Right || pad_tracker.dpadRight == GamePad::ButtonStateTracker::PRESSED))
     {
         Adx::play(9);
 
@@ -152,7 +182,10 @@ bool Option::update()
     if (opmenu == 7 && (key_tracker.pressed.Enter || pad_tracker.a == GamePad::ButtonStateTracker::PRESSED)||pad_tracker.start||state.C)
     {
         Adx::play(10);
+        FILE* fp = fopen("option.txt", "w");
 
+        fprintf(fp, "%d %d %d %d %d %d %d", difficulty, hold, next, hidden, vs, reverse, score);
+        fclose(fp);
         pstart = 1;
         return false;
     }
