@@ -48,17 +48,38 @@ void Credit::draw()
     Sprite::draw(texture_, Vector2::Zero);
 }
 
-void Credit::buttondraw()
+void Credit::namedraw()
 {
+    RECT rect;
 
-    RECT btrim;
-    btrim.top = 463-129;
-    btrim.left = 1536;
-    btrim.bottom = btrim.top + 129;
-    btrim.right = btrim.left + 128;
+    for (int i = 0; i < 13; i++)
+    {
+        rect.top = 961;
+        rect.left = 160-16+(name[i]*16);
+        rect.bottom = rect.top + 21;
+        rect.right = rect.left + 16;
+        if (name[i] != 0)
+        {
+            Sprite::draw(texture_, Vector2(530+(i*16), 107), &rect);
+        }
+    }
+}
 
+void Credit::datedraw()
+{
+    RECT rect;
 
-    Sprite::draw(texture_, Vector2(1002, 519), &btrim);
+    for (int i = 0; i < 11; i++)
+    {
+        rect.top = 961;
+        rect.left = 0 + (creation_date[i] * 16);
+        rect.bottom = rect.top + 21;
+        rect.right = rect.left + 16;
+        if (creation_date[i] != 100)
+        {
+            Sprite::draw(texture_, Vector2(555 + (i * 16), 620), &rect);
+        }
+    }
 }
 
 void Credit::destroy()

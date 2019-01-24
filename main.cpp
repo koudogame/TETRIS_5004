@@ -440,6 +440,8 @@ int WINAPI WinMain( HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLin
                     break;
                 case kCreditUpdate:
                     credit.draw(); //クレジット背景
+                    credit.namedraw(); //名前表示
+                    credit.datedraw(); //制作日表示
                     ui.inputdraw(rank_credit);
                     break;
                 case kOptionUpdate:

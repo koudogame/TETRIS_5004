@@ -15,12 +15,15 @@ public:
     Credit() { texture_ = NULL; }
 
     bool init();        //初期化
-    bool update();       //更新
+    bool update();      //更新
     void draw();        //描画
-    void buttondraw();
+    void namedraw();    //名前描画
+    void datedraw();
     void destroy();     //破棄
 
     int menu = 0; //ゲームを終わるときにtrue
     int cnt = 0;
 
+    int name[13] = {8,9,18,15,6,21,13,9,0,19,1,20,15}; //クレジットに描画する自分の名前
+    int creation_date[12] = { 2,0,1,9,42,100,1,42,100,2,8 };
 };
