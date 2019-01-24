@@ -97,7 +97,7 @@ int WINAPI WinMain( HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLin
     const HWND hWnd = CreateWindowEx(
         ex_style,                                                                                   //拡張ウィンドウスタイル
         "ClassName",                                                                                //クラス名
-        "Title",                                                                                    //ウィンドウタイトル
+        "Tetris",                                                                                    //ウィンドウタイトル
         style,                                                                                      //ウィンドウタイトル
         CW_USEDEFAULT,                                                                              //表示座標X
         CW_USEDEFAULT,                                                                              //表示座標Y

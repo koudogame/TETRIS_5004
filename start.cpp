@@ -63,8 +63,8 @@ bool Start::update()
 
         if (starttimer == 0)
         {
-            //Adx::play(24); //‚â‚Á‚¿‚Ü‚Á‚Ä‚­‚¾‚¹‚¥
-            Adx::play(13);
+            Adx::play(24); //‚â‚Á‚¿‚Ü‚Á‚Ä‚­‚¾‚¹‚¥
+            //Adx::play(13);
             goflag = true;
         }
     }
