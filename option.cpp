@@ -161,6 +161,16 @@ bool Option::update()
         pstart = 0;
     }
 
+    if (key_tracker.pressed.Enter || pad_tracker.a == GamePad::ButtonStateTracker::PRESSED)
+    {
+
+        if (opmenu < 7)
+        {
+            Adx::play(10);
+
+            opmenu++;
+        }
+    }
     //カーソルループ
     if (opmenu > 7)
     {

@@ -160,6 +160,7 @@ public:
     int hold[4][4] = { 0 };    //ホールド用
     int hold_a;
     int holdtmp_a;
+
     bool srs = false; //スーパーローテーション
 
 	//ゲームオーバー処理関係
@@ -195,4 +196,14 @@ public:
     int clearline = 0;
     bool first = false; //最初は全消し扱いにしない
     bool all_clear = false; //全消し
+
+    //オプション
+    int option[8]; //オプションの項目保存
+    int maxlevelop; //レベル上限
+    bool holdop;    //ホールド使用設定
+    int nextop;     //ネクストを何個表示するか
+    bool hidden;    //隠しを入れるか
+    bool vsop;      //vsモードにするか
+    bool reverseop; //操作を反転させるか
+    bool scorereset;//ランキングスコアリセット
 };

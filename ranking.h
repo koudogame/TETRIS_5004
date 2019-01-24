@@ -20,4 +20,6 @@ public:
     void destroy();
 
     int num = 0;
+    int rankcntx = 0;
+    int rankcnty = 0;
 };

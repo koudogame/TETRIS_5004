@@ -99,6 +99,10 @@ int Title::update()
 
         return 5; //クレジット
     }
+    else if (menu == 5 && (key_tracker.pressed.Enter || pad_tracker.a == GamePad::ButtonStateTracker::PRESSED))
+    {
+        Adx::play(0);
+    }
 
     // メニューのループ
     if (menu > 5)

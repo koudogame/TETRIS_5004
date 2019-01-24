@@ -55,21 +55,21 @@ int Pause::update()
     }
 
     //ゲームを続ける
-    if (menucnt == 0 && (pad_tracker.a == GamePad::ButtonStateTracker::PRESSED))
+    if (menucnt == 0 && (pad_tracker.a == GamePad::ButtonStateTracker::PRESSED||key_tracker.pressed.Enter))
     {
         Adx::play(10);
 
         return 2;
     }
     //リセット
-    else if (menucnt == 1 && (pad_tracker.a == GamePad::ButtonStateTracker::PRESSED))
+    else if (menucnt == 1 && (pad_tracker.a == GamePad::ButtonStateTracker::PRESSED || key_tracker.pressed.Enter))
     {
         Adx::play(10);
 
         return 3;
     }
     //メインメニューに戻る
-    else if (menucnt == 2 && (pad_tracker.a == GamePad::ButtonStateTracker::PRESSED))
+    else if (menucnt == 2 && (pad_tracker.a == GamePad::ButtonStateTracker::PRESSED || key_tracker.pressed.Enter))
     {
         Adx::play(10);
 

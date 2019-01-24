@@ -17,38 +17,6 @@ bool Ranking::init()
         return false;
     }
 
-    FILE* fp = fopen("ranking.txt", "r");
-
-    RECT trim;
-    RECT rank;
-    trim.top = 0;
-    trim.left = 0;
-    trim.bottom = trim.top + 720;
-    trim.right = trim.left + 1280;
-
-    Sprite::draw(texture_, Vector2::Zero, &trim);
-    if (fp == NULL)
-    {
-        Error::showDialog("ranking.txtÇÃì«Ç›çûÇ›Ç…é∏îsÇµÇ‹ÇµÇΩ");
-        PostQuitMessage(0);
-    }
-    int ranking;
-    int left = 0;
-
-    while (fscanf(fp, "%d", &ranking) != EOF)
-    {
-        left = ranking;
-        rank.top = 961;
-        rank.left = 0 + (16 * ranking);
-        rank.bottom = rank.top + 21;
-        rank.right = rank.left + 16;
-
-        Sprite::draw(texture_, Vector2(463, 139), &rank);
-    }
-
-    fclose(fp);
-
-
     return true;
 }
 
@@ -75,6 +43,65 @@ bool Ranking::update()
 
 void Ranking::draw()
 {
+    rankcntx = 0;
+    rankcnty = 0;
+    RECT trim;
+
+    trim.top = 0;
+    trim.left = 0;
+    trim.bottom = trim.top + 720;
+    trim.right = trim.left + 1280;
+
+    Sprite::draw(texture_, Vector2::Zero, &trim);
+    FILE* fp = fopen("ranking.txt", "r");
+
+    RECT rank;
+
+    if (fp == NULL)
+    {
+        Error::showDialog("ranking.txtÇÃì«Ç›çûÇ›Ç…é∏îsÇµÇ‹ÇµÇΩ");
+        PostQuitMessage(0);
+    }
+    int ranking;
+    int left = 0;
+
+    while (fscanf(fp, "%d", &ranking) != EOF)
+    {
+        rankcntx++;
+        if (rankcntx == 4)
+        {
+            rankcntx++;
+        }
+        if (rankcntx == 11)
+        {
+            rankcntx++;
+        }
+        if (rankcntx % 13 == 0)
+        {
+            rankcnty++;
+            rankcntx = 1;
+        }
+
+        rank.top = 982;
+        rank.left = 0 + (32 * ranking);
+        rank.bottom = rank.top + 42;
+        rank.right = rank.left + 32;
+        if (rankcntx < 4)
+        {
+            Sprite::draw(texture_, Vector2(429 + (rankcntx * 32), 139 + (rankcnty * 52)), &rank);
+        }
+        else if (rankcntx > 4 && rankcntx < 12)
+        {
+            Sprite::draw(texture_, Vector2(435 + (rankcntx * 32), 139 + (rankcnty * 52)), &rank);
+        }
+        else
+        {
+            Sprite::draw(texture_, Vector2(445 + (rankcntx * 32), 139 + (rankcnty * 52)), &rank);
+        }
+    }
+
+    fclose(fp);
+
 
 
 }

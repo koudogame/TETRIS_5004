@@ -77,6 +77,84 @@ bool Mino::init(int player_num)
     first = true;
 
     nowtime = timeGetTime();
+
+    FILE* fp = fopen("option.txt", "r");
+    if (fp == NULL)
+    {
+        Error::showDialog("option.txtの読み込みに失敗");
+        PostQuitMessage(0);
+    }
+
+    int optiontxt;
+    //optionの内容を反映
+    int num = 0;
+
+    while (fscanf(fp, "%d", &optiontxt) != NULL)
+    {
+        option[num] = optiontxt;
+        if (num == 7) //なんかとまらなかったからbreak
+        {
+            break;
+        }
+        num++;
+
+    }
+
+    //レベル上限
+    if (option[0] == 0)
+    {
+        maxlevelop = 6;
+    }
+    else
+    {
+        maxlevelop = 9;
+    }
+
+    //ホールド使用設定
+    if (option[1] == 0)
+    {
+        holdop = true;
+    }
+    else
+    {
+        holdop = false;
+    }
+
+    if (option[2] == 3)
+    {
+        nextop = 0;
+    }
+    else if (option[2] == 2)
+    {
+        nextop = 1;
+    }
+    else if (option[2] == 1)
+    {
+        nextop = 2;
+    }
+    else
+    {
+        nextop = 3;
+    }
+
+    if (option[3] == 0)
+    {
+        hidden = false;
+    }
+    else
+    {
+        hidden = true;
+    }
+
+    if (option[5] == 0)
+    {
+        reverseop = false;
+    }
+    else
+    {
+        reverseop = true;
+    }
+
     return true;
 }
 
@@ -235,7 +313,7 @@ int Mino::update(int player_num)
     }
 
     //ゲームクリア
-    if (fall_speed == 9 && erase >= 10)
+    if (fall_speed == maxlevelop && erase >= 10)
     {
         Adx::stop();
 
@@ -254,7 +332,10 @@ int Mino::update(int player_num)
     //ミノのホールド
     if (key_tracker.pressed.LeftShift || pad_tracker.leftShoulder == GamePad::ButtonStateTracker::PRESSED)
     {
-        change();
+        if (holdop)
+        {
+            change();
+        }
     }
 
     //上(ハードドロップ)
@@ -311,50 +392,122 @@ int Mino::update(int player_num)
     //左移動
     if (state.Left || pad.dpad.left)
     {
-        left++;
-    }
-    if (left % 50 == 7 || pad_tracker.dpadLeft == GamePad::ButtonStateTracker::PRESSED || key_tracker.pressed.Left)
-    {
-        left = 0;
-        collisionleft(player_num);
-        collisionsrs(player_num);
-
-        if (!collisionf)
+        if (reverseop)
         {
-            Adx::play(14);
-            ghostupdate(player_num);
-            pos--;
+            right++;
+        }
+        else
+        {
+            left++;
+
         }
     }
 
+    if (!reverseop)
+    {
+        if (left % 50 == 10 || pad_tracker.dpadLeft == GamePad::ButtonStateTracker::PRESSED || key_tracker.pressed.Left)
+        {
+            left = 0;
+            collisionleft(player_num);
+            collisionsrs(player_num);
+
+            if (!collisionf)
+            {
+                Adx::play(14);
+                ghostupdate(player_num);
+                pos--;
+            }
+        }
+    }
+    else //リバース
+    {
+        if (left % 50 == 10 || pad_tracker.dpadRight == GamePad::ButtonStateTracker::PRESSED || key_tracker.pressed.Right)
+        {
+            left = 0;
+            collisionleft(player_num);
+            collisionsrs(player_num);
+
+            if (!collisionf)
+            {
+                Adx::play(14);
+                ghostupdate(player_num);
+                pos--;
+            }
+        }
+    }
+
+
     if (key_tracker.released.Left || pad_tracker.dpadLeft == GamePad::ButtonStateTracker::RELEASED)
     {
-        left = 0;
+        if (reverseop)
+        {
+            left = 0;
+        }
+        else
+        {
+            right = 0;
+        }
     }
     //右移動
     if (state.Right || pad.dpad.right)
     {
-        right++;
-    }
-    if (right % 50 == 10 || pad_tracker.dpadRight == GamePad::ButtonStateTracker::PRESSED || key_tracker.pressed.Right)
-    {
-
-        right = 0;
-        collisionright(player_num);
-        collisionsrs(player_num);
-
-        if (!collisionf)
+        if (reverseop)
         {
-            Adx::play(14);
+            left++;
+        }
+        else
+        {
+            right++;
+        }
+    }
+    if (!reverseop)
+    {
+        if (right % 50 == 10 || pad_tracker.dpadRight == GamePad::ButtonStateTracker::PRESSED || key_tracker.pressed.Right)
+        {
 
-            ghostupdate(player_num);
-            pos++;
+            right = 0;
+            collisionright(player_num);
+            collisionsrs(player_num);
+
+            if (!collisionf)
+            {
+                Adx::play(14);
+
+                ghostupdate(player_num);
+                pos++;
+            }
+        }
+    }
+    else //リバース
+    {
+        if (right % 50 == 10 || pad_tracker.dpadLeft == GamePad::ButtonStateTracker::PRESSED || key_tracker.pressed.Left)
+        {
+
+            right = 0;
+            collisionright(player_num);
+            collisionsrs(player_num);
+
+            if (!collisionf)
+            {
+                Adx::play(14);
+
+                ghostupdate(player_num);
+                pos++;
+            }
         }
     }
 
+
     if (key_tracker.released.Right || pad_tracker.dpadRight == GamePad::ButtonStateTracker::RELEASED)
     {
-        right = 0;
+        if (reverseop)
+        {
+            left++;
+        }
+        else
+        {
+            right = 0;
+        }
     }
     //回転270
     if (key_tracker.pressed.Enter || pad_tracker.a == GamePad::ButtonStateTracker::PRESSED)
@@ -536,13 +689,6 @@ int Mino::update(int player_num)
 //ゴースト更新
 void Mino::ghostupdate(int player_num)
 {
-
-    const GamePad::State pad = Pad::getState();
-    const GamePad::ButtonStateTracker pad_tracker = Pad::getTracker();
-
-    const Keyboard::State state = Key::getState();
-    const Keyboard::KeyboardStateTracker key_tracker = Key::getTracker();
-
     gdown = down;
     gcollsion = false;
 
@@ -1424,6 +1570,7 @@ void Mino::maindraw(int player_num)
             trim.right = trim.left + 25;
             if (main[player_num][i][j] != 0 && main[player_num][i][j] != 9)
             {
+                if(!hidden)
                 Sprite::draw(texture_, Vector2(510 + (25 * j) - 25, 221 + (25 * i) - 75), &trim);
             }
         }
@@ -1435,9 +1582,8 @@ void Mino::nextdraw(int player_num)
 {
     RECT trim;
 
-
     //描画
-    for (int l = 1; l < 4; l++)
+    for (int l = 1; l < nextop+1; l++)
     {
         for (int i = 0; i < 4; i++)
         {
