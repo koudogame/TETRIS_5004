@@ -75,6 +75,7 @@ bool Mino::init(int player_num)
     gdown = down;
     down = -1;
     first = true;
+    op_bonus = 1.0;
 
     nowtime = timeGetTime();
 
@@ -97,7 +98,6 @@ bool Mino::init(int player_num)
             break;
         }
         num++;
-
     }
 
     //レベル上限
@@ -117,6 +117,7 @@ bool Mino::init(int player_num)
     }
     else
     {
+        op_bonus += 0.5;
         holdop = false;
     }
 
@@ -126,14 +127,17 @@ bool Mino::init(int player_num)
     }
     else if (option[2] == 2)
     {
+        op_bonus += 0.25;
         nextop = 1;
     }
     else if (option[2] == 1)
     {
+        op_bonus += 0.5;
         nextop = 2;
     }
     else
     {
+        op_bonus += 1.0;
         nextop = 3;
     }
 
@@ -143,6 +147,7 @@ bool Mino::init(int player_num)
     }
     else
     {
+        op_bonus += 5.0;
         hidden = true;
     }
 
@@ -152,6 +157,7 @@ bool Mino::init(int player_num)
     }
     else
     {
+        op_bonus += 2.5;
         reverseop = true;
     }
 
@@ -665,11 +671,11 @@ int Mino::update(int player_num)
         //レベル得点掛ける消えたライン数
         if (!all_clear)
         {
-            score += ((fall_speed + 1) * linescore[erase_line - 1])*back_to_back;
+            score += ((fall_speed + 1) * linescore[erase_line - 1])*back_to_back*op_bonus;
         }
         else
         {
-            score += ((fall_speed + 1) * linescore[erase_line - 1])*back_to_back*10;
+            score += ((fall_speed + 1) * linescore[erase_line - 1])*back_to_back*10*op_bonus;
             all_clear = false;
         }
 

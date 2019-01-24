@@ -206,4 +206,7 @@ public:
     bool vsop;      //vsモードにするか
     bool reverseop; //操作を反転させるか
     bool scorereset;//ランキングスコアリセット
+
+    double op_bonus = 1.0;
+
 };
