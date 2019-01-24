@@ -10,6 +10,7 @@ class Gameover
 private:
     ID3D11ShaderResourceView* texture_;
 public:
+    Gameover();
     bool init();
     void update();
     void draw();

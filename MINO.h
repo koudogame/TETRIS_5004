@@ -19,11 +19,13 @@
 #include"CueSheet_0.h"
 #include"adx.h"
 #include<ctime>
+#include"gameover.h"
 
 class Mino
 {
 private:
     ID3D11ShaderResourceView* texture_; //テクスチャ
+    Gameover gameover_;
 public:
     Mino();
 

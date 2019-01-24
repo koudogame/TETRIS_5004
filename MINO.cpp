@@ -178,21 +178,27 @@ int Mino::update(int player_num)
 
     const Keyboard::State state = Key::getState();
     const Keyboard::KeyboardStateTracker key_tracker = Key::getTracker();
-    
+
     clearline = 0;
 
     //全消しの確認
     allclear(player_num);
-    
+
 
     //ゲームオーバー処理
-    if (main[player_num][0][5] != 0 && !gameover)
+    if (main[player_num][0][5] != 0)
     {
         nextblock = false;
         shift = false;
         overcnt++;
         overcnt2++;
+        gameover = true;
+        if (overcnt2 == 1)
+        {
+            Adx::stop();
 
+            Adx::play(7);
+        }
         for (int i = 1; i < 11; i++)
         {
             if (main[player_num][22 - overcnt][i] != 0)
@@ -207,489 +213,493 @@ int Mino::update(int player_num)
         }
 
         //ゲームオーバーメニュー
-        if (overcnt2 >= 40)
+        if (overcnt2 >= 200)
         {
             return 3;
         }
     }
-
-    //ポーズメニュー
-    if (key_tracker.pressed.F1 || pad_tracker.start == GamePad::ButtonStateTracker::PRESSED)
-    {
-        Adx::play(10);
-        return 2;
-    }
-
-    //初期化(テスト用)
-    if (pad_tracker.rightShoulder == GamePad::ButtonStateTracker::PRESSED || key_tracker.pressed.Space)
-    {
-        reset(player_num);
-        gameover = false;
-    }
-
-    //ネクスト
-    nextpattern();
-
-    //下
-    if (state.Down || pad.dpad.down)
-    {
-        time = 50;
-    }
-    else
-    {
-        time = 1;
-    }
-
-    //当たり判定
-    collisiondown(player_num);
-
-
-    //回転先が埋まっていた場合スーパーローテーション関数で補正をかける
-    if (srs)
-    {
-        srsystem(turnover_rate,player_num);
-    }
-
-    //実時間で落とす
-    if (!collision_down && !Accumulate)
+    if (!gameover)
     {
 
-        if (nowtime - oldtime >= fall_time / (time + fall_speed))
+        //ポーズメニュー
+        if (key_tracker.pressed.F1 || pad_tracker.start == GamePad::ButtonStateTracker::PRESSED)
         {
-            if (state.Down || pad.dpad.down)
-            {
-                score++;
-            }
-
-            if (time == 50) //降下音（消えるから放置）
-            {
-                Adx::play(14);
-            }
-            down++;
-            oldtime = nowtime;
+            Adx::play(10);
+            return 2;
         }
 
-
-    }
-
-    //ブロックを消す場所の確認
-    for (int i = 0; i < 22; i++)
-    {
-        for (int j = 1; j < 11; j++)
+        //初期化(テスト用)
+        if (pad_tracker.rightShoulder == GamePad::ButtonStateTracker::PRESSED || key_tracker.pressed.Space)
         {
-            if (main[player_num][i][j] == 0)
+            reset(player_num);
+            gameover = false;
+        }
+
+        //ネクスト
+        nextpattern();
+
+        //下
+        if (state.Down || pad.dpad.down)
+        {
+            time = 50;
+        }
+        else
+        {
+            time = 1;
+        }
+
+        //当たり判定
+        collisiondown(player_num);
+
+
+        //回転先が埋まっていた場合スーパーローテーション関数で補正をかける
+        if (srs)
+        {
+            srsystem(turnover_rate, player_num);
+        }
+
+        //実時間で落とす
+        if (!collision_down && !Accumulate)
+        {
+
+            if (nowtime - oldtime >= fall_time / (time + fall_speed))
             {
-                clearlinepos[i] = 1;  //空欄を確認 
-                break;  //空欄があったら次の行へ
+                if (state.Down || pad.dpad.down)
+                {
+                    score++;
+                }
+
+                if (time == 50) //降下音（消えるから放置）
+                {
+                    Adx::play(14);
+                }
+                down++;
+                oldtime = nowtime;
+            }
+
+
+        }
+
+        //ブロックを消す場所の確認
+        for (int i = 0; i < 22; i++)
+        {
+            for (int j = 1; j < 11; j++)
+            {
+                if (main[player_num][i][j] == 0)
+                {
+                    clearlinepos[i] = 1;  //空欄を確認 
+                    break;  //空欄があったら次の行へ
+                }
+                else
+                {
+                    clearlinepos[i] = 0;    //ブロックで埋まっているときは0
+                }
+            }
+        }
+
+        //消す処理と消された後の落とす処理
+        for (int i = 0; i < 22; i++)
+        {
+            if (clearlinepos[i] == 0)
+            {
+
+                for (int j = 1; j < 11; j++)
+                {
+                    //配列の初期化
+                    main[player_num][i][j] = 0;
+                }
+                clearlinepos[i] = 0;
+
+                for (int k = i; k > 0; k--)
+                {
+                    for (int l = 1; l < 11; l++)
+                    {
+                        //ミノ落とし
+                        sub[k][l] = main[player_num][k][l];
+                        main[player_num][k][l] = main[player_num][k - 1][l];
+                        main[player_num][k - 1][l] = sub[k][l];
+                    }
+                }
+                Adx::play(2);
+                erase++;
+                erase_line++;
+            }
+        }
+
+        //ゲームクリア
+        if (fall_speed == maxlevelop && erase >= 10)
+        {
+            Adx::stop();
+
+            Adx::play(23);
+            return 4;
+        }
+
+        //ライン消去数で落下速度変更
+        if (erase >= 10)
+        {
+            Adx::play(6);
+            erase -= 10;
+            fall_speed++;
+        }
+
+        //ミノのホールド
+        if (key_tracker.pressed.LeftShift || pad_tracker.leftShoulder == GamePad::ButtonStateTracker::PRESSED)
+        {
+            if (holdop)
+            {
+                change();
+            }
+        }
+
+        //上(ハードドロップ)
+        if (pad_tracker.dpadUp == GamePad::ButtonStateTracker::PRESSED || key_tracker.pressed.Up)
+        {
+            Adx::play(4);
+
+            while (!collision_down)
+            {
+                down++;
+                score += 2;
+                //下側
+                for (int y = 0; y < block_height; y++) {
+                    for (int x = 0; x < block_width; x++) {
+                        if (test[y][x] != 0) {
+                            if (main[player_num][down + y][pos + x] != 0) {
+                                collision_down = true;
+                            }
+                        }
+                    }
+                }
+            }
+
+            //積み上げ
+            for (int i = 0; i < 4; i++)
+            {
+                for (int j = 0; j < 4; j++)
+                {
+                    if (test[i][j] != 0 && main[player_num][down + i - 1][pos + j] == 0)
+                        main[player_num][down + i - 1][pos + j] = test[i][j];
+                }
+            }
+
+            //フラグ更新
+            nextblock = true;
+            shift = true;
+            holdbutton = false;
+            holdf = false;
+            next++;
+            gdown = down;
+
+            if (first)
+            {
+                first = false;
+            }
+
+            if (next > 6)
+            {
+                shuffle = true;
+                next = 0;
+            }
+        }
+
+        //左移動
+        if (state.Left || pad.dpad.left)
+        {
+            if (reverseop)
+            {
+                right++;
             }
             else
             {
-                clearlinepos[i] = 0;    //ブロックで埋まっているときは0
+                left++;
+
             }
         }
-    }
 
-    //消す処理と消された後の落とす処理
-    for (int i = 0; i < 22; i++)
-    {
-        if (clearlinepos[i] == 0)
+        if (!reverseop)
         {
-
-            for (int j = 1; j < 11; j++)
+            if (left % 50 == 10 || pad_tracker.dpadLeft == GamePad::ButtonStateTracker::PRESSED || key_tracker.pressed.Left)
             {
-                //配列の初期化
-                main[player_num][i][j] = 0;
-            }
-            clearlinepos[i] = 0;
+                left = 0;
+                collisionleft(player_num);
+                collisionsrs(player_num);
 
-            for (int k = i; k > 0; k--)
-            {
-                for (int l = 1; l < 11; l++)
+                if (!collisionf)
                 {
-                    //ミノ落とし
-                    sub[k][l] = main[player_num][k][l];
-                    main[player_num][k][l] = main[player_num][k - 1][l];
-                    main[player_num][k - 1][l] = sub[k][l];
+                    Adx::play(14);
+                    ghostupdate(player_num);
+                    pos--;
                 }
             }
-            Adx::play(2);
-            erase++;
-            erase_line++;
         }
-    }
-
-    //ゲームクリア
-    if (fall_speed == maxlevelop && erase >= 10)
-    {
-        Adx::stop();
-
-        Adx::play(23);
-        return 4;
-    }
-
-    //ライン消去数で落下速度変更
-    if (erase >= 10)
-    {
-        Adx::play(6);
-        erase -= 10;
-        fall_speed++;
-    }
-
-    //ミノのホールド
-    if (key_tracker.pressed.LeftShift || pad_tracker.leftShoulder == GamePad::ButtonStateTracker::PRESSED)
-    {
-        if (holdop)
+        else //リバース
         {
-            change();
+            if (left % 50 == 10 || pad_tracker.dpadRight == GamePad::ButtonStateTracker::PRESSED || key_tracker.pressed.Right)
+            {
+                left = 0;
+                collisionleft(player_num);
+                collisionsrs(player_num);
+
+                if (!collisionf)
+                {
+                    Adx::play(14);
+                    ghostupdate(player_num);
+                    pos--;
+                }
+            }
         }
-    }
 
-    //上(ハードドロップ)
-    if (pad_tracker.dpadUp == GamePad::ButtonStateTracker::PRESSED || key_tracker.pressed.Up)
-    {
-        Adx::play(4);
 
-        while (!collision_down)
+        if (key_tracker.released.Left || pad_tracker.dpadLeft == GamePad::ButtonStateTracker::RELEASED)
         {
-            down++;
-            score += 2;
-            //下側
-            for (int y = 0; y < block_height; y++) {
-                for (int x = 0; x < block_width; x++) {
-                    if (test[y][x] != 0) {
-                        if (main[player_num][down + y][pos + x] != 0) {
-                            collision_down = true;
-                        }
+            if (reverseop)
+            {
+                left = 0;
+            }
+            else
+            {
+                right = 0;
+            }
+        }
+        //右移動
+        if (state.Right || pad.dpad.right)
+        {
+            if (reverseop)
+            {
+                left++;
+            }
+            else
+            {
+                right++;
+            }
+        }
+        if (!reverseop)
+        {
+            if (right % 50 == 10 || pad_tracker.dpadRight == GamePad::ButtonStateTracker::PRESSED || key_tracker.pressed.Right)
+            {
+
+                right = 0;
+                collisionright(player_num);
+                collisionsrs(player_num);
+
+                if (!collisionf)
+                {
+                    Adx::play(14);
+
+                    ghostupdate(player_num);
+                    pos++;
+                }
+            }
+        }
+        else //リバース
+        {
+            if (right % 50 == 10 || pad_tracker.dpadLeft == GamePad::ButtonStateTracker::PRESSED || key_tracker.pressed.Left)
+            {
+
+                right = 0;
+                collisionright(player_num);
+                collisionsrs(player_num);
+
+                if (!collisionf)
+                {
+                    Adx::play(14);
+
+                    ghostupdate(player_num);
+                    pos++;
+                }
+            }
+        }
+
+
+        if (key_tracker.released.Right || pad_tracker.dpadRight == GamePad::ButtonStateTracker::RELEASED)
+        {
+            if (reverseop)
+            {
+                left++;
+            }
+            else
+            {
+                right = 0;
+            }
+        }
+        //回転270
+        if (key_tracker.pressed.Enter || pad_tracker.a == GamePad::ButtonStateTracker::PRESSED)
+        {
+            Adx::play(0);
+            if (Accumulate)
+            {
+                oldtime = nowtime;
+                nowtime = timeGetTime();
+            }
+
+            turnover_rate--;
+
+            if (turnover_rate < 0)
+            {
+                turnover_rate = 3;
+            }
+
+            for (int i = 0; i < 4; i++)
+            {
+                for (int j = 0; j < 4; j++)
+                {
+                    tmp[i][j] = test[j][i];
+                }
+            }
+
+            //IとOミノは例外判定で回転軸ずらす
+            if (a != 0 && a != 5)
+            {
+                for (int i = 0; i < 4; i++)
+                {
+                    for (int j = 0; j < 4; j++)
+                    {
+                        test[4 - i][j] = tmp[i][j];
+                    }
+                }
+            }
+            else
+            {
+                for (int i = 0; i < 4; i++)
+                {
+                    for (int j = 0; j < 4; j++)
+                    {
+                        test[3 - i][j] = tmp[i][j];
+                    }
+                }
+            }
+            collisionsrs(player_num);
+        }
+
+        //回転90
+        if (key_tracker.pressed.RightShift || pad_tracker.b == GamePad::ButtonStateTracker::PRESSED)
+        {
+            Adx::play(0);
+
+            turnover_rate++;
+            if (turnover_rate > 3)
+            {
+                turnover_rate = 0;
+            }
+
+            if (Accumulate)
+            {
+                oldtime = nowtime;
+                nowtime = timeGetTime();
+            }
+
+
+            for (int i = 0; i < 4; i++)
+            {
+                for (int j = 0; j < 4; j++)
+                {
+                    tmp[i][j] = test[j][i];
+                }
+            }
+
+            //IとOミノは例外判定で回転軸ずらす
+            if (a != 0 && a != 5)
+            {
+                for (int i = 0; i < 4; i++)
+                {
+                    for (int j = 0; j < 4; j++)
+                    {
+                        test[i][4 - j] = tmp[i][j];
+                    }
+                }
+            }
+            else
+            {
+                for (int i = 0; i < 4; i++)
+                {
+                    for (int j = 0; j < 4; j++)
+                    {
+                        test[i][3 - j] = tmp[i][j];
                     }
                 }
             }
         }
 
+        //下が当たっていたら積む
+        if (nowtime - oldtime >= fall_time - 300 && collision_down)
+        {
+            Accumulate = true;
+        }
+        else
+        {
+            Accumulate = false;
+        }
+
         //積み上げ
-        for (int i = 0; i < 4; i++)
-        {
-            for (int j = 0; j < 4; j++)
-            {
-                if (test[i][j] != 0 && main[player_num][down + i - 1][pos + j] == 0)
-                    main[player_num][down + i - 1][pos + j] = test[i][j];
-            }
-        }
-
-        //フラグ更新
-        nextblock = true;
-        shift = true;
-        holdbutton = false;
-        holdf = false;
-        next++;
-        gdown = down;
-
-        if (first)
-        {
-            first = false;
-        }
-
-        if (next > 6)
-        {
-            shuffle = true;
-            next = 0;
-        }
-    }
-
-    //左移動
-    if (state.Left || pad.dpad.left)
-    {
-        if (reverseop)
-        {
-            right++;
-        }
-        else
-        {
-            left++;
-
-        }
-    }
-
-    if (!reverseop)
-    {
-        if (left % 50 == 10 || pad_tracker.dpadLeft == GamePad::ButtonStateTracker::PRESSED || key_tracker.pressed.Left)
-        {
-            left = 0;
-            collisionleft(player_num);
-            collisionsrs(player_num);
-
-            if (!collisionf)
-            {
-                Adx::play(14);
-                ghostupdate(player_num);
-                pos--;
-            }
-        }
-    }
-    else //リバース
-    {
-        if (left % 50 == 10 || pad_tracker.dpadRight == GamePad::ButtonStateTracker::PRESSED || key_tracker.pressed.Right)
-        {
-            left = 0;
-            collisionleft(player_num);
-            collisionsrs(player_num);
-
-            if (!collisionf)
-            {
-                Adx::play(14);
-                ghostupdate(player_num);
-                pos--;
-            }
-        }
-    }
-
-
-    if (key_tracker.released.Left || pad_tracker.dpadLeft == GamePad::ButtonStateTracker::RELEASED)
-    {
-        if (reverseop)
-        {
-            left = 0;
-        }
-        else
-        {
-            right = 0;
-        }
-    }
-    //右移動
-    if (state.Right || pad.dpad.right)
-    {
-        if (reverseop)
-        {
-            left++;
-        }
-        else
-        {
-            right++;
-        }
-    }
-    if (!reverseop)
-    {
-        if (right % 50 == 10 || pad_tracker.dpadRight == GamePad::ButtonStateTracker::PRESSED || key_tracker.pressed.Right)
-        {
-
-            right = 0;
-            collisionright(player_num);
-            collisionsrs(player_num);
-
-            if (!collisionf)
-            {
-                Adx::play(14);
-
-                ghostupdate(player_num);
-                pos++;
-            }
-        }
-    }
-    else //リバース
-    {
-        if (right % 50 == 10 || pad_tracker.dpadLeft == GamePad::ButtonStateTracker::PRESSED || key_tracker.pressed.Left)
-        {
-
-            right = 0;
-            collisionright(player_num);
-            collisionsrs(player_num);
-
-            if (!collisionf)
-            {
-                Adx::play(14);
-
-                ghostupdate(player_num);
-                pos++;
-            }
-        }
-    }
-
-
-    if (key_tracker.released.Right || pad_tracker.dpadRight == GamePad::ButtonStateTracker::RELEASED)
-    {
-        if (reverseop)
-        {
-            left++;
-        }
-        else
-        {
-            right = 0;
-        }
-    }
-    //回転270
-    if (key_tracker.pressed.Enter || pad_tracker.a == GamePad::ButtonStateTracker::PRESSED)
-    {
-        Adx::play(0);
         if (Accumulate)
         {
-            oldtime = nowtime;
-            nowtime = timeGetTime();
-        }
 
-        turnover_rate--;
+            Adx::play(1);
 
-        if (turnover_rate < 0)
-        {
-            turnover_rate = 3;
-        }
-
-        for (int i = 0; i < 4; i++)
-        {
-            for (int j = 0; j < 4; j++)
-            {
-                tmp[i][j] = test[j][i];
-            }
-        }
-
-        //IとOミノは例外判定で回転軸ずらす
-        if (a != 0 && a != 5)
-        {
             for (int i = 0; i < 4; i++)
             {
                 for (int j = 0; j < 4; j++)
                 {
-                    test[4 - i][j] = tmp[i][j];
+                    if (test[i][j] != 0 && main[player_num][down + i - 1][pos + j] == 0)
+                        main[player_num][down + i - 1][pos + j] = test[i][j];
                 }
             }
-        }
-        else
-        {
-            for (int i = 0; i < 4; i++)
+
+            //フラグ更新
+            nextblock = true;
+            shift = true;
+            holdbutton = false;
+            holdf = false;
+            next++;
+            if (first)
             {
-                for (int j = 0; j < 4; j++)
-                {
-                    test[3 - i][j] = tmp[i][j];
-                }
+                first = false;
             }
-        }
-        collisionsrs(player_num);
-    }
-
-    //回転90
-    if (key_tracker.pressed.RightShift || pad_tracker.b == GamePad::ButtonStateTracker::PRESSED)
-    {
-        Adx::play(0);
-
-        turnover_rate++;
-        if (turnover_rate > 3)
-        {
-            turnover_rate = 0;
-        }
-
-        if (Accumulate)
-        {
-            oldtime = nowtime;
-            nowtime = timeGetTime();
-        }
-
-
-        for (int i = 0; i < 4; i++)
-        {
-            for (int j = 0; j < 4; j++)
+            if (next > 7)
             {
-                tmp[i][j] = test[j][i];
+                shuffle = true;
+                next = 0;
             }
         }
 
-        //IとOミノは例外判定で回転軸ずらす
-        if (a != 0 && a != 5)
+        //スコアの計算
+        if (!erase_line == 0)
         {
-            for (int i = 0; i < 4; i++)
+
+            //B2Bの計算
+            if (olderasenum == 4 && olderasenum == erase_line)
             {
-                for (int j = 0; j < 4; j++)
-                {
-                    test[i][4 - j] = tmp[i][j];
-                }
+                back_to_back = 1.5;
             }
-        }
-        else
-        {
-            for (int i = 0; i < 4; i++)
+            else
             {
-                for (int j = 0; j < 4; j++)
-                {
-                    test[i][3 - j] = tmp[i][j];
-                }
+                back_to_back = 1;
             }
-        }
-    }
-
-    //下が当たっていたら積む
-    if (nowtime - oldtime >= fall_time-300 && collision_down)
-    {
-        Accumulate = true;
-    }
-    else
-    {
-        Accumulate = false;
-    }
-
-    //積み上げ
-    if (Accumulate)
-    {
-
-        Adx::play(1);
-
-        for (int i = 0; i < 4; i++)
-        {
-            for (int j = 0; j < 4; j++)
+            //レベル得点掛ける消えたライン数
+            if (!all_clear)
             {
-                if (test[i][j] != 0 && main[player_num][down + i - 1][pos + j] == 0)
-                    main[player_num][down + i - 1][pos + j] = test[i][j];
+                score += ((fall_speed + 1) * linescore[erase_line - 1])*back_to_back*op_bonus;
             }
+            else
+            {
+                score += ((fall_speed + 1) * linescore[erase_line - 1])*back_to_back * 10 * op_bonus;
+                all_clear = false;
+            }
+
+            //スコア上限
+            if (score >= 999999)
+            {
+                score = 999999;
+            }
+
+            olderasenum = erase_line;
+            erase_line = 0;
         }
 
-        //フラグ更新
-        nextblock = true;
-        shift = true;
-        holdbutton = false;
-        holdf = false;
-        next++;
-        if (first)
-        {
-            first = false;
-        }
-        if (next > 7)
-        {
-            shuffle = true;
-            next = 0;
-        }
     }
-
-    //スコアの計算
-    if (!erase_line == 0)
-    {
-
-        //B2Bの計算
-        if (olderasenum == 4 && olderasenum == erase_line)
-        {
-            back_to_back = 1.5;
-        }
-        else
-        {
-            back_to_back = 1;
-        }
-        //レベル得点掛ける消えたライン数
-        if (!all_clear)
-        {
-            score += ((fall_speed + 1) * linescore[erase_line - 1])*back_to_back*op_bonus;
-        }
-        else
-        {
-            score += ((fall_speed + 1) * linescore[erase_line - 1])*back_to_back*10*op_bonus;
-            all_clear = false;
-        }
-
-        //スコア上限
-        if (score >= 999999)
-        {
-            score = 999999;
-        }
-
-        olderasenum = erase_line;
-        erase_line = 0;
-    }
-
     return 1;
+
 }
 
 //ゴースト更新

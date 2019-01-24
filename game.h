@@ -15,6 +15,7 @@
 #include"start.h"
 #include"tetrismulti.h"
 #include"clear.h"
+#include"gameover.h"
 
 //Class
 class Game
@@ -30,6 +31,7 @@ private:
     Mino mino_;
     Pause pause_;
     Clear clear_;
+    Gameover gameover_;
     
 
 public:

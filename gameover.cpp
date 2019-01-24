@@ -1,5 +1,10 @@
 #include "gameover.h"
 
+Gameover::Gameover()
+{
+    texture_ = NULL;
+}
+
 bool Gameover::init()
 {
 
@@ -12,6 +17,9 @@ bool Gameover::init()
         //エラー
         return false;
     }
+
+
+
 
     return true;
 }
@@ -28,18 +36,34 @@ void Gameover::update()
     {
         menucnt++;
     }
+
+
+
+
 }
 
 void Gameover::draw()
 {
-    if (menucnt == 1)
-    {
-        RECT rect;
-        rect.top = 0;
-        rect.left = 1739;
-        rect.bottom = rect.top + 153;
-        rect.right = rect.left + 153;
-    }
+    //メニューウィンドウ
+    RECT rect;
+    rect.top = 0;
+    rect.left = 1739-153;
+    rect.bottom = rect.top + 153;
+    rect.right = rect.left + 153;
+
+    //ランク
+    RECT rank;
+    rank.top = 961;
+    rank.left = 0;
+    rank.right = rank.left + 16;
+    rank.bottom = rank.top + 21;
+
+
+
+
+    Sprite::draw(texture_, Vector2(558, 274), &rect);
+    Sprite::draw(texture_, Vector2(573, 336), &rank); //ランク
+    
 
 }
 
