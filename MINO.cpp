@@ -10,6 +10,8 @@ bool Mino::init(int player_num)
 
     texture_ = Texture::load(L"Tetris11_SingleT.png");
 
+    if (!gameover_.init()) { return false; }
+
     if (texture_ == NULL)
     {
         Error::showDialog("Tetris11_singleT.pngが読み込めません");
@@ -215,7 +217,10 @@ int Mino::update(int player_num)
         //ゲームオーバーメニュー
         if (overcnt2 >= 200)
         {
-            return 3;
+            gameover_.draw();
+            gameover_.rankdraw(fall_speed);
+            gameover_.scoredraw(score);
+            gameover_.update();
         }
     }
     if (!gameover)
@@ -1722,6 +1727,15 @@ void Mino::cleardraw()
     Sprite::draw(texture_, Vector2(558, 274), &rect);
 }
 
+//ゲームオーバー
+void Mino::menudraw()
+{
+    gameover_.draw();
+    gameover_.rankdraw(fall_speed);
+    gameover_.scoredraw(score);
+    
+}
+
 //ゴーストの描画
 void Mino::ghostdraw(int player_num)
 {
@@ -1749,6 +1763,9 @@ void Mino::ghostdraw(int player_num)
 
 void Mino::destroy()
 {
+    
+    gameover_.destroy();
+
     //破棄
     SAFE_RELEASE(texture_);
 }

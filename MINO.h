@@ -45,6 +45,7 @@ public:
     void ghostdraw(int player_num);
     void scoredraw(int player_num); //スコアとレベルの描画
     void cleardraw();
+    void menudraw();
 
 	void destroy();  //破棄
     void reset(int player_num);    //積み上げ配列の範囲内の全情報を初期化

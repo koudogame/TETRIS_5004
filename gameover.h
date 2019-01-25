@@ -14,6 +14,8 @@ public:
     bool init();
     void update();
     void draw();
+    void scoredraw(int score);
+    void rankdraw(int rank);
     void destroy();
 
     int menucnt = 0;

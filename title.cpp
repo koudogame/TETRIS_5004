@@ -83,9 +83,8 @@ int Title::update()
     }
     else if (menu == 2 && (key_tracker.pressed.Enter || pad_tracker.a == GamePad::ButtonStateTracker::PRESSED))
     {
-        Adx::play(10);
+        Adx::play(0); //4人テトリス（いけない）
 
-        return 6; //ランキング
     }
     else if (menu == 3 && (key_tracker.pressed.Enter|| pad_tracker.a == GamePad::ButtonStateTracker::PRESSED))
     {
@@ -101,7 +100,7 @@ int Title::update()
     }
     else if (menu == 5 && (key_tracker.pressed.Enter || pad_tracker.a == GamePad::ButtonStateTracker::PRESSED))
     {
-        Adx::play(0);
+        Adx::play(0); //ぷよぷよ（いけない）
     }
 
     // メニューのループ
@@ -141,7 +140,6 @@ void Title::dpaddraw()
     trim.bottom = trim.top + 220;
     trim.right = trim.left + 220;
 
-
     Sprite::draw(texture_, Vector2(49,425), &trim);
 
 }
@@ -154,7 +152,6 @@ void Title::buttondraw()
     btrim.left = 1536;
     btrim.bottom = btrim.top+129;
     btrim.right = btrim.left + 128;
-
 
     Sprite::draw(texture_, Vector2(1002, 519), &btrim);
 

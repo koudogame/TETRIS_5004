@@ -18,9 +18,6 @@ bool Gameover::init()
         return false;
     }
 
-
-
-
     return true;
 }
 
@@ -36,9 +33,6 @@ void Gameover::update()
     {
         menucnt++;
     }
-
-
-
 
 }
 
@@ -58,13 +52,18 @@ void Gameover::draw()
     rank.right = rank.left + 16;
     rank.bottom = rank.top + 21;
 
-
-
-
     Sprite::draw(texture_, Vector2(558, 274), &rect);
     Sprite::draw(texture_, Vector2(573, 336), &rank); //ƒ‰ƒ“ƒN
-    
 
+}
+
+void Gameover::scoredraw(int score)
+{
+
+}
+
+void Gameover::rankdraw(int rank)
+{
 }
 
 void Gameover::destroy()
