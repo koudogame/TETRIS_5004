@@ -1739,7 +1739,7 @@ void Mino::menudraw()
 //ÉSÅ[ÉXÉgÇÃï`âÊ
 void Mino::ghostdraw(int player_num)
 {
-    Color color = Color(1.0F, 1.0F, 1.0F, 0.6F);
+    Color color = Color(1.0F, 1.0F, 1.0F, 0.4F);
     RECT trim;
 
     //ï`âÊ
