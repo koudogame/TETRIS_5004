@@ -16,7 +16,6 @@
 #include"credit.h"
 #include"option.h"
 #include"ranking.h"
-#include"tetrismulti.h"
 using namespace DirectX;
 using namespace SimpleMath;
 
@@ -183,7 +182,6 @@ int WINAPI WinMain( HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLin
     UI ui;
     Ranking ranking;
     Start start;         
-    Tetrismulti tetrismulti;
 
 
     int no = 0;
@@ -396,17 +394,10 @@ int WINAPI WinMain( HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLin
                     }
                     break;
                 case k4ptetrisInit:
-                    if (!tetrismulti.init())
-                    {
-                        PostQuitMessage(0);
-                    }
-                    work_no = k4ptetrisUpdate;
+
                     break;
                 case k4ptetrisUpdate:
-                    if (!tetrismulti.update())
-                    {
-                        work_no = kResultInit;
-                    }
+
                     break;
                 }
 
@@ -455,7 +446,6 @@ int WINAPI WinMain( HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLin
                     ui.inputdraw(rank_credit);
                     break;
                 case k4ptetrisUpdate:
-                    tetrismulti.draw();
                     break;
 
                 }
@@ -480,7 +470,6 @@ int WINAPI WinMain( HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLin
     credit.destroy();
     game.destroy();
     ui.destroy();
-    tetrismulti.destroy();
     
     option.destroy();
     ranking.destroy();

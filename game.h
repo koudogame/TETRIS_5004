@@ -9,11 +9,9 @@
 #include"start.h"
 #include"time.h"
 #include"result.h"
-#include"field.h"
 #include"MINO.h"
 #include"pause.h"
 #include"start.h"
-#include"tetrismulti.h"
 #include"clear.h"
 #include"gameover.h"
 
@@ -26,7 +24,6 @@ private:
     Title title_;                       // タイトルクラス
     Start start_;                       //スタートクラス
     Result result_;                     //リザルトクラス
-    Field field_;                       //フィールドクラス
     Pov pov_;                           //povクラス
     Mino mino_;
     Pause pause_;

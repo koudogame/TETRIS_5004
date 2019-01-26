@@ -150,7 +150,6 @@
     <ClCompile Include="credit.cpp" />
     <ClCompile Include="direct3d.cpp" />
     <ClCompile Include="directshow.cpp" />
-    <ClCompile Include="field.cpp" />
     <ClCompile Include="game.cpp" />
     <ClCompile Include="gameover.cpp" />
     <ClCompile Include="key.cpp" />
@@ -166,7 +165,6 @@
     <ClCompile Include="scene.cpp" />
     <ClCompile Include="sprite.cpp" />
     <ClCompile Include="start.cpp" />
-    <ClCompile Include="tetrismulti.cpp" />
     <ClCompile Include="texture.cpp" />
     <ClCompile Include="title.cpp" />
     <ClCompile Include="UI.cpp" />
@@ -181,7 +179,6 @@
     <ClInclude Include="direct3d.h" />
     <ClInclude Include="directshow.h" />
     <ClInclude Include="Error.h" />
-    <ClInclude Include="field.h" />
     <ClInclude Include="game.h" />
     <ClInclude Include="gameover.h" />
     <ClInclude Include="key.h" />
@@ -198,7 +195,6 @@
     <ClInclude Include="sprite.h" />
     <ClInclude Include="start.h" />
     <ClInclude Include="tetris_acf.h" />
-    <ClInclude Include="tetrismulti.h" />
     <ClInclude Include="texture.h" />
     <ClInclude Include="title.h" />
     <ClInclude Include="UI.h" />
