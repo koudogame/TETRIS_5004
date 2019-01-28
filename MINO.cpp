@@ -163,6 +163,7 @@ bool Mino::init(int player_num)
         reverseop = true;
     }
 
+    erase = 9;
     return true;
 }
 
@@ -217,10 +218,12 @@ int Mino::update(int player_num)
         //ゲームオーバーメニュー
         if (overcnt2 >= 200)
         {
-            gameover_.draw();
-            gameover_.rankdraw(fall_speed);
-            gameover_.scoredraw(score);
-            gameover_.update();
+            //変数類初期化
+            overcnt2 = 0;
+            score = 0;
+            erase = 0;
+            fall_speed = SPEED;
+            return 5;
         }
     }
     if (!gameover)
@@ -240,8 +243,6 @@ int Mino::update(int player_num)
             gameover = false;
         }
 
-        //ネクスト
-        nextpattern();
 
         //下
         if (state.Down || pad.dpad.down)
@@ -661,7 +662,7 @@ int Mino::update(int player_num)
             {
                 first = false;
             }
-            if (next > 7)
+            if (next > 6)
             {
                 shuffle = true;
                 next = 0;
@@ -702,6 +703,9 @@ int Mino::update(int player_num)
             erase_line = 0;
         }
 
+
+        //ネクスト
+        nextpattern();
     }
     return 1;
 
@@ -806,13 +810,13 @@ void Mino::nextpattern()
     {
         if (!shuffle)
         {
-            for (int i = 0; i < 6; i++)
+            for (int i = 0; i < 7; i++)
             {
                 next1[i] = next1[i + 1];
 
             }
             next1[6] = next2[0];
-            for (int i = 0; i < 6; i++)
+            for (int i = 0; i < 7; i++)
             {
                 next2[i] = next2[i + 1];
 
@@ -838,6 +842,7 @@ void Mino::nextpattern()
             next2[i] = next2[j];
             next2[j] = t;
         }
+        nextblock = true;
         shuffle = false;
     }
 
@@ -1725,15 +1730,6 @@ void Mino::cleardraw()
     rect.right = rect.left + 153;
 
     Sprite::draw(texture_, Vector2(558, 274), &rect);
-}
-
-//ゲームオーバー
-void Mino::menudraw()
-{
-    gameover_.draw();
-    gameover_.rankdraw(fall_speed);
-    gameover_.scoredraw(score);
-    
 }
 
 //ゴーストの描画

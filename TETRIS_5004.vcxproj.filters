@@ -16,6 +16,9 @@
     <Filter Include="ソース ファイル\directx">
       <UniqueIdentifier>{530f2bf0-3252-4dbb-8fcc-d0f0bd90547c}</UniqueIdentifier>
     </Filter>
+    <Filter Include="ヘッダー ファイル\いじらないやつ">
+      <UniqueIdentifier>{9890b066-af02-413f-9c96-19e68e635fc9}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="adx.cpp">
@@ -92,28 +95,13 @@
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="adx.h">
-      <Filter>ヘッダー ファイル</Filter>
-    </ClInclude>
     <ClInclude Include="common.h">
       <Filter>ヘッダー ファイル</Filter>
     </ClInclude>
     <ClInclude Include="credit.h">
       <Filter>ヘッダー ファイル</Filter>
     </ClInclude>
-    <ClInclude Include="direct3d.h">
-      <Filter>ヘッダー ファイル</Filter>
-    </ClInclude>
-    <ClInclude Include="Error.h">
-      <Filter>ヘッダー ファイル</Filter>
-    </ClInclude>
     <ClInclude Include="game.h">
-      <Filter>ヘッダー ファイル</Filter>
-    </ClInclude>
-    <ClInclude Include="key.h">
-      <Filter>ヘッダー ファイル</Filter>
-    </ClInclude>
-    <ClInclude Include="texture.h">
       <Filter>ヘッダー ファイル</Filter>
     </ClInclude>
     <ClInclude Include="title.h">
@@ -122,13 +110,7 @@
     <ClInclude Include="UI.h">
       <Filter>ヘッダー ファイル</Filter>
     </ClInclude>
-    <ClInclude Include="pad.h">
-      <Filter>ヘッダー ファイル</Filter>
-    </ClInclude>
     <ClInclude Include="player.h">
-      <Filter>ヘッダー ファイル</Filter>
-    </ClInclude>
-    <ClInclude Include="release.h">
       <Filter>ヘッダー ファイル</Filter>
     </ClInclude>
     <ClInclude Include="result.h">
@@ -175,6 +157,27 @@
     </ClInclude>
     <ClInclude Include="directshow.h">
       <Filter>ヘッダー ファイル</Filter>
+    </ClInclude>
+    <ClInclude Include="adx.h">
+      <Filter>ヘッダー ファイル\いじらないやつ</Filter>
+    </ClInclude>
+    <ClInclude Include="direct3d.h">
+      <Filter>ヘッダー ファイル\いじらないやつ</Filter>
+    </ClInclude>
+    <ClInclude Include="key.h">
+      <Filter>ヘッダー ファイル\いじらないやつ</Filter>
+    </ClInclude>
+    <ClInclude Include="pad.h">
+      <Filter>ヘッダー ファイル\いじらないやつ</Filter>
+    </ClInclude>
+    <ClInclude Include="Error.h">
+      <Filter>ヘッダー ファイル\いじらないやつ</Filter>
+    </ClInclude>
+    <ClInclude Include="release.h">
+      <Filter>ヘッダー ファイル\いじらないやつ</Filter>
+    </ClInclude>
+    <ClInclude Include="texture.h">
+      <Filter>ヘッダー ファイル\いじらないやつ</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

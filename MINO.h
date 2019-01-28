@@ -8,7 +8,7 @@
 
 #define fall_time 1500
 
-#define SPEED 1 //初期レベル（速度)
+#define SPEED 6 //初期レベル（速度)
 
 #include"texture.h"
 #include"player.h"
@@ -45,7 +45,6 @@ public:
     void ghostdraw(int player_num);
     void scoredraw(int player_num); //スコアとレベルの描画
     void cleardraw();
-    void menudraw();
 
 	void destroy();  //破棄
     void reset(int player_num);    //積み上げ配列の範囲内の全情報を初期化
