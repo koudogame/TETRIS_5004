@@ -55,7 +55,7 @@ int Pause::update()
     }
 
     //ƒQ[ƒ€‚ğ‘±‚¯‚é
-    if (menucnt == 0 && (pad_tracker.a == GamePad::ButtonStateTracker::PRESSED||key_tracker.pressed.Enter))
+    if (key_tracker.pressed.F1||pad_tracker.start == GamePad::ButtonStateTracker::PRESSED||(menucnt == 0 && (pad_tracker.a == GamePad::ButtonStateTracker::PRESSED||key_tracker.pressed.Enter)))
     {
         Adx::play(10);
 

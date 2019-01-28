@@ -258,7 +258,6 @@ int Mino::update(int player_num)
         //当たり判定
         collisiondown(player_num);
 
-
         //回転先が埋まっていた場合スーパーローテーション関数で補正をかける
         if (srs)
         {
@@ -457,7 +456,6 @@ int Mino::update(int player_num)
             }
         }
 
-
         if (key_tracker.released.Left || pad_tracker.dpadLeft == GamePad::ButtonStateTracker::RELEASED)
         {
             if (reverseop)
@@ -517,7 +515,6 @@ int Mino::update(int player_num)
                 }
             }
         }
-
 
         if (key_tracker.released.Right || pad_tracker.dpadRight == GamePad::ButtonStateTracker::RELEASED)
         {
@@ -900,9 +897,9 @@ void Mino::nextpattern()
 
 }
 
+//全消しの確認
 void Mino::allclear(int player_num)
 {
-    //全消しの確認
     for (int i = 0; i < 22; i++)
     {
         for (int j = 1; j < 11; j++)
@@ -934,7 +931,7 @@ void Mino::allclear(int player_num)
 
 }
 
-//スーパーローテーション(未完成)
+//スーパーローテーション(できない)
 void Mino::srsystem(int rotation_type, int player_num)
 {
     int step = rotation_type;
