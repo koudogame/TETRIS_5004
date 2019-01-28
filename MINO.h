@@ -8,7 +8,7 @@
 
 #define fall_time 1500
 
-#define SPEED 6 //初期レベル（速度)
+#define SPEED 1 //初期レベル（速度)
 
 #include"texture.h"
 #include"player.h"

@@ -92,6 +92,7 @@ bool Mino::init(int player_num)
     //optionの内容を反映
     int num = 0;
 
+    //オプション設定の読み込み
     while (fscanf(fp, "%d", &optiontxt) != NULL)
     {
         option[num] = optiontxt;
@@ -163,7 +164,7 @@ bool Mino::init(int player_num)
         reverseop = true;
     }
 
-    erase = 9;
+    //erase = 9;
     return true;
 }
 
