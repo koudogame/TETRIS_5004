@@ -3,7 +3,6 @@
 #include"sprite.h"
 #include"pad.h"
 #include"key.h"
-
 #include"adx.h"
 
 Player player;
