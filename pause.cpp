@@ -33,7 +33,7 @@ int Pause::update()
     const Keyboard::KeyboardStateTracker key_tracker = Key::getTracker();
 
 
-    if (pad_tracker.dpadDown == GamePad::ButtonStateTracker::PRESSED|key_tracker.pressed.Down)
+    if (pad_tracker.dpadDown == GamePad::ButtonStateTracker::PRESSED||key_tracker.pressed.Down)
     {
         Adx::play(9);
         menucnt++;
