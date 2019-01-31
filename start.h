@@ -1,6 +1,5 @@
 #pragma once
 
-#include<d3d11.h>
 #include"release.h"
 #include"player.h"
 #include"title.h"
@@ -9,7 +8,6 @@
 #include"pad.h"
 #include"adx.h"
 #include"key.h"
-#include<ctime>
 
 class Start
 {

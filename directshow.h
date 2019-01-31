@@ -1,6 +1,11 @@
 #pragma once
 #include"Error.h"
 #include"texture.h"
-#include<dshow.h>
 
-void movie();
+
+
+
+// lib
+#pragma comment( lib, "strmiids.lib" )
+
+//int _tmain(int Argc, TCHAR* argv);

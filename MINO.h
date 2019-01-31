@@ -18,7 +18,6 @@
 #include"tetris_acf.h"
 #include"CueSheet_0.h"
 #include"adx.h"
-#include<ctime>
 #include"gameover.h"
 
 class Mino

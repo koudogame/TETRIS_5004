@@ -1,6 +1,4 @@
 #pragma once
-#include<d3d11.h>
-#include<WICTextureLoader.h>
 #include"Error.h"
 
 //–¼‘O‹óŠÔ

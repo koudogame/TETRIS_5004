@@ -90,6 +90,7 @@ int Clear::update(int menu_type)
     return 1;
 }
 
+//クリアウィンドウの描画
 void Clear::draw()
 {
     RECT rect;
@@ -103,6 +104,7 @@ void Clear::draw()
     Sprite::draw(texture_, Vector2(558, 274), &rect);
 }
 
+//メニュー内カーソルの描画
 void Clear::cursordraw()
 {
     RECT rect;

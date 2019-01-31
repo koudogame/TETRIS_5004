@@ -1,6 +1,5 @@
 #pragma once
 
-#include<cri_adx2le.h>
 #include"release.h"
 
 //Class
