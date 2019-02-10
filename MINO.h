@@ -1,12 +1,12 @@
 #pragma once
 
-#define field_width 12
-#define field_height 23
+#define field_width 12 //フィールド横幅
+#define field_height 23 //フィールド縦幅
 
-#define block_width 4
-#define block_height 4
+#define block_width 4 //ブロック横幅
+#define block_height 4 //ブロック縦幅
 
-#define fall_time 1500
+#define fall_time 1500 //落下秒数
 
 #define SPEED 1 //初期レベル（速度)
 
@@ -176,10 +176,10 @@ public:
     int fall_speed = SPEED;
 
     //スコア
-    int score = 0;
+    unsigned int score = 0;
     int erase_line = 0; //消されたライン数
     int olderasenum = 0; //前回消した行数を取っておく(B2B用)
-    double back_to_back = 1; //back_to_backをした時のスコア倍率
+    float back_to_back = 1; //back_to_backをした時のスコア倍率
     const int linescore[4] = { 40,100,300,1200 }; //同時消しの点数表
 
     //ゴースト
@@ -210,6 +210,6 @@ public:
     bool reverseop; //操作を反転させるか
     bool scorereset;//ランキングスコアリセット
 
-    double op_bonus = 1.0;
+    float op_bonus = 1.0;
 
 };
