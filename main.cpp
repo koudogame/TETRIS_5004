@@ -3,6 +3,7 @@
 #include<Windows.h>
 #include<d3d11.h>
 #include<ctime>
+#include<crtdbg.h>
 #include"direct3d.h"
 #include"sprite.h"
 #include"common.h"
@@ -16,6 +17,7 @@
 #include"credit.h"
 #include"option.h"
 #include"ranking.h"
+#include"resource.h"
 using namespace DirectX;
 using namespace SimpleMath;
 
@@ -62,6 +64,26 @@ LRESULT CALLBACK WinProc( HWND hWnd, UINT Msg, WPARAM wParam, LPARAM lParam );
 
 int WINAPI WinMain( HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine, int nCmdShow )
 {
+#ifdef _DEBUG
+
+    //メモリリークのチェック
+    //_CrtSetBreakAlloc(164); //引数はメモリリークした番号
+    _CrtSetDbgFlag(_CRTDBG_ALLOC_MEM_DF | _CRTDBG_LEAK_CHECK_DF);
+
+#endif // _DEBUG
+
+    //ミューテックスの作成
+    HANDLE mutex = CreateMutex(NULL, false, "Big_Enter");
+
+    //多重起動のチェック
+    if (GetLastError() == ERROR_ALREADY_EXISTS)
+    {
+        //起動している
+        Error::showDialog("すでに起動しています");
+
+        return 0;
+    }
+
     //乱数初期化
     srand( time( NULL ) );
 
@@ -74,8 +96,9 @@ int WINAPI WinMain( HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLin
     wnd.lpszClassName = "ClassName";                                                                //クラス名
     wnd.hCursor = LoadCursor( NULL, IDC_ARROW );                                                    //カーソル形状
     wnd.hbrBackground = reinterpret_cast<HBRUSH>(COLOR_WINDOW + 1);
-    wnd.lpfnWndProc = WinProc;                                                                      //ウィンドウプロシージャへの関数ポインタ
-
+    wnd.lpfnWndProc = WinProc;   //ウィンドウプロシージャへの関数ポインタ
+    wnd.hIcon = LoadIcon(hInstance, reinterpret_cast<LPCSTR>(IDI_ICON1));
+    //wnd.hIconSm
     //登録
     if( !RegisterClassEx( &wnd ) )
     {

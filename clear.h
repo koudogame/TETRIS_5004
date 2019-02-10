@@ -5,6 +5,7 @@
 #include"sprite.h"
 #include"texture.h"
 #include"release.h"
+#include"adx.h"
 
 class Clear
 {
@@ -14,8 +15,9 @@ private:
 public:
     Clear();
     bool init();
-    void update(int menu_type);
+    int update(int menu_type);
     void draw();
+    void cursordraw();
     void destroy();
 
     //メニューウィンドウの種類
@@ -30,5 +32,7 @@ public:
     
     //入力終了
     bool end = false;
+
+    int menu = 0; //リトライメニュー
 
 };

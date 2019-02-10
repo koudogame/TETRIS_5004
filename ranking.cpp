@@ -65,44 +65,54 @@ void Ranking::draw()
     int ranking;
     int left = 0;
 
+    //ランキングの描画
     while (fscanf(fp, "%d", &ranking) != EOF)
     {
         rankcntx++;
+
+        //空欄
         if (rankcntx == 4)
         {
             rankcntx++;
         }
+
+        //空欄
         if (rankcntx == 11)
         {
             rankcntx++;
         }
+
+        //改行
         if (rankcntx % 13 == 0)
         {
             rankcnty++;
             rankcntx = 1;
         }
 
+        //トリミング
         rank.top = 982;
         rank.left = 0 + (32 * ranking);
         rank.bottom = rank.top + 42;
         rank.right = rank.left + 32;
-        if (rankcntx < 4)
+
+        if (rankcntx < 4) 
         {
+            //名前の部分
             Sprite::draw(texture_, Vector2(429 + (rankcntx * 32), 139 + (rankcnty * 52)), &rank);
         }
-        else if (rankcntx > 4 && rankcntx < 12)
+        else if (rankcntx > 4 && rankcntx < 12) 
         {
+            //スコアの部分
             Sprite::draw(texture_, Vector2(435 + (rankcntx * 32), 139 + (rankcnty * 52)), &rank);
         }
         else
         {
+            //ランクの部分
             Sprite::draw(texture_, Vector2(445 + (rankcntx * 32), 139 + (rankcnty * 52)), &rank);
         }
     }
 
     fclose(fp);
-
-
 
 }
 

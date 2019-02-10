@@ -33,7 +33,7 @@ int Pause::update()
     const Keyboard::KeyboardStateTracker key_tracker = Key::getTracker();
 
 
-    if (pad_tracker.dpadDown == GamePad::ButtonStateTracker::PRESSED|key_tracker.pressed.Down)
+    if (pad_tracker.dpadDown == GamePad::ButtonStateTracker::PRESSED||key_tracker.pressed.Down)
     {
         Adx::play(9);
         menucnt++;
@@ -55,7 +55,7 @@ int Pause::update()
     }
 
     //ÉQÅ[ÉÄÇë±ÇØÇÈ
-    if (menucnt == 0 && (pad_tracker.a == GamePad::ButtonStateTracker::PRESSED||key_tracker.pressed.Enter))
+    if (key_tracker.pressed.F1||pad_tracker.start == GamePad::ButtonStateTracker::PRESSED||(menucnt == 0 && (pad_tracker.a == GamePad::ButtonStateTracker::PRESSED||key_tracker.pressed.Enter)))
     {
         Adx::play(10);
 

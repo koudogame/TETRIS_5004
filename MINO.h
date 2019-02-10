@@ -18,7 +18,6 @@
 #include"tetris_acf.h"
 #include"CueSheet_0.h"
 #include"adx.h"
-#include<ctime>
 #include"gameover.h"
 
 class Mino
@@ -45,7 +44,6 @@ public:
     void ghostdraw(int player_num);
     void scoredraw(int player_num); //スコアとレベルの描画
     void cleardraw();
-    void menudraw();
 
 	void destroy();  //破棄
     void reset(int player_num);    //積み上げ配列の範囲内の全情報を初期化

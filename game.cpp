@@ -22,6 +22,7 @@ bool Game::init()
     if (!pause_.init()) { return false; }
     if (!start_.init()) { return false; }
     if (!clear_.init()) { return false; }
+    if (!gameover_.init()) { return false; }
 
     play = false;
 
@@ -31,6 +32,10 @@ bool Game::init()
 //更新
 int Game::update(int player_num)
 {
+
+    int num = 0;
+    int num2 = 0;
+
     if (!play)
     {
         if (!start_.update())
@@ -58,12 +63,41 @@ int Game::update(int player_num)
         }
         else if (menu_type == 4) //ゲームクリア
         {
-            clear_.update(menu_type);
-            return 5;
+           num = clear_.update(menu_type);
+
+           if (num == 3)
+           {
+               num = 0;
+               menu_type = 1;
+
+               return 3;
+           }
+           else if (num == 4)
+           {
+               num = 0;
+               menu_type = 1;
+
+               return 4;
+           }
         }
         else if (menu_type == 5) //ゲームオーバーメインメニュー
         {
-            return 4;
+
+            num2 = gameover_.update();
+
+            if (num2 == 3)
+            {
+                num2 = 0;
+                menu_type = 1;
+                return 3;
+            }
+            else if (num2 == 4)
+            {
+                num2 = 0;
+                menu_type = 1;
+
+                return 4;
+            }
         }
 
         if (pausecnt == 2) //ゲームを続ける
@@ -121,16 +155,18 @@ void Game::draw()
         pause_.draw();
         pause_.cursordraw();
     }
-    if (menu_type == 3)
-    {
-        mino_.menudraw();
-    }
 
     //ゲームクリア
     if (menu_type == 4)
     {
         mino_.cleardraw();
         clear_.draw();
+        clear_.cursordraw();
+    }
+
+    if (menu_type == 5)
+    {
+        gameover_.draw();
     }
 }
 

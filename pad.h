@@ -1,6 +1,5 @@
 #pragma once
 
-#include<GamePad.h>
 
 using namespace DirectX;
 

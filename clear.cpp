@@ -21,7 +21,7 @@ bool Clear::init()
     return true;
 }
 
-void Clear::update(int menu_type)
+int Clear::update(int menu_type)
 {
 
     const GamePad::State pad = Pad::getState();
@@ -30,68 +30,93 @@ void Clear::update(int menu_type)
     const Keyboard::State state = Key::getState();
     const Keyboard::KeyboardStateTracker key_tracker = Key::getTracker();
 
-    if (!end)
+    //オールレベルクリア
+    if (mode == 0)
     {
-        //オールレベルクリア
-        if (mode == 1)
+        if (key_tracker.pressed.Enter||(pad_tracker.a || pad_tracker.b == GamePad::ButtonStateTracker::PRESSED))
         {
-            if ((pad_tracker.a || pad_tracker.b) == GamePad::ButtonStateTracker::PRESSED)
-            {
-                //次の項目へ
-                mode = 2;
-            }
-        }
-        else if (mode == 2) //名前入力
-        {
-            if (!end)
-            {
-                if (pad_tracker.dpadLeft == GamePad::ButtonStateTracker::PRESSED || key_tracker.pressed.Left)
-                {
-                    num--;
-                }
-
-                if (num < 0)
-                {
-                    num = 27;
-                }
-                else if (num > 27)
-                {
-                    num = 0;
-                }
-
-                if (num == 27 && pad_tracker.a == GamePad::ButtonStateTracker::PRESSED || key_tracker.pressed.Enter)
-                {
-
-                    //次の項目へ
-                    end = true;
-                }
-                else if (!num == 27 && pad_tracker.a == GamePad::ButtonStateTracker::PRESSED || key_tracker.pressed.Enter)
-                {
-                    name[digit] = num;
-
-                    //次の文字へ
-                    digit++;
-                }
-
-            }
+            Adx::play(9);
+            //次の項目へ
+            mode = 3;
         }
     }
+    else if (mode == 3) //名前入力
+    {
+        if (key_tracker.pressed.Up || pad_tracker.dpadUp == GamePad::ButtonStateTracker::PRESSED)
+        {
+            Adx::play(9);
+
+            menu--;
+        }
+        if (key_tracker.pressed.Down || pad_tracker.dpadDown == GamePad::ButtonStateTracker::PRESSED)
+        {
+            Adx::play(9);
+
+            menu++;
+        }
+
+        if (menu == 0 && (key_tracker.pressed.Enter || (pad_tracker.a == GamePad::ButtonStateTracker::PRESSED)))
+        {
+            Adx::play(10);
+
+            //リトライ
+            menu = 0;
+
+            return 3;
+        }
+
+        if (menu == 1 && (key_tracker.pressed.Enter || (pad_tracker.a == GamePad::ButtonStateTracker::PRESSED)))
+        {
+            Adx::play(10);
+
+            //メインメニュー
+            menu = 0;
+            return 4;
+        }
+
+        //メニューカーソルのループ
+        if (menu > 1)
+        {
+            menu = 0;
+        }
+        if (menu < 0)
+        {
+            menu = 1;
+        }
+
+        return 2;
+    }
+
+    return 1;
 }
 
+//クリアウィンドウの描画
 void Clear::draw()
 {
     RECT rect;
-    for (int i = 0; i < 4; i++)
+
+
+    rect.top = 0;
+    rect.left = 1433 + (153*mode);
+    rect.bottom = rect.top + 153;
+    rect.right = rect.left + 153;
+
+    Sprite::draw(texture_, Vector2(558, 274), &rect);
+}
+
+//メニュー内カーソルの描画
+void Clear::cursordraw()
+{
+    RECT rect;
+
+    rect.top = 947;
+    rect.left = 1186;
+    rect.bottom = rect.top + 25;
+    rect.right = rect.left + 15;
+    if (mode == 3)
     {
-
-        rect.top = 0;
-        rect.left = 1280 + 153;
-        rect.bottom = rect.top + 153;
-        rect.right = rect.left + 153;
-
-        Sprite::draw(texture_, Vector2(558, 274), &rect);
+        Sprite::draw(texture_, Vector2(562, 323+(menu*25)), &rect);
     }
-
 }
 
 void Clear::destroy()

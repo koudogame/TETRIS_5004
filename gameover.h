@@ -4,6 +4,7 @@
 #include"pad.h"
 #include"texture.h"
 #include"release.h"
+#include"adx.h"
 
 class Gameover
 {
@@ -12,11 +13,9 @@ private:
 public:
     Gameover();
     bool init();
-    void update();
+    int update();
     void draw();
-    void scoredraw(int score);
-    void rankdraw(int rank);
     void destroy();
 
-    int menucnt = 0;
+    int menu = 0;
 };

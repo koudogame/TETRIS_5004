@@ -92,6 +92,7 @@ bool Mino::init(int player_num)
     //optionの内容を反映
     int num = 0;
 
+    //オプション設定の読み込み
     while (fscanf(fp, "%d", &optiontxt) != NULL)
     {
         option[num] = optiontxt;
@@ -163,6 +164,7 @@ bool Mino::init(int player_num)
         reverseop = true;
     }
 
+    //erase = 9;
     return true;
 }
 
@@ -217,10 +219,12 @@ int Mino::update(int player_num)
         //ゲームオーバーメニュー
         if (overcnt2 >= 200)
         {
-            gameover_.draw();
-            gameover_.rankdraw(fall_speed);
-            gameover_.scoredraw(score);
-            gameover_.update();
+            //変数類初期化
+            overcnt2 = 0;
+            score = 0;
+            erase = 0;
+            fall_speed = SPEED;
+            return 5;
         }
     }
     if (!gameover)
@@ -240,8 +244,6 @@ int Mino::update(int player_num)
             gameover = false;
         }
 
-        //ネクスト
-        nextpattern();
 
         //下
         if (state.Down || pad.dpad.down)
@@ -255,7 +257,6 @@ int Mino::update(int player_num)
 
         //当たり判定
         collisiondown(player_num);
-
 
         //回転先が埋まっていた場合スーパーローテーション関数で補正をかける
         if (srs)
@@ -455,7 +456,6 @@ int Mino::update(int player_num)
             }
         }
 
-
         if (key_tracker.released.Left || pad_tracker.dpadLeft == GamePad::ButtonStateTracker::RELEASED)
         {
             if (reverseop)
@@ -515,7 +515,6 @@ int Mino::update(int player_num)
                 }
             }
         }
-
 
         if (key_tracker.released.Right || pad_tracker.dpadRight == GamePad::ButtonStateTracker::RELEASED)
         {
@@ -661,7 +660,7 @@ int Mino::update(int player_num)
             {
                 first = false;
             }
-            if (next > 7)
+            if (next > 6)
             {
                 shuffle = true;
                 next = 0;
@@ -702,6 +701,9 @@ int Mino::update(int player_num)
             erase_line = 0;
         }
 
+
+        //ネクスト
+        nextpattern();
     }
     return 1;
 
@@ -806,13 +808,13 @@ void Mino::nextpattern()
     {
         if (!shuffle)
         {
-            for (int i = 0; i < 6; i++)
+            for (int i = 0; i < 7; i++)
             {
                 next1[i] = next1[i + 1];
 
             }
             next1[6] = next2[0];
-            for (int i = 0; i < 6; i++)
+            for (int i = 0; i < 7; i++)
             {
                 next2[i] = next2[i + 1];
 
@@ -838,6 +840,7 @@ void Mino::nextpattern()
             next2[i] = next2[j];
             next2[j] = t;
         }
+        nextblock = true;
         shuffle = false;
     }
 
@@ -894,9 +897,9 @@ void Mino::nextpattern()
 
 }
 
+//全消しの確認
 void Mino::allclear(int player_num)
 {
-    //全消しの確認
     for (int i = 0; i < 22; i++)
     {
         for (int j = 1; j < 11; j++)
@@ -928,7 +931,7 @@ void Mino::allclear(int player_num)
 
 }
 
-//スーパーローテーション(未完成)
+//スーパーローテーション(できない)
 void Mino::srsystem(int rotation_type, int player_num)
 {
     int step = rotation_type;
@@ -1725,15 +1728,6 @@ void Mino::cleardraw()
     rect.right = rect.left + 153;
 
     Sprite::draw(texture_, Vector2(558, 274), &rect);
-}
-
-//ゲームオーバー
-void Mino::menudraw()
-{
-    gameover_.draw();
-    gameover_.rankdraw(fall_speed);
-    gameover_.scoredraw(score);
-    
 }
 
 //ゴーストの描画

@@ -48,6 +48,7 @@ void Credit::draw()
     Sprite::draw(texture_, Vector2::Zero);
 }
 
+//名前の表示
 void Credit::namedraw()
 {
     RECT rect;
@@ -65,6 +66,7 @@ void Credit::namedraw()
     }
 }
 
+//日付の表示
 void Credit::datedraw()
 {
     RECT rect;
